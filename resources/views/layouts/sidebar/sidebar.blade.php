@@ -1,5 +1,5 @@
 <div class="sidebar">
-    <!-- Sidebar user panel (optional) -->
+    {{-- <!-- Sidebar user panel (optional) -->
     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
             <img src="{{ asset('vendor/adminlte/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
@@ -8,7 +8,7 @@
         <div class="info">
             <a href="#" class="d-block">Alexander Pierce</a>
         </div>
-    </div>
+    </div> --}}
 
 
     <!-- Sidebar Menu -->
@@ -17,74 +17,90 @@
             <!-- Add icons to the links using the .nav-icon class
    with font-awesome or any other icon font library -->
             <li class="nav-header">DATA</li>
+                
+            <!-- Data Pegawai -->
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-copy"></i>
                     <p>
-                        Lihat Data
+                        Data Pegawai
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="pages/layout/top-nav.html" class="nav-link">
+                        <a href="{{ route('pegawai-view-data') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Top Navigation</p>
+                            <p>Lihat Data Pegawai</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                        <a href="{{ route('pegawai-input-data') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Top Navigation + Sidebar</p>
+                            <p>Input Data Pegawai</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/boxed.html" class="nav-link">
+                        <a href="{{ route('pegawai-edit-data') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Boxed</p>
+                            <p>Edit Data Pegawai</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/fixed-sidebar.html" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Sidebar</p>
+                            <p>Hapus Data Pegawai</p>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <!-- Data Piket -->
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-copy"></i>
+                    <p>
+                        Data Piket
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ route('piket-view-data') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Lihat Data Piket</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/fixed-sidebar-custom.html" class="nav-link">
+                        <a href="{{ route('piket-input-data') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Sidebar <small>+ Custom Area</small></p>
+                            <p>Input Data Piket</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/fixed-topnav.html" class="nav-link">
+                        <a href="{{ route('piket-edit-data') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Navbar</p>
+                            <p>Edit Data Piket</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/fixed-footer.html" class="nav-link">
+                        <a href="#" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Fixed Footer</p>
+                            <p>Hapus Data Piket</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="pages/layout/collapsed-sidebar.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Collapsed Sidebar</p>
-                        </a>
-                    </li>
+
                 </ul>
             </li>
 
 
-
-            <li class="nav-header">INPUT DATA</li>
+            <li class="nav-header">PROSES DATA</li>
             <li class="nav-item">
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-table"></i>
                     <p>
-                        Tables
+                        Algoritma Neuro Fuzzy
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
@@ -92,19 +108,37 @@
                     <li class="nav-item">
                         <a href="pages/tables/simple.html" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Simple Tables</p>
+                            <p>Algoritma Memetika</p>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="pages/tables/data.html" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>DataTables</p>
+                            <p>Algoritma Genetika</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-table"></i>
+                    <p>
+                        Algoritma Memetika
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="pages/tables/simple.html" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Algoritma Memetika</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/tables/jsgrid.html" class="nav-link">
+                        <a href="pages/tables/data.html" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>jsGrid</p>
+                            <p>Algoritma Genetika</p>
                         </a>
                     </li>
                 </ul>
