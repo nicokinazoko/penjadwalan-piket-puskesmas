@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +20,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::fallback(function (){
+    return view('content.error-page.404');
+});
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
-    return view('content.dashboard');
+Route::prefix('/pegawai')->group(function () {
+
+    Route::get('/lihat-data',  [AdminController::class, 'viewDataPegawai'])->name('pegawai-view-data');
+
+    Route::get('/input-data',  [AdminController::class, 'inputDataPegawai'])->name('pegawai-input-data');
+
+    Route::get('/edit-data',  [AdminController::class, 'editDataPegawai'])->name('pegawai-edit-data');
 });
+
+Route::prefix('/piket')->group(function(){
+
+    Route::get('/lihat-data', [AdminController::class, 'viewDataPiket'])->name('piket-view-data');
+
+    Route::get('/input-data', [AdminController::class, 'viewInputPiket'])->name('piket-input-data');
+
+    Route::get('/edit-data', [AdminController::class, 'editDataPiket'])->name('piket-edit-data');
+});
+
+Route::get('/dashboard', [AdminController::class, 'viewDashboard'])->name('dashboard');
 
 Route::get('/tabel-data', function () {
     return view('content.table-data');
