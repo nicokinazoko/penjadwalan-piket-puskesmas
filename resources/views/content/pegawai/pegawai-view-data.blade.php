@@ -15,6 +15,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
+                            <li class="breadcrumb-item active"><a href="{{route('pegawai-view-data')}}">Data Pegawai</a></li>
                             <li class="breadcrumb-item active">Lihat Data Pegawai</li>
                         </ol>
                     </div>
@@ -30,7 +31,7 @@
                 <!-- =========================================================== -->
                 <h5 class="mt-4 mb-2">Jumlah Data Pegawai yang Sudah Ada</h5>
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-3 col-4">
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
