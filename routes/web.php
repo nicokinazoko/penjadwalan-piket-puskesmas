@@ -40,7 +40,7 @@ Route::prefix('/piket')->group(function(){
 
     Route::get('/lihat-data', [AdminController::class, 'viewDataPiket'])->name('piket-view-data');
 
-    Route::get('/input-data', [AdminController::class, 'viewInputPiket'])->name('piket-input-data');
+    Route::get('/input-data', [AdminController::class, 'inputDataPiket'])->name('piket-input-data');
 
     Route::get('/edit-data', [AdminController::class, 'editDataPiket'])->name('piket-edit-data');
 });
