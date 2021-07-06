@@ -17,7 +17,7 @@
             <!-- Add icons to the links using the .nav-icon class
    with font-awesome or any other icon font library -->
             <li class="nav-header">DATA</li>
-                
+
             <!-- Data Pegawai -->
             <li class="nav-item">
                 <a href="#" class="nav-link">
