@@ -15,7 +15,8 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{route('pegawai-view-data')}}">Data Pegawai</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('pegawai-view-data') }}">Data Pegawai</a>
+                            </li>
                             <li class="breadcrumb-item active">Lihat Data Pegawai</li>
                         </ol>
                     </div>
@@ -40,7 +41,7 @@
                                 <p>Data Pegawai</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fas fa-user-nurse"></i>
                             </div>
                             <a href="{{ route('pegawai-input-data') }}" class="small-box-footer">Input Data <i
                                     class="fas fa-arrow-circle-right"></i></a>
@@ -66,15 +67,21 @@
                                             <th>Nama Pegawai</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Jabatan</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @for ($i = 0; $i <= 10; $i++)
-                                        <tr>
-                                            <td>Amelia</td>
-                                            <td>Dokter</td>
-                                            <td>Perempuan</td>
-                                        </tr>
+                                            <tr>
+                                                <td>Amelia</td>
+                                                <td>Dokter</td>
+                                                <td>Perempuan</td>
+                                                <td>
+                                                    <a href="{{ route('pegawai-edit-data') }}"><i
+                                                            class="fas fa-edit"></i></a>
+                                                    <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
 
                                         @endfor
                                     </tbody>
@@ -83,6 +90,7 @@
                                             <th>Nama Pegawai</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Jabatan</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                 </table>
