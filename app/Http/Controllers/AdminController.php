@@ -44,7 +44,7 @@ class AdminController extends Controller
 
     //untuk edit data piket
     public function editDataPiket(){
-        return view('content.piket.edit-data');
+        return view('content.piket.piket-edit-data');
     }
 
 }
