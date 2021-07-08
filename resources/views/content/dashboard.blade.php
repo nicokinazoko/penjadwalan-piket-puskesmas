@@ -35,7 +35,7 @@
                                 <p>Data Pegawai</p>
                             </div>
                             <div class="icon">
-                                <i class="ion ion-bag"></i>
+                                <i class="fas fa-user-nurse"></i>
                             </div>
                             <a href="{{ route('pegawai-view-data') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
@@ -51,7 +51,7 @@
                                 <p>Data Piket</p>
                             </div>
                             <div class="icon">
-                                <i class="fas fa-file-medical"></i>
+                                <i class="fas fa-clipboard-list"></i>
                             </div>
                             <a href="{{ route('piket-view-data') }}" class="small-box-footer">More info <i
                                     class="fas fa-arrow-circle-right"></i></a>
