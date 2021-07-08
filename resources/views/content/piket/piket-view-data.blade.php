@@ -40,9 +40,9 @@
                                 <p>Data Piket</p>
                             </div>
                             <div class="icon">
-                                <i class="fas fa-file-medical"></i>
+                                <i class="fas fa-clipboard-list"></i>
                             </div>
-                            <a href="{{ route('piket-input-data') }}" class="small-box-footer">Input Datax <i
+                            <a href="{{ route('piket-input-data') }}" class="small-box-footer">Input Data<i
                                     class="fas fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
@@ -65,6 +65,7 @@
                                         <tr>
                                             <th>Kode Piket</th>
                                             <th>Nama Piket</th>
+                                            <th colspan="2">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,6 +73,13 @@
                                             <tr>
                                                 <td>Amelia</td>
                                                 <td>Dokter</td>
+                                                <td>
+                                                    <a href="{{ route('piket-edit-data') }}"><i
+                                                            class="fas fa-edit"></i></a>
+                                                </td>
+                                                <td>
+                                                    <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
                                             </tr>
 
                                         @endfor
@@ -80,6 +88,7 @@
                                         <tr>
                                             <th>Kode Piket</th>
                                             <th>Nama Piket</th>
+                                            <th colspan="2">Aksi</th>
                                         </tr>
                                     </tfoot>
                                 </table>
