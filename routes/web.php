@@ -34,6 +34,8 @@ Route::prefix('/pegawai')->group(function () {
     Route::get('/input-data',  [AdminController::class, 'inputDataPegawai'])->name('pegawai-input-data');
 
     Route::get('/edit-data',  [AdminController::class, 'editDataPegawai'])->name('pegawai-edit-data');
+
+    Route::get('/edit-data/id', [AdminController::class, 'editDataPegawaiById'])->name('pegawai-edit-data-by-id');
 });
 
 Route::prefix('/piket')->group(function(){
@@ -43,6 +45,8 @@ Route::prefix('/piket')->group(function(){
     Route::get('/input-data', [AdminController::class, 'inputDataPiket'])->name('piket-input-data');
 
     Route::get('/edit-data', [AdminController::class, 'editDataPiket'])->name('piket-edit-data');
+
+    Route::get('/edit-data/id', [AdminController::class, 'editDataPiketById'])->name('piket-edit-data-by-id');
 });
 
 Route::get('/dashboard', [AdminController::class, 'viewDashboard'])->name('dashboard');
