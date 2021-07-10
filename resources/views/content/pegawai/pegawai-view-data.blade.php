@@ -77,7 +77,7 @@
                                                 <td>Dokter</td>
                                                 <td>Perempuan</td>
                                                 <td>
-                                                    <a href="{{ route('pegawai-edit-data') }}"><i
+                                                    <a href="{{ route('pegawai-edit-data-by-id') }}"><i
                                                             class="fas fa-edit"></i></a>
                                                     <a href="#"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
