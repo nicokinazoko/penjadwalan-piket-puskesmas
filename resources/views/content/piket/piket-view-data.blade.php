@@ -74,7 +74,7 @@
                                                 <td>Amelia</td>
                                                 <td>Dokter</td>
                                                 <td>
-                                                    <a href="{{ route('piket-edit-data') }}"><i
+                                                    <a href="{{ route('piket-edit-data-by-id') }}"><i
                                                             class="fas fa-edit"></i></a>
                                                 </td>
                                                 <td>
