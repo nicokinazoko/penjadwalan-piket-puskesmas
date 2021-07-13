@@ -63,4 +63,15 @@ class AdminController extends Controller
     {
         return view('content.piket.piket-edit-data-id');
     }
+
+
+    // untuk melihat menu Algoritma memetika
+    public function viewAlgoritmaMemetika(){
+        return view('content.memetic.memetic');
+    }
+
+    // untuk melihat menu algoritma neuro fuzzy
+    public function viewAlgoritmaNeuroFuzzy(){
+        return view('content.neuro-fuzzy.neuro-fuzzy');
+    }
 }
