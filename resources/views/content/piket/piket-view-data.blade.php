@@ -65,7 +65,7 @@
                                         <tr>
                                             <th>Kode Piket</th>
                                             <th>Nama Piket</th>
-                                            <th colspan="2">Aksi</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -76,8 +76,6 @@
                                                 <td>
                                                     <a href="{{ route('piket-edit-data-by-id') }}"><i
                                                             class="fas fa-edit"></i></a>
-                                                </td>
-                                                <td>
                                                     <a href="#"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                             </tr>
@@ -88,7 +86,7 @@
                                         <tr>
                                             <th>Kode Piket</th>
                                             <th>Nama Piket</th>
-                                            <th colspan="2">Aksi</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </tfoot>
                                 </table>
