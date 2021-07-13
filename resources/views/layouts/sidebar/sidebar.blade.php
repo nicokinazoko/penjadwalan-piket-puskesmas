@@ -97,52 +97,30 @@
 
             <li class="nav-header">PROSES DATA</li>
             <li class="nav-item">
+
                 <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-table"></i>
                     <p>
-                        Algoritma Neuro Fuzzy
+                        Pilihan Algoritma
                         <i class="fas fa-angle-left right"></i>
                     </p>
                 </a>
                 <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="pages/tables/simple.html" class="nav-link">
+                        <a href="{{ route('view-memetika') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Algoritma Memetika</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/tables/data.html" class="nav-link">
+                        <a href="{{ route('view-neuro-fuzzy') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
-                            <p>Algoritma Genetika</p>
+                            <p>Algoritma Neuro Fuzzy</p>
                         </a>
                     </li>
                 </ul>
             </li>
 
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-table"></i>
-                    <p>
-                        Algoritma Memetika
-                        <i class="fas fa-angle-left right"></i>
-                    </p>
-                </a>
-                <ul class="nav nav-treeview">
-                    <li class="nav-item">
-                        <a href="pages/tables/simple.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Algoritma Memetika</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="pages/tables/data.html" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Algoritma Genetika</p>
-                        </a>
-                    </li>
-                </ul>
-            </li>
 
             </li>
         </ul>
