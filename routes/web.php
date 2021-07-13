@@ -54,3 +54,9 @@ Route::get('/dashboard', [AdminController::class, 'viewDashboard'])->name('dashb
 Route::get('/tabel-data', function () {
     return view('content.table-data');
 });
+
+Route::prefix('/algoritma')->group(function () {
+    Route::get('memetika', [AdminController::class, 'viewAlgoritmaMemetika'])->name('view-memetika');
+
+    Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
+});
