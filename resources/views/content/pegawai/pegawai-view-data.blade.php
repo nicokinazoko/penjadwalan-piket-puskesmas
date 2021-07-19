@@ -36,8 +36,7 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>150</h3>
-
+                                <h3>{{ $jumlahData['dataPegawai'] }}</h3>
                                 <p>Data Pegawai</p>
                             </div>
                             <div class="icon">
@@ -71,11 +70,11 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i <= 10; $i++)
+                                        @foreach ($pegawai as $dataPegawai)
                                             <tr>
-                                                <td>Amelia</td>
-                                                <td>Dokter</td>
-                                                <td>Perempuan</td>
+                                                <td>{{ $dataPegawai->nama_pegawai }}</td>
+                                                <td>{{ $dataPegawai->nama_jenis_kelamin }}</td>
+                                                <td>{{ $dataPegawai->nama_jabatan }}</td>
                                                 <td>
                                                     <a href="{{ route('pegawai-edit-data-by-id') }}"><i
                                                             class="fas fa-edit"></i></a>
@@ -83,7 +82,7 @@
                                                 </td>
                                             </tr>
 
-                                        @endfor
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
