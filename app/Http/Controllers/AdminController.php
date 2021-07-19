@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\AdminModel;
 
 class AdminController extends Controller
 {
@@ -17,13 +18,18 @@ class AdminController extends Controller
     //Untuk lihat data Pegawai
     public function viewDataPegawai()
     {
-        return view('content.pegawai.pegawai-view-data');
+        $dataPegawai = AdminModel::getAllDataPegawai();
+        $dataJumlahData = AdminModel::getCountDataPiketAndPegawai();
+        return view('content.pegawai.pegawai-view-data', ['pegawai' => $dataPegawai, 'jumlahData' => $dataJumlahData]);
+        dump($dataJumlahData);
+
     }
 
     //Untuk input data Pegawai
     public function inputDataPegawai()
     {
-        return view('content.pegawai.pegawai-input-data');
+        $dataJenisKelamin = AdminModel::getDataJenisKelamin();
+        return view('content.pegawai.pegawai-input-data', ['jenisKelamin' => $dataJenisKelamin]);
     }
 
     //Untuk view edit data Pegawai
@@ -66,12 +72,14 @@ class AdminController extends Controller
 
 
     // untuk melihat menu Algoritma memetika
-    public function viewAlgoritmaMemetika(){
+    public function viewAlgoritmaMemetika()
+    {
         return view('content.memetic.memetic');
     }
 
     // untuk melihat menu algoritma neuro fuzzy
-    public function viewAlgoritmaNeuroFuzzy(){
+    public function viewAlgoritmaNeuroFuzzy()
+    {
         return view('content.neuro-fuzzy.neuro-fuzzy');
     }
 }
