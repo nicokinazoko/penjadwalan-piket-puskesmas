@@ -33,19 +33,22 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form>
+                    <form method="GET" action="#">
+                        @csrf
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputNamaPegawai">Nama Pegawai</label>
-                                <input type="text" class="form-control" id="inputNamaPegawai" placeholder="Enter email"
+                                <input type="text" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
                                     name="inputNamaPegawai">
                             </div>
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
                                 <select class="form-control select2bs4" style="width: 100%;"
                                     name="inputJenisKelaminPegawai">
-                                    <option selected="selected" value="Laki-Laki">Laki-Laki</option>
-                                    <option value="Perempuan">Perempuan</option>
+                                    @foreach($jenisKelamin as $dataJenisKelamin)
+                                    <option value="{{$dataJenisKelamin->id_jenis_kelamin}}">{{$dataJenisKelamin->nama_jenis_kelamin}}</option>
+                                    {{-- <option value="Perempuan">Perempuan</option> --}}
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
