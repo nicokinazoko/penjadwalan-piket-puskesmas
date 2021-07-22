@@ -26,16 +26,33 @@ class AdminModel extends Model
         return $jumlahData;
     }
 
+
+
+
     // ---------- Data Piket -----------
+
+    // ambil semua data jabatan
+    public static function getAllDataJabatan()
+    {
+        $dataJabatan = DB::table('jabatans')->get();
+        return $dataJabatan;
+    }
+
     // ambil semua data piket
     public static function getAllDataPiket()
     {
+        $dataPiket = DB::table('pikets')->get();
+
+        return $dataPiket;
+        // dump($dataPiket);
     }
 
 
+
     // input data piket
-    public static function inputDataPiket()
+    public static function inputDataPiket($piket)
     {
+        dump($piket);
     }
 
     // edit data piket
@@ -63,9 +80,19 @@ class AdminModel extends Model
         return $dataPegawai;
     }
 
-    // input data pegawai
-    public static function inputDataPegawai(Request $request)
+    // cari data pegawai berdasarkan id
+    public static function getDataPegawaiById($id)
     {
+        $dataPegawaiCari = DB::table('pegawais')->find($id);
+
+        return $dataPegawaiCari;
+        //dump($dataPegawaiCari);
+    }
+
+    // input data pegawai
+    public static function inputDataPegawai($pegawai)
+    {
+
     }
 
     // edit data piket
