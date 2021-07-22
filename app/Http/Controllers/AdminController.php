@@ -10,7 +10,8 @@ class AdminController extends Controller
     //untuk lihat dashboard utama
     public function viewDashboard()
     {
-        return view('content.dashboard');
+        $totalDataPiket = AdminModel::getCountDataPiketAndPegawai();
+        return view('content.dashboard', ['dataTotal' => $totalDataPiket]);
     }
 
     // Data Pegawai
@@ -20,8 +21,8 @@ class AdminController extends Controller
     {
         $dataPegawai = AdminModel::getAllDataPegawai();
         $dataJumlahData = AdminModel::getCountDataPiketAndPegawai();
-        return view('content.pegawai.pegawai-view-data', ['pegawai' => $dataPegawai, 'jumlahData' => $dataJumlahData]);
-        dump($dataJumlahData);
+        return view('content.pegawai.pegawai-view-data', ['pegawai' => $dataPegawai, 'dataTotal' => $dataJumlahData]);
+        // dump($dataJumlahData);
 
     }
 
@@ -29,17 +30,31 @@ class AdminController extends Controller
     public function inputDataPegawai()
     {
         $dataJenisKelamin = AdminModel::getDataJenisKelamin();
-        return view('content.pegawai.pegawai-input-data', ['jenisKelamin' => $dataJenisKelamin]);
+        $dataJabatan = AdminModel::getAllDataJabatan();
+        return view('content.pegawai.pegawai-input-data', ['jenisKelamin' => $dataJenisKelamin, 'jabatan' => $dataJabatan]);
+    }
+
+    // Proses input data Pegawai
+    public static function prosesInputDataPegawai()
+    {
     }
 
     //Untuk view edit data Pegawai
     public function editDataPegawai()
     {
-        return view('content.pegawai.pegawai-edit-data');
+        $dataPegawai = AdminModel::getAllDataPegawai();
+        $dataTotal = AdminModel::getCountDataPiketAndPegawai();
+        return view('content.pegawai.pegawai-edit-data', ['pegawai' => $dataPegawai, 'dataTotal' => $dataTotal]);
     }
 
+    // Proses edit data Pegawai
+    public function prosesEditDataPegawaiById()
+    {
+    }
+
+
     // untuk edit data pegawai base id
-    public function editDataPegawaiById()
+    public function editDataPegawaiById($idPegawai)
     {
         return view('content.pegawai.pegawai-edit-data-id');
     }
@@ -50,7 +65,11 @@ class AdminController extends Controller
     //untuk melihat data piket
     public function viewDataPiket()
     {
-        return view('content.piket.piket-view-data');
+        $dataPiket = AdminModel::getAllDataPiket();
+        $totalData = AdminModel::getCountDataPiketAndPegawai();
+
+        return view('content.piket.piket-view-data', ['piket' => $dataPiket, 'dataTotal' => $totalData]);
+        // dump($dataPiket);
     }
 
     //untuk input data piket
@@ -59,10 +78,20 @@ class AdminController extends Controller
         return view('content.piket.piket-input-data');
     }
 
+    // proses input data piket
+    public function prosesInputDataPiket(Request $dataPiket)
+    {
+        $dataPiketRequest = $dataPiket->all();
+        $dataInputPiket = AdminModel::inputDataPiket($dataPiketRequest);
+        
+    }
+
     //untuk view edit data piket
     public function editDataPiket()
     {
-        return view('content.piket.piket-edit-data');
+        $dataPiket = AdminModel::getAllDataPiket();
+        $dataTotal = AdminModel::getCountDataPiketAndPegawai();
+        return view('content.piket.piket-edit-data', ['piket' => $dataPiket, 'dataTotal' => $dataTotal]);
     }
 
     public function editDataPiketById()
