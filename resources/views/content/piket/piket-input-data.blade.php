@@ -32,7 +32,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="GET" action="#">
+                    <form method="POST" action="{{ route('piket-input-data-proses') }}">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
