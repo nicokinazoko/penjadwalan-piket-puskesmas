@@ -35,7 +35,7 @@
                         <!-- small box -->
                         <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>53<sup style="font-size: 20px">%</sup></h3>
+                                <h3>{{ $dataTotal['dataPiket'] }}</h3>
 
                                 <p>Data Piket</p>
                             </div>
@@ -69,18 +69,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i <= 10; $i++)
+                                        @foreach ($piket as $dataPiket)
                                             <tr>
-                                                <td>Amelia</td>
-                                                <td>Dokter</td>
+                                                <td>{{ $dataPiket->kode_piket }}</td>
+                                                <td>{{ $dataPiket->nama_piket }}</td>
                                                 <td>
-                                                    <a href="{{ route('piket-edit-data-by-id') }}"><i
+                                                    <a
+                                                        href="{{ route('piket-edit-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
                                                             class="fas fa-edit"></i></a>
                                                     <a href="#"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                             </tr>
-
-                                        @endfor
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
