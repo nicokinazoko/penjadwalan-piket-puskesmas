@@ -15,7 +15,8 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{route('pegawai-view-data')}}">Data Pegawai</a></li>
+                            <li class="breadcrumb-item active"><a href="{{ route('pegawai-view-data') }}">Data Pegawai</a>
+                            </li>
                             <li class="breadcrumb-item active">Lihat Data Pegawai Edit</li>
                         </ol>
                     </div>
@@ -35,7 +36,7 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>150</h3>
+                                <h3>{{ $dataTotal['dataPegawai'] }}</h3>
 
                                 <p>Data Pegawai</p>
                             </div>
@@ -70,18 +71,20 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i <= 10; $i++)
-                                        <tr>
-                                            <td>Amelia</td>
-                                            <td>Dokter</td>
-                                            <td>Perempuan</td>
-                                            <td>
-                                                <a href="{{route('pegawai-edit-data-by-id')}}"><i class="fas fa-edit"></i></a>
-                                                <a href="#"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
+                                        @foreach ($pegawai as $dataPegawai)
+                                            <tr>
+                                                <td>{{$dataPegawai->nama_pegawai}}</td>
+                                                <td>{{$dataPegawai->nama_jenis_kelamin}}</td>
+                                                <td>{{$dataPegawai->nama_jabatan}}</td>
+                                                <td>
+                                                    <a
+                                                        href="{{ route('pegawai-edit-data-by-id', ['id_pegawai' => $dataPegawai->id_pegawai]) }}"><i
+                                                            class="fas fa-edit"></i></a>
+                                                    <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                                </td>
+                                            </tr>
 
-                                        @endfor
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
