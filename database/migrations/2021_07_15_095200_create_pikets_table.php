@@ -15,6 +15,7 @@ class CreatePiketsTable extends Migration
     {
         Schema::create('pikets', function (Blueprint $table) {
             $table->id('id_piket');
+            $table->string('kode_piket');
             $table->string('nama_piket');
         });
     }
