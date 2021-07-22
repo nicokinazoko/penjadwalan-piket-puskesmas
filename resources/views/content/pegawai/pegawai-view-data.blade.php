@@ -36,7 +36,7 @@
                         <!-- small box -->
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{ $jumlahData['dataPegawai'] }}</h3>
+                                <h3>{{ $dataTotal['dataPegawai'] }}</h3>
                                 <p>Data Pegawai</p>
                             </div>
                             <div class="icon">
@@ -76,7 +76,7 @@
                                                 <td>{{ $dataPegawai->nama_jenis_kelamin }}</td>
                                                 <td>{{ $dataPegawai->nama_jabatan }}</td>
                                                 <td>
-                                                    <a href="{{ route('pegawai-edit-data-by-id') }}"><i
+                                                    <a href="{{ route('pegawai-edit-data-by-id', ['id_pegawai' => $dataPegawai->id_pegawai]) }}"><i
                                                             class="fas fa-edit"></i></a>
                                                     <a href="#"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
