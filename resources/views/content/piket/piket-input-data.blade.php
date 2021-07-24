@@ -1,6 +1,7 @@
 @extends('master.master')
 
 @section('title', 'SPP | Input Data Piket')
+
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -49,7 +50,8 @@
                         <!-- /.card-body -->
 
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button id="buttonSubmit" class="btn btn-primary" data-toggle="modal"
+                                data-target="#exampleModal">Submit</button>
                         </div>
                     </form>
                 </div>
