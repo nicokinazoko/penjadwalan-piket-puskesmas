@@ -16,7 +16,7 @@
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('piket-view-data') }}">Data Piket</a></li>
                             <li class="breadcrumb-item"><a href="{{ route('piket-edit-data') }}">Edit Data Piket</a></li>
-                            <li class="breadcrumb-item active">Nama nya disini</li>
+                            <li class="breadcrumb-item active">{{ $piket[0]->nama_piket }}</li>
                         </ol>
                     </div>
                 </div>
@@ -34,34 +34,20 @@
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form>
+                        @csrf
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="exampleInputEmail1">Email address</label>
-                                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                <label for="inputKodePiket">Kode Piket</label>
+                                <input type="text" class="form-control" id="inputKodePiket" placeholder="Kode Piket"
+                                    name="inputKodePiket" value="{{$piket[0]->kode_piket }}">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputPassword1">Password</label>
-                                <input type="password" class="form-control" id="exampleInputPassword1"
-                                    placeholder="Password">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Minimal</label>
-                                <select class="form-control select2bs4" style="width: 100%;">
-                                    <option selected="selected">Alabama</option>
-                                    <option>Alaska</option>
-                                    <option>California</option>
-                                    <option>Delaware</option>
-                                    <option>Tennessee</option>
-                                    <option>Texas</option>
-                                    <option>Washington</option>
-                                </select>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                <label for="inputNamaPiket">Nama Piket</label>
+                                <input type="text" class="form-control" id="inputNamaPiket" placeholder="Nama Piket"
+                                    name="inputNamaPiket" value="{{$piket[0]->nama_piket}}">
                             </div>
                         </div>
+
                         <!-- /.card-body -->
 
                         <div class="card-footer">
