@@ -1,7 +1,9 @@
 @include('layouts.header.header')
 
-<body class="hold-transition sidebar-mini layout-navbar-fixed">
 
+
+<body class="hold-transition sidebar-mini layout-navbar-fixed">
+    @include('sweetalert::alert')
     <div class="wrapper">
 
         <!-- Preloader -->
