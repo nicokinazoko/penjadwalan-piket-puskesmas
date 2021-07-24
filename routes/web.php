@@ -51,6 +51,9 @@ Route::prefix('/piket')->group(function () {
     Route::get('/edit-data', [AdminController::class, 'editDataPiket'])->name('piket-edit-data');
 
     Route::get('/edit-data/{id_piket}', [AdminController::class, 'editDataPiketById'])->name('piket-edit-data-by-id');
+    Route::put('/edit-data/{id_piket}', [AdminController::class, 'editDataPiketById'])->name('piket-edit-data-by-id');
+
+    Route::get('/delete-data/{id_piket}',[AdminController::class, 'deleteDataPiketById'])->name('piket-delete-data-by-id');
 });
 
 Route::get('/dashboard', [AdminController::class, 'viewDashboard'])->name('dashboard');
