@@ -77,7 +77,10 @@
                                                     <a
                                                         href="{{ route('piket-edit-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
                                                             class="fas fa-edit"></i></a>
-                                                    <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                                    <a
+                                                        href="{{ route('piket-delete-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
+                                                            class="fas fa-trash-alt"></i></a>
+
                                                 </td>
                                             </tr>
                                         @endforeach
