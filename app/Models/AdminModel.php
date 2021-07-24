@@ -47,22 +47,52 @@ class AdminModel extends Model
         // dump($dataPiket);
     }
 
+    // cari data piket berdasarkan Id
+    public static function getDataPiketById($idPiket)
+    {
+        $dataPiketCari = DB::table('pikets')
+            ->where('id_piket', $idPiket)
+            ->get();
+
+        return $dataPiketCari;
+        // dump($dataPiketCari);
+    }
+
+
 
 
     // input data piket
-    public static function inputDataPiket($piket)
+    public static function inputDataPiket($inputPiket)
     {
-        dump($piket);
+        // untuk menghilangkan array _token dari input
+        unset($piket['_token']);
+        // echo $piket['_token'];
+        $dataPiket = [
+            'kode_piket' => $inputPiket['inputKodePiket'],
+            'nama_piket' => $inputPiket['inputNamaPiket']
+        ];
+        $inputDataPiket = DB::table('pikets')->insertGetId($dataPiket);
+
+        return $inputDataPiket;
     }
 
     // edit data piket
-    public static function editDataPiket()
+    public static function editDataPiket($editPiket)
     {
+        $dataPiket = [];
+        $dataPiket = DB::table('pikets')
+            ->where('id_piket', 1)
+            ->update(['id', 3]);
     }
 
     // hapus data piket
-    public static function deleteDataPiket()
+    public static function deleteDataPiketById($idPiket)
     {
+        $deleteDataPiket = DB::table('pikets')
+            ->where('id_piket', '=',  $idPiket)
+            ->delete();
+
+        // dump($deleteDataPiket);
     }
 
 
@@ -92,7 +122,6 @@ class AdminModel extends Model
     // input data pegawai
     public static function inputDataPegawai($pegawai)
     {
-
     }
 
     // edit data piket
