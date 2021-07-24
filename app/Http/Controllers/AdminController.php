@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AdminModel;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AdminController extends Controller
 {
@@ -72,6 +73,7 @@ class AdminController extends Controller
         // dump($dataPiket);
     }
 
+
     //untuk input data piket
     public function inputDataPiket()
     {
@@ -83,7 +85,8 @@ class AdminController extends Controller
     {
         $dataPiketRequest = $dataPiket->all();
         $dataInputPiket = AdminModel::inputDataPiket($dataPiketRequest);
-        
+        Alert::success('Success Title', 'Success Message');
+        return redirect()->route('piket-view-data');
     }
 
     //untuk view edit data piket
@@ -94,9 +97,41 @@ class AdminController extends Controller
         return view('content.piket.piket-edit-data', ['piket' => $dataPiket, 'dataTotal' => $dataTotal]);
     }
 
-    public function editDataPiketById()
+    public function editDataPiketById($idPiket)
     {
-        return view('content.piket.piket-edit-data-id');
+        $cariDataPiketById = AdminModel::getDataPiketById($idPiket);
+        // dump($cariDataPiketById);
+        if (!$cariDataPiketById) {
+            echo "data tidak ada";
+        } else {
+            return view('content.piket.piket-edit-data-id', ['piket' => $cariDataPiketById]);
+        }
+    }
+
+    public function prosesEditDataPiketById($idPiket)
+    {
+    }
+
+    // delete data piket by ID
+    public function deleteDataPiketById($idPiket)
+    {
+
+        $dataPiketCari = AdminModel::getDataPiketById($idPiket);
+        if (!$dataPiketCari) {
+            echo "Data tidak ditemukan";
+        } else
+        if ($dataPiketCari) {
+            $dataPiketHapus = AdminModel::deleteDataPiketById($idPiket);
+            if (!$dataPiketHapus) {
+                echo "tidak bisa menghapus";
+            } else {
+                return redirect()->route('piket-view-data');
+            }
+        }
+
+
+
+        // dump($dataPiketHapus);
     }
 
 
