@@ -39,6 +39,8 @@ Route::prefix('/pegawai')->group(function () {
 
     Route::get('/edit-data/{id_pegawai}', [AdminController::class, 'editDataPegawaiById'])->name('pegawai-edit-data-by-id');
     Route::post('/edit-data/{id_pegawai}',  [AdminController::class, 'prosesEditDataPegawaiById'])->name('pegawai-edit-data-proses');
+
+    Route::get('/delete-data/{id_pegawai}', [AdminController::class, 'deleteDataPegawaiByID'])->name('pegawai-delete-data');
 });
 
 Route::prefix('/piket')->group(function () {
