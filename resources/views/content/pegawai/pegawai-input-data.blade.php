@@ -33,7 +33,7 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="GET" action="{{ route('pegawai-input-data-proses') }}">
+                    <form method="POST" action="{{ route('pegawai-input-data-proses') }}">
                         @csrf
                         <div class="card-body">
                             <div class="form-group">
