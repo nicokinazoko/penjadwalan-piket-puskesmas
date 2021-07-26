@@ -51,7 +51,7 @@ class AdminModel extends Model
     public static function getDataPiketById($idPiket)
     {
         $dataPiketCari = DB::table('pikets')
-            ->where('id_piket', $idPiket)
+            ->where('id_piket', '=', $idPiket)
             ->get();
 
         return $dataPiketCari;
@@ -60,12 +60,11 @@ class AdminModel extends Model
 
 
 
-
     // input data piket
     public static function inputDataPiket($inputPiket)
     {
         // untuk menghilangkan array _token dari input
-        unset($piket['_token']);
+        unset($inputPiket['_token']);
         // echo $piket['_token'];
         $dataPiket = [
             'kode_piket' => $inputPiket['inputKodePiket'],
@@ -110,18 +109,34 @@ class AdminModel extends Model
         return $dataPegawai;
     }
 
-    // cari data pegawai berdasarkan id
-    public static function getDataPegawaiById($id)
+    // cari data pegawai berdasarkan Id
+    public static function getDataPegawaiById($idPegawai)
     {
-        $dataPegawaiCari = DB::table('pegawais')->find($id);
+        $dataPegawaiCari = DB::table('pegawais')
+            ->where('id_pegawai', $idPegawai)
+            ->get();
 
         return $dataPegawaiCari;
-        //dump($dataPegawaiCari);
+        // dump($dataPiketCari);
     }
 
     // input data pegawai
-    public static function inputDataPegawai($pegawai)
+    public static function inputDataPegawai($inputPegawai)
     {
+        // menghilangkan array token dari input
+        unset($inputPegawai['_token']);
+
+        // membuat array untuk menampung hasil input pegawai yang akan dimasukkan ke db
+        $dataPegawai = [
+            'nama_pegawai' => $inputPegawai['inputNamaPegawai'],
+            'id_jenis_kelamin' => $inputPegawai['inputJenisKelaminPegawai'],
+            'id_jabatan' => $inputPegawai['inputJabatanPegawai']
+        ];
+
+        // memasukkan data ke db pegawais menggunakan query builder
+        $inputDataPegawai = DB::table('pegawais')->insertGetId($dataPegawai);
+
+        return $inputDataPegawai;
     }
 
     // edit data piket
@@ -130,8 +145,13 @@ class AdminModel extends Model
     }
 
     // hapus data piket
-    public static function deleteDataPegawai()
+    public static function deleteDataPegawaiById($idPegawai)
     {
+        $dataPegawaiHapus = DB::table('pegawais')
+            ->where('id_pegawai', '=', $idPegawai)
+            ->delete();
+
+        return $dataPegawaiHapus;
     }
 
     // ambil data jenis kelamin
