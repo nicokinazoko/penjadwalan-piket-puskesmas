@@ -79,7 +79,7 @@ class AdminController extends Controller
         // ambil data jumlah pegawai dan jumlah piket
         $dataTotal = AdminModel::getCountDataPiketAndPegawai();
 
-        // redirect ke view edit data 
+        // redirect ke view edit data
         return view('content.pegawai.pegawai-edit-data', ['pegawai' => $dataPegawai, 'dataTotal' => $dataTotal]);
     }
 
@@ -99,12 +99,21 @@ class AdminController extends Controller
     // delete data pegawai by id
     public function deleteDataPegawaiByID($idPegawai)
     {
+        // panggil method untuk hapus data pegawai base by Id dari input
         $dataPegawaiCari = AdminModel::deleteDataPegawaiByID($idPegawai);
+
+        // jika data ditemukan
         if ($dataPegawaiCari) {
-            Alert::success('Sukses', 'Input Data telah berhasil !');
+            // alert berhasil delete data
+            Alert::success('Sukses', 'Delete Data telah berhasil !');
+
+            // kembali ke menu view data pegawai
             return redirect()->route('pegawai-view-data');
         } else {
+            // alert data gagal dihapus
             alert()->warning('Perhatian', 'Data tidak ditemukan !');
+
+            // kembali ke menu view data pegawai
             return redirect()->route('pegawai-view-data');
         }
     }
@@ -116,45 +125,79 @@ class AdminController extends Controller
     //untuk melihat data piket
     public function viewDataPiket()
     {
+        // mengambil semua data piket
         $dataPiket = AdminModel::getAllDataPiket();
+
+        // mengambil jumlah semua data piket dan data pegawai
         $totalData = AdminModel::getCountDataPiketAndPegawai();
 
+        // kembali ke menu view data piket beserta data
         return view('content.piket.piket-view-data', ['piket' => $dataPiket, 'dataTotal' => $totalData]);
         // dump($dataPiket);
     }
 
 
-    //untuk input data piket
+    //untuk view input data piket
     public function inputDataPiket()
     {
+        // menuju view input data
         return view('content.piket.piket-input-data');
     }
+
 
     // proses input data piket
     public function prosesInputDataPiket(Request $dataPiket)
     {
+        // ambil data piket hasil input
         $dataPiketRequest = $dataPiket->all();
+
+        // panggil method untuk input data piket
         $dataInputPiket = AdminModel::inputDataPiket($dataPiketRequest);
-        Alert::success('Success Title', 'Success Message');
-        return redirect()->route('piket-view-data');
+
+        // cek jika proses input berhasil
+        if ($dataInputPiket) {
+            // menampilkan alert berhasil input data
+            Alert::success('Success Title', 'Success Message');
+
+            // kembali ke menu view data piket
+            return redirect()->route('piket-view-data');
+        } else {
+            // menampilkan alert warning data ketika proses input gagal
+            alert()->warning('Perhatian', 'Ada kesalahan dalam proses input data !');
+
+            // kembali ke menu
+            return redirect()->route('piket-view-data');
+        }
     }
 
     //untuk view edit data piket
     public function editDataPiket()
     {
+        // ambil semua data piket
         $dataPiket = AdminModel::getAllDataPiket();
+
+        // ambil semua jumlah data piket dan data pegawai
         $dataTotal = AdminModel::getCountDataPiketAndPegawai();
+
+        // kembali ke menu view data piket
         return view('content.piket.piket-edit-data', ['piket' => $dataPiket, 'dataTotal' => $dataTotal]);
     }
 
     public function editDataPiketById($idPiket)
     {
+        // cari data piket berdasarkan idPiket
         $cariDataPiketById = AdminModel::getDataPiketById($idPiket);
-        // dump($cariDataPiketById);
-        if (!$cariDataPiketById) {
-            echo "data tidak ada";
-        } else {
+
+
+
+        // cek apakah data ada atau tidak
+        if (!empty($cariDataPiketById[0])) {
+
             return view('content.piket.piket-edit-data-id', ['piket' => $cariDataPiketById]);
+        } else {
+            // alert data data tidak ditemukan
+            alert()->warning('Perhatian', 'Data tidak ditemukan !');
+            return redirect()->route('piket-view-data');
         }
     }
 
