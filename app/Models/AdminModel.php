@@ -34,7 +34,9 @@ class AdminModel extends Model
     // ambil semua data jabatan
     public static function getAllDataJabatan()
     {
-        $dataJabatan = DB::table('jabatans')->get();
+        $dataJabatan = DB::table('jabatans')
+            ->orderBy('nama_jabatan')
+            ->get();
         return $dataJabatan;
     }
 
