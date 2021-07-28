@@ -14,8 +14,13 @@ class AdminController extends Controller
         // mengambil jumlah data pegawai dan data piket
         $totalDataPiket = AdminModel::getCountDataPiketAndPegawai();
 
-        // kembali ke view dashboard
-        return view('content.dashboard', ['dataTotal' => $totalDataPiket]);
+        if ($totalDataPiket) {
+            // kembali ke view dashboard
+            return view('content.dashboard', ['dataTotal' => $totalDataPiket]);
+        }
+        else{
+            alert()->error('Error', 'Ada kesalahan dalam pengambilan data !');
+        }
     }
 
 
@@ -228,7 +233,8 @@ class AdminController extends Controller
     // untuk melihat menu Algoritma memetika
     public function viewAlgoritmaMemetika()
     {
-        return view('content.memetic.memetic');
+        $dataPegawai = AdminModel::getAllDataPegawai();
+        return view('content.memetic.memetic', ['pegawai' => $dataPegawai]);
     }
 
     // untuk melihat menu algoritma neuro fuzzy
