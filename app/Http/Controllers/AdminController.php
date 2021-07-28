@@ -17,8 +17,7 @@ class AdminController extends Controller
         if ($totalDataPiket) {
             // kembali ke view dashboard
             return view('content.dashboard', ['dataTotal' => $totalDataPiket]);
-        }
-        else{
+        } else {
             alert()->error('Error', 'Ada kesalahan dalam pengambilan data !');
         }
     }
@@ -97,7 +96,15 @@ class AdminController extends Controller
     // untuk edit data pegawai base id
     public function editDataPegawaiById($idPegawai)
     {
-        return view('content.pegawai.pegawai-edit-data-id');
+        $dataJenisKelamin = AdminModel::getDataJenisKelamin();
+        $dataJabatan = AdminModel::getAllDataJabatan();
+        $dataPegawaiCari = AdminModel::getDataPegawaiById($idPegawai);
+        // dump($dataPegawaiCari);
+        return view('content.pegawai.pegawai-edit-data-id', [
+            'jenisKelamin' => $dataJenisKelamin,
+            'jabatan' => $dataJabatan,
+            'pegawaiCari' => $dataPegawaiCari
+        ]);
     }
 
 
@@ -193,8 +200,6 @@ class AdminController extends Controller
         // cari data piket berdasarkan idPiket
         $cariDataPiketById = AdminModel::getDataPiketById($idPiket);
 
-
-
         // cek apakah data ada atau tidak
         if (!empty($cariDataPiketById[0])) {
 
@@ -240,6 +245,7 @@ class AdminController extends Controller
     // untuk melihat menu algoritma neuro fuzzy
     public function viewAlgoritmaNeuroFuzzy()
     {
-        return view('content.neuro-fuzzy.neuro-fuzzy');
+        $dataPegawai = AdminModel::getAllDataPegawai();
+        return view('content.neuro-fuzzy.neuro-fuzzy', ['pegawai' => $dataPegawai]);
     }
 }
