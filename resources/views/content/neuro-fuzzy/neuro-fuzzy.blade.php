@@ -89,19 +89,18 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i <= 10; $i++)
+                                        @foreach ($pegawai as $dataPegawai)
                                             <tr>
-                                                <td>Amelia</td>
-                                                <td>Dokter</td>
-                                                <td>Perempuan</td>
+                                                <td>{{ $dataPegawai->nama_pegawai }}</td>
+                                                <td>{{ $dataPegawai->nama_jenis_kelamin }}</td>
+                                                <td>{{ $dataPegawai->nama_jabatan }}</td>
                                                 <td>
-                                                    <a href="{{ route('pegawai-edit-data-by-id') }}"><i
-                                                            class="fas fa-edit"></i></a>
+                                                    <a href="#"><i class="fas fa-edit"></i></a>
                                                     <a href="#"><i class="fas fa-trash-alt"></i></a>
                                                 </td>
                                             </tr>
 
-                                        @endfor
+                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -134,5 +133,3 @@
     @include('layouts.footer.form-scripts')
     @include('layouts.footer.table-data-scripts')
 @endsection
-
-
