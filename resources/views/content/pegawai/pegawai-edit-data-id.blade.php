@@ -38,28 +38,36 @@
                     <form method="GET" action="{{ route('pegawai-input-data-proses') }}">
                         @csrf
                         <div class="card-body">
+                            {{-- ini belum coba input id nya --}}
+                            <input type="hidden" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
+                                name="inputNamaPegawai">
                             <div class="form-group">
                                 <label for="inputNamaPegawai">Nama Pegawai</label>
                                 <input type="text" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
-                                    name="inputNamaPegawai">
+                                    name="inputNamaPegawai" value="{{ $pegawaiCari[0]->nama_pegawai }}">
                             </div>
+
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
-                                <select class="form-control select2bs4" style="width: 100%;"
-                                    name="inputJenisKelaminPegawai">
-                                    {{-- @foreach ($jenisKelamin as $dataJenisKelamin)
-                                        <option value="{{ $dataJenisKelamin->id_jenis_kelamin }}">
-                                            {{ $dataJenisKelamin->nama_jenis_kelamin }}</option>
-                                    @endforeach --}}
+                                <select class="form-control select2bs4" style="width: 100%;" name="inputJenisKelaminPegawai"
+                                    value="{{ $pegawaiCari[0]->id_jenis_kelamin }}">
+                                    @foreach ($jenisKelamin as $dataJenisKelamin)
+                                        <option value="{{ $dataJenisKelamin->nama_jenis_kelamin }}"
+                                            {{ (old('inputJenisKelaminPegawai') ?? $pegawaiCari[0]->id_jenis_kelamin) == $dataJenisKelamin->id_jenis_kelamin ? 'selected' : '' }}>
+                                            {{ $dataJenisKelamin->nama_jenis_kelamin }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Jabatan Pegawai</label>
                                 <select class="form-control select2bs4" style="width: 100%;" name="inputJabatanPegawai">
-                                    {{-- @foreach ($jabatan as $dataJabatan)
-                                        <option value="{{ $dataJabatan->id_jabatan }}">{{ $dataJabatan->nama_jabatan }}
+                                    @foreach ($jabatan as $dataJabatan)
+                                        <option value="{{ $dataJabatan->id_jabatan }}"
+                                            {{ (old('inputJabatanPegawai') ?? $pegawaiCari[0]->id_jabatan) == $dataJabatan->id_jabatan ? 'selected' : '' }}>
+                                            {{ $dataJabatan->nama_jabatan }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
 
                                 </select>
                             </div>
