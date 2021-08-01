@@ -38,7 +38,7 @@
                     <form method="GET" action="{{ route('pegawai-input-data-proses') }}">
                         @csrf
                         <div class="card-body">
-                            {{-- ini belum coba input id nya --}}
+                            {{-- x --}}
                             <input type="hidden" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
                                 name="inputNamaPegawai">
                             <div class="form-group">
