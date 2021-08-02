@@ -38,7 +38,7 @@ Route::prefix('/pegawai')->group(function () {
 
 
     Route::get('/edit-data/{id_pegawai}', [AdminController::class, 'editDataPegawaiById'])->name('pegawai-edit-data-by-id');
-    Route::post('/edit-data/{id_pegawai}',  [AdminController::class, 'prosesEditDataPegawaiById'])->name('pegawai-edit-data-proses');
+    Route::patch('/edit-data/{id_pegawai}',  [AdminController::class, 'prosesEditDataPegawaiById'])->name('pegawai-edit-data-proses');
 
     Route::get('/delete-data/{id_pegawai}', [AdminController::class, 'deleteDataPegawaiByID'])->name('pegawai-delete-data');
 });
@@ -53,7 +53,7 @@ Route::prefix('/piket')->group(function () {
     Route::get('/edit-data', [AdminController::class, 'editDataPiket'])->name('piket-edit-data');
 
     Route::get('/edit-data/{id_piket}', [AdminController::class, 'editDataPiketById'])->name('piket-edit-data-by-id');
-    Route::put('/edit-data/{id_piket}', [AdminController::class, 'editDataPiketById'])->name('piket-edit-data-by-id');
+    Route::patch('/edit-data/{id_piket}', [AdminController::class, 'prosesEditDataPiketById'])->name('piket-edit-data-by-id-proses');
 
     Route::get('/delete-data/{id_piket}',[AdminController::class, 'deleteDataPiketById'])->name('piket-delete-data-by-id');
 });
