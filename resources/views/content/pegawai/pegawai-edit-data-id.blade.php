@@ -35,12 +35,11 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form method="GET" action="{{ route('pegawai-input-data-proses') }}">
+                    <form action="{{ route('pegawai-edit-data-proses', ['id_pegawai' => $pegawaiCari[0]->id_pegawai]) }}"
+                        method="POST">
+                        @method('PATCH')
                         @csrf
                         <div class="card-body">
-                            {{-- x --}}
-                            <input type="hidden" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
-                                name="inputNamaPegawai">
                             <div class="form-group">
                                 <label for="inputNamaPegawai">Nama Pegawai</label>
                                 <input type="text" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
@@ -52,7 +51,7 @@
                                 <select class="form-control select2bs4" style="width: 100%;" name="inputJenisKelaminPegawai"
                                     value="{{ $pegawaiCari[0]->id_jenis_kelamin }}">
                                     @foreach ($jenisKelamin as $dataJenisKelamin)
-                                        <option value="{{ $dataJenisKelamin->nama_jenis_kelamin }}"
+                                        <option value="{{ $dataJenisKelamin->id_jenis_kelamin }}"
                                             {{ (old('inputJenisKelaminPegawai') ?? $pegawaiCari[0]->id_jenis_kelamin) == $dataJenisKelamin->id_jenis_kelamin ? 'selected' : '' }}>
                                             {{ $dataJenisKelamin->nama_jenis_kelamin }}
                                         </option>
