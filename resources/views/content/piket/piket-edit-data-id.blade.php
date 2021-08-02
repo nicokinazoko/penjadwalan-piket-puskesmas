@@ -33,18 +33,19 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form>
+                    <form action="{{ route('piket-edit-data-by-id-proses', ['id_piket' => $piket[0]->id_piket]) }}" method="POST">
                         @csrf
+                        @method('PATCH')
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="inputKodePiket">Kode Piket</label>
                                 <input type="text" class="form-control" id="inputKodePiket" placeholder="Kode Piket"
-                                    name="inputKodePiket" value="{{$piket[0]->kode_piket }}">
+                                    name="inputKodePiket" value="{{ $piket[0]->kode_piket }}">
                             </div>
                             <div class="form-group">
                                 <label for="inputNamaPiket">Nama Piket</label>
                                 <input type="text" class="form-control" id="inputNamaPiket" placeholder="Nama Piket"
-                                    name="inputNamaPiket" value="{{$piket[0]->nama_piket}}">
+                                    name="inputNamaPiket" value="{{ $piket[0]->nama_piket }}">
                             </div>
                         </div>
 
