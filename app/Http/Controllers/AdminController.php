@@ -88,8 +88,20 @@ class AdminController extends Controller
     }
 
     // Proses edit data Pegawai
-    public function prosesEditDataPegawaiById()
+    public function prosesEditDataPegawaiById(Request $dataPegawai, $idPegawai)
     {
+        $dataPegawaiRequestEdit = $dataPegawai->all();
+        // dump($idPegawai);
+        // echo "ok";
+        $dataPegawaiEdit = AdminModel::editDataPegawai($idPegawai, $dataPegawaiRequestEdit);
+
+        // dump($dataPegawaiEdit);
+        if ($dataPegawaiEdit) {
+            alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
+            return redirect()->route('pegawai-view-data');
+        } else {
+            alert()->error('Error', 'Ada kesalahan dalam edit data');
+        }
     }
 
 
@@ -211,8 +223,20 @@ class AdminController extends Controller
         }
     }
 
-    public function prosesEditDataPiketById($idPiket)
+    public function prosesEditDataPiketById($idPiket, Request $dataPiket)
     {
+        $dataPiketRequestEdit = $dataPiket->all();
+        // dump($dataPiketRequestEdit);
+        // dump($idPiket);
+        $dataPiketEdit = AdminModel::editDataPiket($idPiket, $dataPiketRequestEdit);
+
+        // // dump($dataPiketEdit);
+        if ($dataPiketEdit) {
+            alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
+            return redirect()->route('piket-view-data');
+        } else {
+            alert()->error('Error', 'Ada kesalahan dalam edit data');
+        }
     }
 
     // delete data piket by ID
