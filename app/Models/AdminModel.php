@@ -78,12 +78,21 @@ class AdminModel extends Model
     }
 
     // edit data piket
-    public static function editDataPiket($editPiket)
+    public static function editDataPiket($idPiket, $dataPiket)
     {
-        $dataPiket = [];
-        $dataPiket = DB::table('pikets')
-            ->where('id_piket', 1)
-            ->update(['id', 3]);
+        unset($dataPiket['_token'], $dataPiket['_method']);
+        // dump($dataPiket);
+        $dataPiketUpdate = [
+            'kode_piket' => $dataPiket['inputKodePiket'],
+            'nama_piket' => $dataPiket['inputNamaPiket']
+        ];
+        // dump($dataPiketUpdate);
+
+        $dataPiketHasilUpdate = DB::table('pikets')
+            ->where('id_piket', $idPiket)
+            ->update($dataPiketUpdate);
+
+        return $dataPiketHasilUpdate;
     }
 
     // hapus data piket
@@ -142,8 +151,22 @@ class AdminModel extends Model
     }
 
     // edit data piket
-    public static function editDataPegawai()
+    public static function editDataPegawai($idPegawai, $dataPegawai)
     {
+        unset($dataPegawai['_method'], $dataPegawai['_token']);
+        // dump($dataPegawai);
+        $dataPegawaiUpdate = [
+            'nama_pegawai' => $dataPegawai['inputNamaPegawai'],
+            'id_jenis_kelamin' => $dataPegawai['inputJenisKelaminPegawai'],
+            'id_jabatan' => $dataPegawai['inputJabatanPegawai']
+        ];
+        // dump($dataPegawaiUpdate);
+
+        $dataPegawaiHasilUpdate = DB::table('pegawais')
+            ->where('id_pegawai', $idPegawai)
+            ->update($dataPegawaiUpdate);
+
+        return $dataPegawaiHasilUpdate;
     }
 
     // hapus data piket
