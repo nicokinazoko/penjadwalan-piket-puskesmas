@@ -66,6 +66,7 @@ Route::get('/tabel-data', function () {
 
 Route::prefix('/algoritma')->group(function () {
     Route::get('memetika', [AdminController::class, 'viewAlgoritmaMemetika'])->name('view-memetika');
+    Route::post('memetika',[AdminController::class, 'prosesAlgoritmaMemetika'])->name('proses-memetika');
 
     Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
 });
