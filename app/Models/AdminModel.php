@@ -120,6 +120,14 @@ class AdminModel extends Model
         return $dataPegawai;
     }
 
+    // ambil data pegawai mentah
+    public static function getDataPegawaiAll()
+    {
+        $dataPegawai = DB::table('pegawais')->get();
+
+        return $dataPegawai;
+    }
+
     // cari data pegawai berdasarkan Id
     public static function getDataPegawaiById($idPegawai)
     {
@@ -209,5 +217,54 @@ class AdminModel extends Model
     {
     }
 
-    //
+    // ---------- Ubah Data ke Biner -----------
+
+    // ubah data pegawai ke biner
+    public static function dataPegawaiToBiner($dataPegawai)
+    {
+        $dataPegawaiBiner = [];
+        for($i = 0; $i < count($dataPegawai); $i++){
+            $dataPegawai[$i] = decbin($dataPegawai[$i]->id_pegawai);
+            // echo $data[$i]->id_pegawai . '<br>';
+            // $dataPegawai[$i] = $data[$i]->id_pegawai;
+        }
+
+        return $dataPegawaiBiner;
+    }
+
+    // ubah data tanggal ke biner
+    public static function dataTanggalToBiner($dataTanggal){
+        $dataTanggalBiner = [];
+
+        // dump($dataTanggal);
+        // untuk memisah antara tahun dan bulan
+        $tanggal = explode('-', $dataTanggal);
+        // echo $tanggal[0];
+
+        // untuk konversi dari input bulan dan tahun ke total hari
+        $totalHari = cal_days_in_month(CAL_GREGORIAN, $tanggal[1], $tanggal[0]);
+
+        for($i = 0; $i < $totalHari; $i++){
+            $dataTanggalBiner[$i] = decbin($i+1);
+        }
+
+        return $dataTanggalBiner;
+    }
+
+
+    // convert data piket ke biner
+    public static function dataPiketToBiner($dataPiket){
+        $dataPiketBiner = [];
+
+        dump($dataPiket);
+
+        for($i = 0; $i < count($dataPiket); $i++){
+            $dataPiketBiner[$i] = decbin($dataPiket[$i]->id_piket);
+        }
+
+        return $dataPiketBiner;
+
+
+    }
+
 }
