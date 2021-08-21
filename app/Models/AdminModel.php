@@ -223,18 +223,22 @@ class AdminModel extends Model
     public static function dataPegawaiToBiner($dataPegawai)
     {
         $dataPegawaiBiner = [];
-        for($i = 0; $i < count($dataPegawai); $i++){
-            $dataPegawai[$i] = decbin($dataPegawai[$i]->id_pegawai);
-            // echo $data[$i]->id_pegawai . '<br>';
-            // $dataPegawai[$i] = $data[$i]->id_pegawai;
+        for ($i = 0; $i < count($dataPegawai); $i++) {
+            $dataPegawaiBiner[$i] = decbin($dataPegawai[$i]->id_pegawai);
+
+            // untuk menambah bit 0
+            // agar sesuai dengan semua array
+            $dataPegawaiBiner[$i] = str_pad($dataPegawaiBiner[$i], 6, '0', STR_PAD_LEFT);
         }
 
         return $dataPegawaiBiner;
     }
 
     // ubah data tanggal ke biner
-    public static function dataTanggalToBiner($dataTanggal){
+    public static function dataTanggalToBiner($dataTanggal)
+    {
         $dataTanggalBiner = [];
+        $dataTanggalTotal = [];
 
         // dump($dataTanggal);
         // untuk memisah antara tahun dan bulan
@@ -244,27 +248,88 @@ class AdminModel extends Model
         // untuk konversi dari input bulan dan tahun ke total hari
         $totalHari = cal_days_in_month(CAL_GREGORIAN, $tanggal[1], $tanggal[0]);
 
-        for($i = 0; $i < $totalHari; $i++){
-            $dataTanggalBiner[$i] = decbin($i+1);
+        for ($i = 0; $i < $totalHari; $i++) {
+            // untuk mengubah dari number menjadi binary
+            $dataTanggalBiner[$i] = decbin($i + 1);
+
+            // untuk menambah bit 0
+            // agar sesuai dengan semua array
+            $dataTanggalBiner[$i] = str_pad($dataTanggalBiner[$i], 6, '0', STR_PAD_LEFT);
         }
 
-        return $dataTanggalBiner;
+        $month_name = date("F", mktime(0, 0, 0, $tanggal[1]));
+        $dataTanggalTotal = [
+            'namaBulan' => $month_name,
+            'nomorBulan' => $tanggal[1],
+            'hari' => $dataTanggalBiner
+        ];
+        // dump($dataTanggalTotal);
+
+        return $dataTanggalTotal;
     }
 
 
     // convert data piket ke biner
-    public static function dataPiketToBiner($dataPiket){
+    public static function dataPiketToBiner($dataPiket)
+    {
         $dataPiketBiner = [];
 
-        dump($dataPiket);
+        // dump($dataPiket);
 
-        for($i = 0; $i < count($dataPiket); $i++){
+        for ($i = 0; $i < count($dataPiket); $i++) {
             $dataPiketBiner[$i] = decbin($dataPiket[$i]->id_piket);
+            // if($dataPiketBiner[$i] <)
+
+            // untuk menambah bit 0
+            // agar sesuai dengan semua array
+            $dataPiketBiner[$i] = str_pad($dataPiketBiner[$i], 6, '0', STR_PAD_LEFT);
         }
 
+
         return $dataPiketBiner;
-
-
     }
 
+    public static function generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataMemetika)
+    {
+
+        $jumlahPopulasi = $dataMemetika['inputJumlahPopulasi'];
+        $jumlahDataPegawaiBiner = count($dataPegawaiBiner);
+        $jumlahDataPiketBiner = count($dataPiketBiner);
+        $jumlahDataTanggalBiner = count($dataTanggalBiner['hari']);
+        $kromosom = [];
+        $kromosom_convert = [];
+
+
+        for ($i = 0; $i < $jumlahPopulasi; $i++) {
+            $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
+            $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
+            $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
+            $kromosom[$i] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
+
+            // $kromosom[$i] = $dataPiketBiner[$indexRandomPiket];
+        }
+
+        dump($kromosom);
+        for ($i = 0; $i < $jumlahPopulasi; $i++) {
+            // $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
+            // $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
+            // $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
+            // $kromosom[$i] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
+
+            // $kromosom[$i] = $dataPiketBiner[$indexRandomPiket];
+            $kromosom_convert[$i] = str_split($kromosom[$i], 6);
+        }
+        dump($kromosom_convert);
+
+        // dump($dataPiketBiner);
+        // $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner);
+        // for ($i = 0; $i < $jumlahPopulasi; $i++) {
+        //     // $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner);
+        //     $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner);
+        //     echo $indexRandomPiket . '<br>';
+        // }
+        // dump($jumlahDataTanggalBiner);
+        // dump($dataMemetika);
+        // return $dataPegawaiBiner;
+    }
 }
