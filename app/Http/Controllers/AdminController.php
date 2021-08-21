@@ -345,33 +345,35 @@ class AdminController extends Controller
     // proses Algoritma Memetika
     public function prosesAlgoritmaMemetika(Request $dataMemetika)
     {
+        // mengambil semua data dari input
         $dataMemetikaAll = $dataMemetika->all();
         // dump($dataMemetika->all());
 
+        // mengambil semua data pegawai
         $dataPegawai = AdminModel::getDataPegawaiAll();
         // dump($dataPegawai);
 
+        // mengubah data pegawai menjadi binary
         $dataPegawaiBiner = AdminModel::dataPegawaiToBiner($dataPegawai);
         // dump($dataPegawaiBiner);
 
+        // mengubah data tanggal menjadi binary
         $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataMemetikaAll['inputBulanPiket']);
         // dump($dataTanggalBiner);
 
 
+        // mengambil semua data piket
         $dataPiket = AdminModel::getAllDataPiket();
 
+        // mengubah data piket menjadi binary
         $dataPiketBiner = AdminModel::dataPiketToBiner($dataPiket);
-        dump($dataPiketBiner);
+        // dump($dataPiketBiner);
+
+        // generate populasi awal
+        $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner,$dataPiketBiner,$dataTanggalBiner, $dataMemetikaAll);
+        // dump($populasiAwal);
 
 
-
-
-
-
-
-
-
-        // echo $dataPegawaiBiner;
     }
 
     // untuk melihat menu algoritma neuro fuzzy
