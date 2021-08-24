@@ -261,7 +261,8 @@ class AdminModel extends Model
         $dataTanggalTotal = [
             'namaBulan' => $month_name,
             'nomorBulan' => $tanggal[1],
-            'hari' => $dataTanggalBiner
+            'hari' => $dataTanggalBiner,
+            'tahun' => $tanggal[0]
         ];
         // dump($dataTanggalTotal);
 
@@ -298,38 +299,81 @@ class AdminModel extends Model
         $jumlahDataTanggalBiner = count($dataTanggalBiner['hari']);
         $kromosom = [];
         $kromosom_convert = [];
-
+        $nilaiFitness = 0;
 
         for ($i = 0; $i < $jumlahPopulasi; $i++) {
             $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
             $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
             $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
-            $kromosom[$i] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
+            $kromosom[$i]['kromosom'] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
+            $kromosom[$i]['fitness'] = $nilaiFitness;
+            // $kromosom[$i]['gen'] = [
+            //     'idPegawai' => $dataPegawaiBiner[$indexRandomPegawai],
+            //     'idPiket' => $dataPiketBiner[$indexRandomPiket],
+            //     'idTanggal' => $dataTanggalBiner['hari'][$indexRandomTanggalBiner]
+            // ];
 
             // $kromosom[$i] = $dataPiketBiner[$indexRandomPiket];
         }
 
-        dump($kromosom);
-        for ($i = 0; $i < $jumlahPopulasi; $i++) {
+        return $kromosom;
+    }
+
+    public static function splitKromosom($kromosom)
+    {
+        $kromosomConvert = [];
+        for ($i = 0; $i < count($kromosom); $i++) {
             // $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
             // $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
             // $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
             // $kromosom[$i] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
 
             // $kromosom[$i] = $dataPiketBiner[$indexRandomPiket];
-            $kromosom_convert[$i] = str_split($kromosom[$i], 6);
-        }
-        dump($kromosom_convert);
+            $kromosomConvert[$i]['kromosom'] = $kromosom[$i]['kromosom'];
+            $kromosomConvert[$i]['nilaiFitness'] = 0;
+            $kromosomConvert[$i]['gen'] = str_split($kromosom[$i]['kromosom'], 6);
+            // $kromosomConvert[$i]['gen']['idPegawai'] = $kromosomConvert[$i]['gen'][0];
 
-        // dump($dataPiketBiner);
-        // $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner);
-        // for ($i = 0; $i < $jumlahPopulasi; $i++) {
-        //     // $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner);
-        //     $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner);
-        //     echo $indexRandomPiket . '<br>';
+
+
+            // $array = array(33 => $oldarray[0], 37 => $oldarray[1]);
+            // $array = array('test' => $oldarray[0], 'test2' => $oldarray[1]);
+        }
+        return $kromosomConvert;
+    }
+
+    // public static function combineGen($kromosom)
+    // {
+    //     for ($i = 0; $i < count($kromosom); $i++) {
+    //     }
+    //     return $kromosom;
+    // }
+
+    public static function hitungNilaiFitness($kromosom, $dataTanggal)
+    {
+        // $tanggal = date("l", mktime(0,0,0,$dataTanggal['hari'][1],$dataTanggal['nomorBulan'],$dataTanggal['tahun']));
+        // echo $tanggal;
+
+        for ($i = 0; $i < count($kromosom); $i++) {
+            $tanggalKromosom[$i] = date("l", mktime(0, 0, 0, $kromosom[$i]['gen'][2], $dataTanggal['nomorBulan'], $dataTanggal['tahun']));
+            if ($tanggalKromosom[$i] === 'Sunday') {
+                $kromosom[$i]['nilaiFitness']--;
+            }
+        }
+
+
+        // for ($i = 0; $i < count($dataTanggal['hari']); $i++) {
+        //     // $tanggal[$i] = date("l", mktime(0,0,0,bindec($dataTanggal['hari'][$i]),$dataTanggal['nomorBulan'],$dataTanggal['tahun']));
+        //     // $tanggal[$i] = bindec($dataTanggal['hari'][$i]) . $dataTanggal['namaBulan'] . $dataTanggal['tahun'];
+        //     $tanggal[$i] = date("l", mktime(0, 0, 0, $dataTanggal['nomorBulan'], bindec($dataTanggal['hari'][$i]), $dataTanggal['tahun']));
+        //     if($tanggal[$i] === 'Sunday'){
+
+        //     }
         // }
-        // dump($jumlahDataTanggalBiner);
-        // dump($dataMemetika);
-        // return $dataPegawaiBiner;
+        dump($kromosom);
+        // return $tanggal;
+        // return $dataTanggal;
+        // dump($tanggal);
+        // dump($dataTanggal);
     }
 }
