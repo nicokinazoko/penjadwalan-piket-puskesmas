@@ -370,10 +370,21 @@ class AdminController extends Controller
         // dump($dataPiketBiner);
 
         // generate populasi awal
-        $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner,$dataPiketBiner,$dataTanggalBiner, $dataMemetikaAll);
+        $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataMemetikaAll);
         // dump($populasiAwal);
 
+        // split kromosom menjadi gen
+        $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
+        // dump($convertKromosomToGen);
 
+        // combine gen menjadi kromosom
+        // ini belum begitu perlu
+        // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
+        // dump($combineGenToKromosom);
+
+        // menghitung nilai fitness
+        $nilaiFitness = AdminModel::hitungNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
+        // dump($nilaiFitness);
     }
 
     // untuk melihat menu algoritma neuro fuzzy
