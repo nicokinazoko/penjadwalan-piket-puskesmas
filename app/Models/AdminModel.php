@@ -342,12 +342,15 @@ class AdminModel extends Model
         return $kromosomConvert;
     }
 
-    // public static function combineGen($kromosom)
-    // {
-    //     for ($i = 0; $i < count($kromosom); $i++) {
-    //     }
-    //     return $kromosom;
-    // }
+    public static function combineGen($kromosom)
+    {
+        for ($i = 0; $i < count($kromosom); $i++) {
+            $kromosom[$i]['kromosom'] = $kromosom[$i]['gen'][0] . $kromosom[$i]['gen'][1] . $kromosom[$i]['gen'][2];
+            unset($kromosom[$i]['gen']);
+        }
+        return $kromosom;
+
+    }
 
     public static function hitungNilaiFitness($kromosom, $dataTanggal)
     {
@@ -370,7 +373,7 @@ class AdminModel extends Model
 
         //     }
         // }
-        dump($kromosom);
+        return $kromosom;
         // return $tanggal;
         // return $dataTanggal;
         // dump($tanggal);
