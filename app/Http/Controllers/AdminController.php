@@ -379,8 +379,10 @@ class AdminController extends Controller
 
         // combine gen menjadi kromosom
         // ini belum begitu perlu
-        // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
-        // dump($combineGenToKromosom);
+        echo "memetika";
+        $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
+        dump($combineGenToKromosom);
+
 
         // menghitung nilai fitness
         $nilaiFitness = AdminModel::hitungNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
@@ -392,5 +394,51 @@ class AdminController extends Controller
     {
         $dataPegawai = AdminModel::getAllDataPegawai();
         return view('content.neuro-fuzzy.neuro-fuzzy', ['pegawai' => $dataPegawai]);
+    }
+
+
+    public function prosesAlgoritmaNeuroFuzzy(Request $dataNeuroFuzzy)
+    {
+
+        // mengambil semua data dari input
+        $dataNeuroFuzzyAll = $dataNeuroFuzzy->all();
+        // dump($dataNeuroFuzzy);
+
+        // mengambil semua data pegawai
+        $dataPegawai = AdminModel::getDataPegawaiAll();
+        // dump($dataPegawai);
+
+        // mengubah data pegawai menjadi binary
+        $dataPegawaiBiner = AdminModel::dataPegawaiToBiner($dataPegawai);
+        // dump($dataPegawaiBiner);
+
+        // mengubah data tanggal menjadi binary
+        $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataNeuroFuzzyAll['inputBulanPiket']);
+        // dump($dataTanggalBiner);
+
+
+        // mengambil semua data piket
+        $dataPiket = AdminModel::getAllDataPiket();
+
+        // mengubah data piket menjadi binary
+        $dataPiketBiner = AdminModel::dataPiketToBiner($dataPiket);
+        // dump($dataPiketBiner);
+
+        // generate populasi awal
+        $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataNeuroFuzzyAll);
+        // dump($populasiAwal);
+
+        // split kromosom menjadi gen
+        $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
+        // dump($convertKromosomToGen);
+
+        // combine gen menjadi kromosom
+        // ini belum begitu perlu
+        // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
+        // dump($combineGenToKromosom);
+
+        // menghitung nilai fitness
+        $nilaiFitness = AdminModel::hitungNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
+        // dump($nilaiFitness);
     }
 }
