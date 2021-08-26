@@ -15,9 +15,13 @@ class AdminModel extends Model
     // ambil data jumlah yang telah diinput
     public static function getCountDataPiketAndPegawai()
     {
+        // menghitung jumlah data pegawai di tabel pegawai
         $jumlahDataPegawai = DB::table('pegawais')->count();
+
+        // menghitung jumlah data piket di tabel piket
         $jumlahDataPiket = DB::table('pikets')->count();
 
+        // memasukkan data jumlah ke array
         $jumlahData = [
             'dataPegawai' => $jumlahDataPegawai,
             'dataPiket' => $jumlahDataPiket
@@ -161,8 +165,11 @@ class AdminModel extends Model
     // edit data piket
     public static function editDataPegawai($idPegawai, $dataPegawai)
     {
+        // menghilangkan elemen _method dari array
         unset($dataPegawai['_method'], $dataPegawai['_token']);
         // dump($dataPegawai);
+
+        // memasukkan data ke dalam array
         $dataPegawaiUpdate = [
             'nama_pegawai' => $dataPegawai['inputNamaPegawai'],
             'id_jenis_kelamin' => $dataPegawai['inputJenisKelaminPegawai'],
@@ -170,6 +177,7 @@ class AdminModel extends Model
         ];
         // dump($dataPegawaiUpdate);
 
+        // memasukkan data ke db
         $dataPegawaiHasilUpdate = DB::table('pegawais')
             ->where('id_pegawai', $idPegawai)
             ->update($dataPegawaiUpdate);
@@ -222,8 +230,11 @@ class AdminModel extends Model
     // ubah data pegawai ke biner
     public static function dataPegawaiToBiner($dataPegawai)
     {
+        // deklarasi variabel array untuk penyimpanan
         $dataPegawaiBiner = [];
+
         for ($i = 0; $i < count($dataPegawai); $i++) {
+            // convert dari id_pegawai desimal menjadi binary
             $dataPegawaiBiner[$i] = decbin($dataPegawai[$i]->id_pegawai);
 
             // untuk menambah bit 0
@@ -237,6 +248,7 @@ class AdminModel extends Model
     // ubah data tanggal ke biner
     public static function dataTanggalToBiner($dataTanggal)
     {
+        // deklarasi variabel array untuk penyimpanan
         $dataTanggalBiner = [];
         $dataTanggalTotal = [];
 
@@ -257,7 +269,10 @@ class AdminModel extends Model
             $dataTanggalBiner[$i] = str_pad($dataTanggalBiner[$i], 6, '0', STR_PAD_LEFT);
         }
 
+        // mendapat data nama bulan
         $month_name = date("F", mktime(0, 0, 0, $tanggal[1]));
+
+        // masukkan data tanggal ke array
         $dataTanggalTotal = [
             'namaBulan' => $month_name,
             'nomorBulan' => $tanggal[1],
@@ -278,14 +293,14 @@ class AdminModel extends Model
         // dump($dataPiket);
 
         for ($i = 0; $i < count($dataPiket); $i++) {
+
+            // mengubah data id_piket dari desimal menjadi binary
             $dataPiketBiner[$i] = decbin($dataPiket[$i]->id_piket);
-            // if($dataPiketBiner[$i] <)
 
             // untuk menambah bit 0
             // agar sesuai dengan semua array
             $dataPiketBiner[$i] = str_pad($dataPiketBiner[$i], 6, '0', STR_PAD_LEFT);
         }
-
 
         return $dataPiketBiner;
     }
@@ -293,44 +308,58 @@ class AdminModel extends Model
     public static function generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataMemetika)
     {
 
+        // memasukkan data jumlah populasi variabel
         $jumlahPopulasi = $dataMemetika['inputJumlahPopulasi'];
+
+        // menghitung total data di array
         $jumlahDataPegawaiBiner = count($dataPegawaiBiner);
+
+        // menghitung total data di array
         $jumlahDataPiketBiner = count($dataPiketBiner);
+
+        // menghitung total data di array
         $jumlahDataTanggalBiner = count($dataTanggalBiner['hari']);
+
+        // deklarasi variabel array untuk penyimpanan
         $kromosom = [];
-        $kromosom_convert = [];
+        // $kromosom_convert = [];
         $nilaiFitness = 0;
 
         for ($i = 0; $i < $jumlahPopulasi; $i++) {
-            $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
-            $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
-            $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
-            $kromosom[$i]['kromosom'] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
-            $kromosom[$i]['fitness'] = $nilaiFitness;
-            // $kromosom[$i]['gen'] = [
-            //     'idPegawai' => $dataPegawaiBiner[$indexRandomPegawai],
-            //     'idPiket' => $dataPiketBiner[$indexRandomPiket],
-            //     'idTanggal' => $dataTanggalBiner['hari'][$indexRandomTanggalBiner]
-            // ];
 
-            // $kromosom[$i] = $dataPiketBiner[$indexRandomPiket];
+            // random id_pegawai untuk menjadi gen
+            $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
+
+            // random id_piket untuk menjadi gen
+            $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
+
+            // random tanggal untuk menjadi gen
+            $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
+
+            // memasukkan data gen ke dalam satu kromosom
+            $kromosom[$i]['kromosom'] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
+
+            // membuat elemen baru untuk menyimpan data nilai fitness
+            $kromosom[$i]['nilaiFitness'] = $nilaiFitness;
         }
 
         return $kromosom;
     }
 
+    // untuk memisah kromom menjadi gen
     public static function splitKromosom($kromosom)
     {
+        // deklarasi array untuk menyimpan data
         $kromosomConvert = [];
         for ($i = 0; $i < count($kromosom); $i++) {
-            // $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
-            // $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
-            // $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
-            // $kromosom[$i] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
 
-            // $kromosom[$i] = $dataPiketBiner[$indexRandomPiket];
+            // memasukkan data kromosom ke array baru
             $kromosomConvert[$i]['kromosom'] = $kromosom[$i]['kromosom'];
-            $kromosomConvert[$i]['nilaiFitness'] = 0;
+
+            // memasukkan data nilai fitness ke kromosom baru
+            $kromosomConvert[$i]['nilaiFitness'] = $kromosom[$i]['nilaiFitness'];
+
+            // memisahkan kromosom menjadi tiga bagian dengan panjang 6
             $kromosomConvert[$i]['gen'] = str_split($kromosom[$i]['kromosom'], 6);
             // $kromosomConvert[$i]['gen']['idPegawai'] = $kromosomConvert[$i]['gen'][0];
 
@@ -342,14 +371,15 @@ class AdminModel extends Model
         return $kromosomConvert;
     }
 
+    // combine gen untuk menjadi kromosom
     public static function combineGen($kromosom)
     {
         for ($i = 0; $i < count($kromosom); $i++) {
+            // menggabungkan
             $kromosom[$i]['kromosom'] = $kromosom[$i]['gen'][0] . $kromosom[$i]['gen'][1] . $kromosom[$i]['gen'][2];
             unset($kromosom[$i]['gen']);
         }
         return $kromosom;
-
     }
 
     public static function hitungNilaiFitness($kromosom, $dataTanggal)
@@ -357,12 +387,103 @@ class AdminModel extends Model
         // $tanggal = date("l", mktime(0,0,0,$dataTanggal['hari'][1],$dataTanggal['nomorBulan'],$dataTanggal['tahun']));
         // echo $tanggal;
 
+        $totalSatu = '';
+        $totalDua = '';
+        $totalTiga = '';
+        $totalEmpat = '';
+
+        // data pegawai
+
+
+        // start menghitung nilai fitness masing-masing kromosom
         for ($i = 0; $i < count($kromosom); $i++) {
-            $tanggalKromosom[$i] = date("l", mktime(0, 0, 0, $kromosom[$i]['gen'][2], $dataTanggal['nomorBulan'], $dataTanggal['tahun']));
-            if ($tanggalKromosom[$i] === 'Sunday') {
+
+            // convert data tanggal menjadi nama hari
+            $tanggalKromosom = date("l", mktime(0, 0, 0, $kromosom[$i]['gen'][2], $dataTanggal['nomorBulan'], $dataTanggal['tahun']));
+
+            // cek apakah ada data pegawai di tabel pegawai
+            $dataPegawai = AdminModel::getDataPegawaiById(bindec($kromosom[$i]['gen'][0]));
+            $dataPiket = Adminmodel::getDataPiketById(bindec($kromosom[$i]['gen'][1]));
+
+            // if(bindec($kromosom[$i]['gen'][2]) <= 7 || bindec($kromosom[$i]['gen'][2]) >= 14 || bindec($kromosom[$i]['gen'][2]) <= 21){
+            //     dump($kromosom[$i]);
+            // }
+            // jika ada data pegawai
+            if ($dataPegawai) {
+                // tambah nilai fitness
+                $kromosom[$i]['nilaiFitness']++;
+
+                // cek untuk data Nely Puspita
+                // Selasa pertama dengan Kamis ketiga, Posbindu
+                // id pegawai 13
+                // dump($dataPegawai);
+                if ($dataPegawai[0]->nama_pegawai === 'Nely Puspita') {
+                    if ($dataPiket[0]->kode_piket === 'PB') {
+                        if (
+                            bindec($kromosom[$i]['gen'][2]) <= 7 ||
+                            (bindec($kromosom[$i]['gen'][2]) <= 21 &&
+                                bindec($kromosom[$i]['gen'][2]) >= 14)
+                        ) {
+                            if ($tanggalKromosom == 'Tuesday' || $tanggalKromosom == 'Thursday') {
+                                $kromosom[$i]['nilaiFitness']++;
+                            } else {
+                                $kromosom[$i]['nilaiFitness']--;
+                            }
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
+                    } else {
+                        // jika piket != PB
+                        // ini masih belum tau gimana ngitung fitness nya
+                        // $kromosom[$i]['nilaiFitness']--;
+                    }
+
+                }
+            } else {
+                // kurangi nilai fitness
                 $kromosom[$i]['nilaiFitness']--;
             }
+
+            // cek apakah jadwal ada di hari minggu
+            // hari minggu = hari libur
+            // jadi tidak kerja
+            if ($tanggalKromosom == 'Sunday') {
+
+                // kurangi nilai fitness
+                $kromosom[$i]['nilaiFitness']--;
+            } else {
+
+                // tambah nilai fitness
+                $kromosom[$i]['nilaiFitness']++;
+            }
+
+            if ($kromosom[$i]['nilaiFitness'] > 2) {
+                $totalSatu++;
+            } else
+            if ($kromosom[$i]['nilaiFitness'] <= 2 && $kromosom[$i]['nilaiFitness'] > 0) {
+                $totalDua++;
+            } else
+            if ($kromosom[$i]['nilaiFitness'] <= 0) {
+                $totalTiga++;
+            }
+            // else {
+            //     if ($kromosom[$i]['nilaiFitness'] ) {
+            //         $totalEmpat++;
+            //     }
+            // }
+
+
         }
+        echo 'Total > 2 = ' . $totalSatu . ', Total > 0 = ' . $totalDua . ', Total < 0 = ' . $totalTiga;
+
+
+
+        // echo $dataPegawai[0]->id_pegawai;
+        // dump($dataPegawai);
+        // dump($kromosom);
+
+
+
 
 
         // for ($i = 0; $i < count($dataTanggal['hari']); $i++) {
