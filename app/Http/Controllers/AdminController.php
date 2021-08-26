@@ -380,13 +380,13 @@ class AdminController extends Controller
         // combine gen menjadi kromosom
         // ini belum begitu perlu
         echo "memetika";
-        $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
-        dump($combineGenToKromosom);
+        // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
+        // dump($combineGenToKromosom);
 
 
         // menghitung nilai fitness
         $nilaiFitness = AdminModel::hitungNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
-        // dump($nilaiFitness);
+        dump($nilaiFitness);
     }
 
     // untuk melihat menu algoritma neuro fuzzy
@@ -430,7 +430,7 @@ class AdminController extends Controller
 
         // split kromosom menjadi gen
         $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
-        // dump($convertKromosomToGen);
+        dump($convertKromosomToGen);
 
         // combine gen menjadi kromosom
         // ini belum begitu perlu
