@@ -400,6 +400,7 @@ class AdminModel extends Model
 
             // convert data tanggal menjadi nama hari
             $tanggalKromosom = date("l", mktime(0, 0, 0, $kromosom[$i]['gen'][2], $dataTanggal['nomorBulan'], $dataTanggal['tahun']));
+            // dump($tanggalKromosom);
 
             // cek apakah ada data pegawai di tabel pegawai
             $dataPegawai = AdminModel::getDataPegawaiById(bindec($kromosom[$i]['gen'][0]));
@@ -413,6 +414,71 @@ class AdminModel extends Model
                 // tambah nilai fitness
                 $kromosom[$i]['nilaiFitness']++;
 
+
+                // cek data untuk dr. Amelia
+                // id = 10 = 001010
+                // tanggal 24 prolanis = 35
+                // RPU senin rabu jumat = 18 = 010010
+                // R infeksius selasa kamis sabtu = 21 = 010101
+                // binary untuk RPU = 001010010010
+                // binary untuk R.Inf = 001010010101
+                if ($dataPegawai[0]->nama_pegawai === "dr. Amelia") {
+                    if ($dataPiket[0]->kode_piket === "Prolanis") {
+                        if (bindec($kromosom[$i]['gen'][2]) === 24) {
+                            $kromosom[$i]['nilaiFitness']++;
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
+                    } else
+                    if ($dataPiket[0]->kode_piket === "RPU") {
+                        if (
+                            $tanggalKromosom === "Monday" || $tanggalKromosom === "Wednesday" ||
+                            $tanggalKromosom === "Friday"
+                        ) {
+                            $kromosom[$i]['nilaiFitness']++;
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
+                    } else
+                    if ($dataPiket[0]->kode_piket === "R.Inf") {
+                        if (
+                            $tanggalKromosom === "Tuesday" || $tanggalKromosom === "Thursday" ||
+                            $tanggalKromosom === "Saturday"
+                        ) {
+                            $kromosom[$i]['nilaiFitness']++;
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
+                    }
+                }
+
+
+                // if (bindec($kromosom[$i]['gen'][2]) === 24) {
+                // } else {
+                //     if (
+                //         $tanggalKromosom === "Monday" || $tanggalKromosom === "Wednesday" ||
+                //         $tanggalKromosom === "Friday"
+                //     ) {
+                //         if ($dataPiket[0]->kode_piket === 'RPU') {
+                //             $kromosom[$i]['nilaiFitness']++;
+                //         } else {
+                //             $kromosom[$i]['nilaiFitness']--;
+                //         }
+                //     } else {
+                //         if (
+                //             $tanggalKromosom === "Tuesday" || $tanggalKromosom === "Thursday" ||
+                //             $tanggalKromosom === "Saturday"
+                //         ) {
+                //             if ($dataPiket[0]->kode_piket === "R.Inf") {
+                //                 $kromosom[$i]['nilaiFitness']++;
+                //             } else {
+                //                 $kromosom[$i]['nilaiFitness']--;
+                //             }
+                //         }
+                //     }
+
+
+
                 // cek untuk data Nely Puspita
                 // Selasa pertama dengan Kamis ketiga, Posbindu
                 // id pegawai 13
@@ -424,7 +490,7 @@ class AdminModel extends Model
                             (bindec($kromosom[$i]['gen'][2]) <= 21 &&
                                 bindec($kromosom[$i]['gen'][2]) >= 14)
                         ) {
-                            if ($tanggalKromosom == 'Tuesday' || $tanggalKromosom == 'Thursday') {
+                            if ($tanggalKromosom === 'Tuesday' || $tanggalKromosom === 'Thursday') {
                                 $kromosom[$i]['nilaiFitness']++;
                             } else {
                                 $kromosom[$i]['nilaiFitness']--;
@@ -437,7 +503,6 @@ class AdminModel extends Model
                         // ini masih belum tau gimana ngitung fitness nya
                         // $kromosom[$i]['nilaiFitness']--;
                     }
-
                 }
             } else {
                 // kurangi nilai fitness
@@ -447,7 +512,7 @@ class AdminModel extends Model
             // cek apakah jadwal ada di hari minggu
             // hari minggu = hari libur
             // jadi tidak kerja
-            if ($tanggalKromosom == 'Sunday') {
+            if ($tanggalKromosom === 'Sunday') {
 
                 // kurangi nilai fitness
                 $kromosom[$i]['nilaiFitness']--;
@@ -457,8 +522,13 @@ class AdminModel extends Model
                 $kromosom[$i]['nilaiFitness']++;
             }
 
+
             if ($kromosom[$i]['nilaiFitness'] > 2) {
+                echo "Lebih dari 2 <br>";
                 $totalSatu++;
+                echo $dataPegawai[0]->nama_pegawai . '<br>';
+                echo $dataPiket[0]->kode_piket . '<br>';
+                echo $tanggalKromosom . '<br> <br>';
             } else
             if ($kromosom[$i]['nilaiFitness'] <= 2 && $kromosom[$i]['nilaiFitness'] > 0) {
                 $totalDua++;
