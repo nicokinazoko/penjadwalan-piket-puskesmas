@@ -47,6 +47,11 @@
                                     name="inputMutationRate">
                             </div>
                             <div class="form-group">
+                                <label for="inputCrossovernRate">Crossover Rate</label>
+                                <input type="text" class="form-control" id="inputCrossoverRate"
+                                    placeholder="Crossover Rate" name="inputCrossoverRate">
+                            </div>
+                            <div class="form-group">
                                 <label for="inputBulanPiket">Bulan Piket</label>
                                 <input type="month" class="form-control" id="inputBulanPiket" placeholder="Bulan Piket"
                                     name="inputBulanPiket">
