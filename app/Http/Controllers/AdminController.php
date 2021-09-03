@@ -269,76 +269,6 @@ class AdminController extends Controller
         // $tesWaktu = date("h:i:sa");
         $dataPegawai = AdminModel::getAllDataPegawai();
         return view('content.memetic.memetic', ['pegawai' => $dataPegawai]);
-
-        // $a = [4, 6, 2, 1, 5];
-        // $b = [5, 3, 1, 9, 2];
-
-        // function tesArray($a, $b, $x)
-        // {
-        //     $point = $x;
-        //     $array_a = $a;
-        //     $array_b = $b;
-        //     $total_array_a = count($a);
-        //     $total_array_b = count($b);
-        //     $replace_array_a = [];
-        //     $replace_array_b = [];
-        //     $array_a_sementara = [];
-        //     $array_b_sementara = [];
-
-        //     echo $x;
-
-        //     for ($i = $point - 1; $i < $total_array_a; $i++) {
-        //         $replace_array_a[$i] = $array_a[$i];
-        //         $replace_array_b[$i] = $array_b[$i];
-        //         // $array_b_sementara = array_push($replace_array_b, $array_a_sementara);
-        //         // $new_array_b = array_replace($array_b, $replace_array_b);
-        //     }
-        //     // print_r($replace_array_a);
-        //     // echo '<br>';
-
-        //     echo "Sebelum di replace" . '<br>';
-        //     print_r($array_a);
-        //     echo '<br>';
-
-        //     print_r($array_b);
-        //     echo '<br>';
-
-        //     echo "Setelah di replace" . '<br>';
-
-        //     $new_array_a = array_replace($array_a, $replace_array_b);
-        //     print_r($new_array_a);
-        //     echo '<br>';
-
-        //     $new_array_b = array_replace($array_b, $replace_array_a);
-        //     print_r($new_array_b);
-        //     echo '<br>';
-        //     // return print_r($new_array_a);
-        //     tesArray($a, $b, rand(0, 5));
-        // }
-
-        // $waktuAkhir = new DateTime('09:20:00');
-        // $selisih = $waktuAwal->diff($waktuAkhir);
-        // echo $selisih->format(' %h %i %s  second(s)');
-
-        // echo "<br>";
-        // echo date("h:i:sa") . $tesWaktu;
-        // echo "<br>";
-        // // echo $tesWaktu - date("h:i:sa");
-        // echo "<br>";
-
-        // $t = time();
-        // echo ($t . "<br>");
-        // echo "<br>";
-        // echo (date("Y-m-d", $t));
-
-        // echo "<br>";
-        // $tesWatku2 = new DateTime();
-        // echo $tesWatku2->format('H:i:s') . date("H:i:s");
-        // echo "<br>";
-        // $time1 = new DateTime('09:00:59');
-        // $time2 = new DateTime('12:10:30');
-        // $interval = $time1->diff($time2);
-        // echo $interval->format('%h Hours %i Minutes %ssecond(s)');
     }
 
 
@@ -393,6 +323,14 @@ class AdminController extends Controller
 
         $nilaiFitness = AdminModel::hitungTotalNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
         // dump($nilaiFitness);
+
+        $kromosomTertinggi = AdminModel::seleksiBasedOnFitness($nilaiFitness);
+        // dump($kromosomTertinggi);
+
+        $hasilCrossover = AdminModel::singlePointCrossover($kromosomTertinggi, $dataMemetika);
+        dump($hasilCrossover);
+
+        $hasilMutasi = AdminModel::bitFlipMutation($hasilCrossover);
     }
 
     // untuk melihat menu algoritma neuro fuzzy
