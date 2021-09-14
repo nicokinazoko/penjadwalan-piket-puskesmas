@@ -41,6 +41,11 @@
                                     placeholder="Jumlah Populasi" name="inputJumlahPopulasi">
                             </div>
                             <div class="form-group">
+                                <label for="inputJumlahGenerasi">Jumlah Generasi</label>
+                                <input type="text" class="form-control" id="inputJumlahGenerasi"
+                                    placeholder="Jumlah Generasi" name="inputJumlahGenerasi">
+                            </div>
+                            <div class="form-group">
                                 <label for="inputMutationRate">Mutation Rate</label>
                                 <input type="text" class="form-control" id="inputMutationRate" placeholder="Mutation Rate"
                                     name="inputMutationRate">
