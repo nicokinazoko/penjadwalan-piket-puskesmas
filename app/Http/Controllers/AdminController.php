@@ -279,6 +279,9 @@ class AdminController extends Controller
         $dataMemetikaAll = $dataMemetika->all();
         // dump($dataMemetika->all());
 
+        $hasilAlgoritmaMemetika = AdminModel::prosesMemetika($dataMemetikaAll);
+
+
         // mengambil semua data pegawai
         $dataPegawai = AdminModel::getDataPegawaiAll();
         // dump($dataPegawai);
@@ -309,7 +312,7 @@ class AdminController extends Controller
 
         // combine gen menjadi kromosom
         // ini belum begitu perlu
-        echo "memetika" . '<br>';
+        // echo "memetika" . '<br>';
         // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
         // dump($combineGenToKromosom);
 
@@ -321,6 +324,8 @@ class AdminController extends Controller
         // $dataHari = AdminModel::tesHari($convertKromosomToGen, $dataTanggalBiner);
         // dump($dataHari);
 
+
+
         $nilaiFitness = AdminModel::hitungTotalNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
         // dump($nilaiFitness);
 
@@ -328,7 +333,7 @@ class AdminController extends Controller
         // dump($kromosomTertinggi);
 
         $hasilCrossover = AdminModel::singlePointCrossover($kromosomTertinggi, $dataMemetika);
-        dump($hasilCrossover);
+        // dump($hasilCrossover);
 
         $hasilMutasi = AdminModel::bitFlipMutation($hasilCrossover);
     }
