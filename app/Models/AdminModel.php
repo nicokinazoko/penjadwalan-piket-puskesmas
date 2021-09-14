@@ -305,11 +305,11 @@ class AdminModel extends Model
         return $dataPiketBiner;
     }
 
-    public static function generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataMemetika)
+    public static function generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $jumlahPopulasi)
     {
 
         // memasukkan data jumlah populasi variabel
-        $jumlahPopulasi = $dataMemetika['inputJumlahPopulasi'];
+        $jumlahPopulasi = $jumlahPopulasi;
 
         // menghitung total data di array
         $jumlahDataPegawaiBiner = count($dataPegawaiBiner);
@@ -935,14 +935,14 @@ class AdminModel extends Model
             // $totalNol = 0;
             // $totalMinSatu = 0;
         }
-        echo 'Total > 2 == ' . $totalTiga . '<br>';
-        echo 'Total = 2 == ' . $totalDua . '<br>';
-        echo 'Total = 1 == ' . $totalSatu . '<br>';
-        echo 'Total = 0 == ' . $totalNol . '<br>';
-        echo 'Total = -1 == ' . $totalMinSatu . '<br>';
-        $total = $totalMinSatu + $totalNol + $totalSatu
-            + $totalDua + $totalTiga;
-        echo 'Total Data == ' . $total . '<br>';
+        // echo 'Total > 2 == ' . $totalTiga . '<br>';
+        // echo 'Total = 2 == ' . $totalDua . '<br>';
+        // echo 'Total = 1 == ' . $totalSatu . '<br>';
+        // echo 'Total = 0 == ' . $totalNol . '<br>';
+        // echo 'Total = -1 == ' . $totalMinSatu . '<br>';
+        // $total = $totalMinSatu + $totalNol + $totalSatu
+        //     + $totalDua + $totalTiga;
+        // echo 'Total Data == ' . $total . '<br>';
 
 
         return $hitungFitnessKromosom;
@@ -1010,7 +1010,7 @@ class AdminModel extends Model
         $split_kromosom_a = str_split($kromosom[0]['kromosom']);
         $split_kromosom_b = str_split($kromosom[1]['kromosom']);
         $singlePoint = mt_rand(0, count($split_kromosom_a) - 1);
-        echo $singlePoint . '<br>';
+        // echo $singlePoint . '<br>';
 
 
         for ($i = $singlePoint - 1; $i < count($split_kromosom_a); $i++) {
@@ -1018,13 +1018,13 @@ class AdminModel extends Model
             $array_b[$i] = $split_kromosom_b[$i];
         }
 
-        echo "Sebelum Crossover " . '<br>';
+        // echo "Sebelum Crossover " . '<br>';
         // print_r($split_kromosom_a) . '<br>';
         // print_r($split_kromosom_b) . '<br>';
-        dump($kromosom);
+        // dump($kromosom);
 
 
-        echo "Setelah Crossover " . '<br>';
+        // echo "Setelah Crossover " . '<br>';
         $kromosom_a_baru = array_replace($split_kromosom_a, $array_b);
         $kromosom_b_baru = array_replace($split_kromosom_b, $array_a);
         // print_r($kromosom_a_baru) . '<br>';
@@ -1033,7 +1033,7 @@ class AdminModel extends Model
         $kromosom[0]['kromosom'] = implode($kromosom_a_baru);
         $kromosom[1]['kromosom'] = implode($kromosom_b_baru);
         $dataTanggal = AdminModel::dataTanggalToBiner($dataMemetikaAll['inputBulanPiket']);
-        dump($dataTanggal);
+        // dump($dataTanggal);
         $nilaiFitness = 0;
         for ($i = 0; $i < count($kromosom); $i++) {
             $kromosom[$i]['nilaiFitness'] = $nilaiFitness = 0;;
@@ -1041,7 +1041,7 @@ class AdminModel extends Model
         $splitKromosom = AdminModel::splitKromosom($kromosom);
         $cekFitness = AdminModel::hitungTotalNilaiFitness($splitKromosom, $dataTanggal);
 
-        dump($cekFitness);
+        // dump($cekFitness);
 
         // dump($kromosom);
 
@@ -1056,16 +1056,17 @@ class AdminModel extends Model
         $split_kromosom_a = str_split($kromosom[0]['kromosom']);
         $split_kromosom_b = str_split($kromosom[1]['kromosom']);
         $indexRandom = mt_rand(0, count($split_kromosom_a));
-        echo $indexRandom . '<br>';
+        // echo $indexRandom . '<br>';
 
-        echo "Sebelum Mutasi" . '<br>';
-        dump($split_kromosom_a);
-        dump($split_kromosom_b);
+        // echo "Sebelum Mutasi" . '<br>';
+        // dump($split_kromosom_a);
+        // dump($split_kromosom_b);
 
         // $indexKromosomA = $split_kromosom_a[$indexRandom - 1];
         // $indexKromosomB = $split_kromosom_b[$indexRandom - 1];
 
 
+        // ini nanti dibuat if biar kalo kurang dari 0 gak error
         if ($split_kromosom_a[$indexRandom - 1] === "0") {
             $split_kromosom_a[$indexRandom - 1] = "1";
         } elseif ($split_kromosom_a[$indexRandom - 1] === "1") {
@@ -1078,8 +1079,97 @@ class AdminModel extends Model
             $split_kromosom_b[$indexRandom - 1] = "0";
         }
 
-        echo "Setelah Mutasi" . '<br>';
-        dump($split_kromosom_a);
-        dump($split_kromosom_b);
+        // echo "Setelah Mutasi" . '<br>';
+        // dump($split_kromosom_a);
+        // dump($split_kromosom_b);
+    }
+
+
+    public static function prosesMemetika($dataMemetika)
+    {
+        dump($dataMemetika);
+
+        // =============== Deklarasi Variabel ===============
+        // untuk menyimpan data jumlah populasi
+        $jumlahPopulasi = intval($dataMemetika['inputJumlahPopulasi']);
+
+        // untuk menyimpan jumlah generasi
+        $jumlahGenerasi = intval($dataMemetika['inputJumlahGenerasi']);
+
+        // untuk menyimpan data nilai mutation rate
+        $mutationRate = floatval($dataMemetika['inputMutationRate']);
+
+        // untuk menyimpan data nilai crossover rate
+        $crossoverRateInput = floatval($dataMemetika['inputCrossoverRate']);
+
+        $dataTanggal = $dataMemetika['inputBulanPiket'];
+
+
+        echo $crossoverRateInput . '<br>';
+        echo $mutationRate  . '<br>';
+        echo $jumlahPopulasi . '<br>';
+
+        // =============== Data Pegawai ===============
+        // mengambil data pegawai
+        $dataPegawai = AdminModel::getDataPegawaiAll();
+        // dump($dataPegawai);
+
+        // mengubah data pegawai menjadi binary
+        $dataPegawaiBiner = AdminModel::dataPegawaiToBiner($dataPegawai);
+        // dump($dataPegawaiBiner);
+
+
+
+        // =============== Data Tanggal ===============
+        // mengubah data tanggal menjadi binary
+        $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataTanggal);
+        // dump($dataTanggalBiner);
+
+
+
+        // =============== Data Piket ===============
+        // mengambil semua data piket
+        $dataPiket = AdminModel::getAllDataPiket();
+        // dump($dataPiket);
+
+
+        // mengubah data piket menjadi binary
+        $dataPiketBiner = AdminModel::dataPiketToBiner($dataPiket);
+        // dump($dataPiketBiner);
+
+        // generate populasi awal
+        $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $jumlahPopulasi);
+        // dump($populasiAwal);
+
+        // split kromosom menjadi gen
+        $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
+        // dump($convertKromosomToGen);
+
+
+        // kondisi selesai
+        // hitung perhitungan crossover berdasarkan total populasi hasil input
+        for ($i = 0; $i < $jumlahGenerasi; $i++) {
+            $nilaiFitness = AdminModel::hitungTotalNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
+            // dump($nilaiFitness);
+        }
+
+        // krsort($nilaiFitness);
+        // $nilaiFitnessKromosom = $nilaiFitness;
+
+
+        // dump($nilaiFitnessKromosom);
+        // array_multisort(
+        //     $nilaiFitness,
+        //     SORT_NUMERIC,
+        //     SORT_ASC
+
+        // );
+
+        // buat urut nilai fitness tertinggi
+        $columns = array_column($nilaiFitness, 'nilaiFitness');
+        // dump($columns);
+        array_multisort($columns, SORT_DESC, $nilaiFitness);
+
+        dump($columns);
     }
 }
