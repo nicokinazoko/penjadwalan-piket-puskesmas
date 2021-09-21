@@ -328,13 +328,13 @@ class AdminModel extends Model
         for ($i = 0; $i < $jumlahPopulasi; $i++) {
 
             // random id_pegawai untuk menjadi gen
-            $indexRandomPegawai = mt_rand(0, $jumlahDataPegawaiBiner - 1);
+            $indexRandomPegawai = mt_rand(1, $jumlahDataPegawaiBiner - 1);
 
             // random id_piket untuk menjadi gen
-            $indexRandomPiket = mt_rand(0, $jumlahDataPiketBiner - 1);
+            $indexRandomPiket = mt_rand(1, $jumlahDataPiketBiner - 1);
 
             // random tanggal untuk menjadi gen
-            $indexRandomTanggalBiner = mt_rand(0, $jumlahDataTanggalBiner - 1);
+            $indexRandomTanggalBiner = mt_rand(1, $jumlahDataTanggalBiner - 1);
 
             // memasukkan data gen ke dalam satu kromosom
             $kromosom[$i]['kromosom'] = $dataPegawaiBiner[$indexRandomPegawai] . $dataPiketBiner[$indexRandomPiket] . $dataTanggalBiner['hari'][$indexRandomTanggalBiner];
@@ -382,6 +382,8 @@ class AdminModel extends Model
         return $kromosom;
     }
 
+    // ini coding ulang
+    // ada kesalahan di bagian cek data
     public static function hitungNilaiFitness($kromosom, $dataTanggal)
     {
         // echo date("l", mktime(0, 0, 0, 8, 31, 2021));
@@ -493,7 +495,7 @@ class AdminModel extends Model
                 // id pegawai 13
                 // dump($dataPegawai);
                 if ($dataPegawai[0]->nama_pegawai === 'Nely Puspita') {
-                    if ($dataPiket[0]->kode_piket === 'PB') {
+                    if ($dataPiket[0]->kode_piket == 'PB') {
                         if (
                             bindec($kromosom[$i]['gen'][2]) <= 7 ||
                             (bindec($kromosom[$i]['gen'][2]) <= 21 &&
@@ -599,353 +601,368 @@ class AdminModel extends Model
         $totalMinSatu = 0;
         $hitungFitnessKromosom = [];
         $i = 0;
+        $jumlahKromosom = count($kromosom);
+        echo $jumlahKromosom;
 
-        foreach ($kromosom as $dataKromosom) {
+        for ($i = 0; $i < $jumlahKromosom; $i++) {
 
             // untuk mengambil data pegawai berdasarkan id pegawai dari kromosom
-            $dataPegawai = AdminModel::getDataPegawaiById(bindec($dataKromosom['gen'][0]));
-
+            $dataPegawai = AdminModel::getDataPegawaiById(bindec($kromosom[$i]['gen'][0]));
             // untuk mengambil data pegawai berdasarkan id piket dari kromosom
-            $dataPiket = Adminmodel::getDataPiketById(bindec($dataKromosom['gen'][1]));
+            $dataPiket = Adminmodel::getDataPiketById(bindec($kromosom[$i]['gen'][1]));
 
             // untuk mengambil data hari berdasarkan binary tanggal dari kromosom
-            $tanggalKromosom = date("l", mktime(0, 0, 0, $dataTanggal['nomorBulan'], bindec($dataKromosom['gen'][2]), $dataTanggal['tahun']));
+            $tanggalKromosom = date("l", mktime(0, 0, 0, $dataTanggal['nomorBulan'], bindec($kromosom[$i]['gen'][2]), $dataTanggal['tahun']));
 
 
-            if ($dataPegawai) {
-                if ($dataPiket) {
+            if ($dataPegawai !== [] && $dataPiket !== []) {
 
-                    if ($tanggalKromosom === 'Sunday') {
-                        $dataKromosom['nilaiFitness']--;
-                    } else {
-                        $dataKromosom['nilaiFitness']++;
+
+                if ($tanggalKromosom === 'Sunday') {
+                    $kromosom[$i]['nilaiFitness']--;
+                } else {
+                    $kromosom[$i]['nilaiFitness']++;
+                }
+
+                // constraint untuk dr Amelia
+                // Tanggal 24, prolanis
+                // RPU senin rabu jumat
+                // R Inf selasa kamis sabtu
+
+                if ($dataPegawai[0]->nama_pegawai == 'dr. Amelia') {
+                    $kromosom[$i]['nilaiFitness']++;
+
+                    if ($dataPiket[0]->kode_piket === 'Prolanis') {
+                        if (bindec($kromosom[$i]['gen'][2]) === 24) {
+                            $kromosom[$i]['nilaiFitness']++;
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
+                    } else
+                            if ($dataPiket[0]->kode_piket === 'RPU') {
+                        if (
+                            $tanggalKromosom === 'Monday' || $tanggalKromosom === 'Wednesday'
+                            || $tanggalKromosom === 'Friday'
+                        ) {
+                            $kromosom[$i]['nilaiFitness']++;
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
+                    } else
+                            if ($dataPiket[0]->kode_piket === 'R.Inf') {
+                        if (
+                            $tanggalKromosom === 'Tuesday' || $tanggalKromosom === 'Thursday'
+                            || $tanggalKromosom === 'Saturday'
+                        ) {
+                            $kromosom[$i]['nilaiFitness']++;
+                        } else {
+                            $kromosom[$i]['nilaiFitness']--;
+                        }
                     }
+                } else
 
                     // constraint untuk dr Amelia
-                    // Tanggal 24, prolanis
-                    // RPU senin rabu jumat
-                    // R Inf selasa kamis sabtu
+                    // RPU selasa, kamis, sabtu
+                    // R infeksius senin, rabu jumat
 
-                    if ($dataPegawai[0]->nama_pegawai === 'dr. Amelia') {
-                        $dataKromosom['nilaiFitness']++;
-
-                        if ($dataPiket[0]->kode_piket === 'Prolanis') {
-                            if (bindec($dataKromosom['gen'][2]) === 24) {
-                                $dataKromosom['nilaiFitness']++;
-                            } else {
-                                $dataKromosom['nilaiFitness']--;
-                            }
-                        } else
+                    if ($dataPegawai[0]->nama_pegawai === 'dr. Dwi Bhakti P') {
+                        $kromosom[$i]['nilaiFitness']++;
                         if ($dataPiket[0]->kode_piket === 'RPU') {
-                            if (
-                                $tanggalKromosom === 'Monday' || $tanggalKromosom === 'Wednesday'
-                                || $tanggalKromosom === 'Friday'
-                            ) {
-                                $dataKromosom['nilaiFitness']++;
-                            } else {
-                                $dataKromosom['nilaiFitness']--;
-                            }
-                        } else
-                        if ($dataPiket[0]->kode_piket === 'R.Inf') {
                             if (
                                 $tanggalKromosom === 'Tuesday' || $tanggalKromosom === 'Thursday'
                                 || $tanggalKromosom === 'Saturday'
                             ) {
-                                $dataKromosom['nilaiFitness']++;
+                                $kromosom[$i]['nilaiFitness']++;
                             } else {
-                                $dataKromosom['nilaiFitness']--;
+                                $kromosom[$i]['nilaiFitness']--;
+                            }
+                        } else
+                            if ($dataPiket[0]->kode_piket === 'R.Inf') {
+                            if (
+                                $tanggalKromosom === 'Monday' || $tanggalKromosom === 'Wednesday'
+                                || $tanggalKromosom === 'Friday'
+                            ) {
+                                $kromosom[$i]['nilaiFitness']++;
+                            } else {
+                                $kromosom[$i]['nilaiFitness']--;
+                            }
+                        }
+                    }
+
+                    // constraint untuk Eni Sud
+                    // Sabtu kedua, posbindu
+
+
+                    else
+                            if ($dataPegawai[0]->nama_pegawai === 'Eni Sudaryati') {
+                        $kromosom[$i]['nilaiFitness']++;
+                        if ($dataPiket[0]->kode_piket === 'PB') {
+                            if (
+                                $tanggalKromosom === 'Saturday' &&
+                                bindec($kromosom[$i]['gen'][2]) >= 7 &&
+                                bindec($kromosom[$i]['gen'][2]) <= 14
+                            ) {
+                                $kromosom[$i]['nilaiFitness']++;
+                            } else {
+                                $kromosom[$i]['nilaiFitness']--;
                             }
                         }
                     } else
 
-                        // constraint untuk dr Amelia
-                        // RPU selasa, kamis, sabtu
-                        // R infeksius senin, rabu jumat
+                        // constraint untuk Nely Puspita
+                        // Selasa pertama dengan Kamis ketiga, Posbindu
 
-                        if ($dataPegawai[0]->nama_pegawai === 'dr. Dwi Bhakti P') {
-                            $dataKromosom['nilaiFitness']++;
-                            if ($dataPiket[0]->kode_piket === 'RPU') {
-                                if (
-                                    $tanggalKromosom === 'Tuesday' || $tanggalKromosom === 'Thursday'
-                                    || $tanggalKromosom === 'Saturday'
-                                ) {
-                                    $dataKromosom['nilaiFitness']++;
-                                } else {
-                                    $dataKromosom['nilaiFitness']--;
-                                }
-                            } else
-                        if ($dataPiket[0]->kode_piket === 'R.Inf') {
-                                if (
-                                    $tanggalKromosom === 'Monday' || $tanggalKromosom === 'Wednesday'
-                                    || $tanggalKromosom === 'Friday'
-                                ) {
-                                    $dataKromosom['nilaiFitness']++;
-                                } else {
-                                    $dataKromosom['nilaiFitness']--;
-                                }
-                            }
-                        }
-
-                        // constraint untuk Eni Sud
-                        // Sabtu kedua, posbindu
-
-
-                        else
-                        if ($dataPegawai[0]->nama_pegawai === 'Eni Sudaryati') {
-                            $dataKromosom['nilaiFitness']++;
+                        if ($dataPegawai[0]->nama_pegawai === 'Nely Puspita') {
+                            $kromosom[$i]['nilaiFitness']++;
                             if ($dataPiket[0]->kode_piket === 'PB') {
                                 if (
-                                    $tanggalKromosom === 'Saturday' &&
-                                    bindec($dataKromosom['gen'][2]) >= 7 &&
-                                    bindec($dataKromosom['gen'][2]) <= 14
+                                    ($tanggalKromosom === 'Tuesday'
+                                        && bindec($kromosom[$i]['gen'][2]) <= 7)
+                                    ||
+                                    ($tanggalKromosom === 'Thursday'
+                                        && bindec($kromosom[$i]['gen'][2]) >= 7
+                                        && bindec($kromosom[$i]['gen'][2]) <= 14)
                                 ) {
-                                    $dataKromosom['nilaiFitness']++;
+                                    $kromosom[$i]['nilaiFitness']++;
                                 } else {
-                                    $dataKromosom['nilaiFitness']--;
+                                    $kromosom[$i]['nilaiFitness']--;
                                 }
                             }
                         } else
 
-                            // constraint untuk Nely Puspita
-                            // Selasa pertama dengan Kamis ketiga, Posbindu
+                            // constaint Martiningsih
+                            // Kamis keempat, senin kedua, posbindu
+                            // Sabtu ketiga, KKR
 
-                            if ($dataPegawai[0]->nama_pegawai === 'Nely Puspita') {
-                                $dataKromosom['nilaiFitness']++;
+                            if ($dataPegawai[0]->nama_pegawai === 'Martiningsih') {
+                                $kromosom[$i]['nilaiFitness']++;
                                 if ($dataPiket[0]->kode_piket === 'PB') {
-                                    if (
-                                        ($tanggalKromosom === 'Tuesday'
-                                            && bindec($dataKromosom['gen'][2]) <= 7)
+                                    if (($tanggalKromosom === 'Thursday'
+                                            && bindec($kromosom[$i]['gen'][2]) >= 21)
                                         ||
-                                        ($tanggalKromosom === 'Thursday'
-                                            && bindec($dataKromosom['gen'][2]) >= 7
-                                            && bindec($dataKromosom['gen'][2]) <= 14)
+                                        ($tanggalKromosom === 'Monday'
+                                            && bindec($kromosom[$i]['gen'][2]) >= 7
+                                            && bindec($kromosom[$i]['gen'][2]) <= 14)
                                     ) {
-                                        $dataKromosom['nilaiFitness']++;
+                                        $kromosom[$i]['nilaiFitness']++;
                                     } else {
-                                        $dataKromosom['nilaiFitness']--;
+                                        $kromosom[$i]['nilaiFitness']--;
                                     }
                                 }
                             } else
 
-                                // constaint Martiningsih
-                                // Kamis keempat, senin kedua, posbindu
-                                // Sabtu ketiga, KKR
+                                // constraint untuk Endah lestari
+                                // Setiap senin, Ruang Infeksius
 
-                                if ($dataPegawai[0]->nama_pegawai === 'Martiningsih') {
-                                    $dataKromosom['nilaiFitness']++;
-                                    if ($dataPiket[0]->kode_piket === 'PB') {
-                                        if (($tanggalKromosom === 'Thursday'
-                                                && bindec($dataKromosom['gen'][2]) >= 21)
-                                            ||
-                                            ($tanggalKromosom === 'Monday'
-                                                && bindec($dataKromosom['gen'][2]) >= 7
-                                                && bindec($dataKromosom['gen'][2]) <= 14)
-                                        ) {
-                                            $dataKromosom['nilaiFitness']++;
+                                if ($dataPegawai[0]->nama_pegawai === 'Endah Lestari') {
+                                    $kromosom[$i]['nilaiFitness']++;
+                                    if ($dataPiket[0]->kode_piket === "R.Inf") {
+                                        if ($tanggalKromosom === 'Monday') {
+                                            $kromosom[$i]['nilaiFitness']++;
                                         } else {
-                                            $dataKromosom['nilaiFitness']--;
+                                            $kromosom[$i]['nilaiFitness']--;
                                         }
                                     }
                                 } else
 
-                                    // constraint untuk Endah lestari
-                                    // Setiap senin, Ruang Infeksius
+                                    // constraint untuk Eni setioningsih
+                                    // Setiap kamis jumat bendahara
 
-                                    if ($dataPegawai[0]->nama_pegawai === 'Endah Lestari') {
-                                        $dataKromosom['nilaiFitness']++;
-                                        if ($dataPiket[0]->kode_piket === 'R.Inf') {
-                                            if ($tanggalKromosom === 'Monday') {
-                                                $dataKromosom['nilaiFitness']++;
+                                    if ($dataPegawai[0]->nama_pegawai === 'Eni Setioningsih') {
+                                        $kromosom[$i]['nilaiFitness']++;
+                                        if ($dataPiket[0]->kode_piket === "BDH") {
+                                            if ($tanggalKromosom === 'Thursday' || $tanggalKromosom === 'Friday') {
+                                                $kromosom[$i]['nilaiFitness']++;
                                             } else {
-                                                $dataKromosom['nilaiFitness']--;
+                                                $kromosom[$i]['nilaiFitness']--;
                                             }
                                         }
                                     } else
 
-                                        // constraint untuk Eni setioningsih
-                                        // Setiap kamis jumat bendahara
+                                        // Rabu minggu pertama, posbindu
+                                        // Sabtu ketiga, rutan
+                                        // Tanggal 24, prolanis
+                                        // Setiap rabu, PKD , ini PKD gak tau apa
 
-                                        if ($dataPegawai[0]->nama_pegawai === 'Eni Setioningsih') {
-                                            $dataKromosom['nilaiFitness']++;
-                                            if ($dataPiket[0]->kode_piket === 'B') {
-                                                if ($tanggalKromosom === 'Thursday' || $tanggalKromosom === 'Friday') {
-                                                    $dataKromosom['nilaiFitness']++;
+                                        if ($dataPegawai[0]->nama_pegawai === 'Margi Yuwono') {
+                                            $kromosom[$i]['nilaiFitness']++;
+                                            if ($dataPiket[0]->kode_piket === 'PB') {
+                                                if (
+                                                    $tanggalKromosom === 'Wednesday'
+                                                    && bindec($kromosom[$i]['gen'][2]) <= 7
+                                                ) {
+                                                    $kromosom[$i]['nilaiFitness']++;
                                                 } else {
-                                                    $dataKromosom['nilaiFitness']--;
+                                                    $kromosom[$i]['nilaiFitness']--;
                                                 }
+                                            } else
+                                                    if ($dataPiket[0]->kode_piket === 'LP') {
+                                                // Sabtu ketiga, rutan
+                                                if (
+                                                    $tanggalKromosom === 'Saturday'
+                                                    && bindec($kromosom[$i]['gen'][2]) >= 14
+                                                    && bindec($kromosom[$i]['gen'][2]) <= 21
+                                                ) {
+                                                    $kromosom[$i]['nilaiFitness']++;
+                                                } else {
+                                                    $kromosom[$i]['nilaiFitness']--;
+                                                }
+                                            } else
+                                                    if ($dataPiket[0]->kode_piket === 'Prolanis') {
+                                                // Tanggal 24, prolanis
+                                                if (bindec($kromosom[$i]['gen'][2]) === 24) {
+                                                    $kromosom[$i]['nilaiFitness']++;
+                                                } else {
+                                                    $kromosom[$i]['nilaiFitness']--;
+                                                }
+                                            } else
+                                                    if ($dataPiket[0]->kode_piket === 'PKD') {
                                             }
                                         } else
 
-                                            // Rabu minggu pertama, posbindu
-                                            // Sabtu ketiga, rutan
-                                            // Tanggal 24, prolanis
-                                            // Setiap rabu, PKD , ini PKD gak tau apa
-
-                                            if ($dataPegawai[0]->nama_pegawai === 'Margi Yuwono') {
-                                                $dataKromosom['nilaiFitness']++;
+                                            // constraint untuk Ari S
+                                            // Sabtu ketiga senin keempat, posbindu
+                                            if ($dataPegawai[0]->nama_pegawai === 'Ari S') {
+                                                $kromosom[$i]['nilaiFitness']++;
                                                 if ($dataPiket[0]->kode_piket === 'PB') {
-                                                    if (
-                                                        $tanggalKromosom === 'Wednesday'
-                                                        && bindec($dataKromosom['gen'][2]) <= 7
+                                                    if (($tanggalKromosom === 'Saturday'
+                                                            && bindec($kromosom[$i]['gen'][2]) >= 14
+                                                            && bindec($kromosom[$i]['gen'][2]) <= 21)
+                                                        ||
+                                                        ($tanggalKromosom === 'Monday'
+                                                            && bindec($kromosom[$i]['gen'][2]) >= 21)
                                                     ) {
-                                                        $dataKromosom['nilaiFitness']++;
+                                                        $kromosom[$i]['nilaiFitness']++;
                                                     } else {
-                                                        $dataKromosom['nilaiFitness']--;
+                                                        $kromosom[$i]['nilaiFitness']--;
                                                     }
-                                                } else
-                                                if ($dataPiket[0]->kode_piket === 'LP') {
-                                                    // Sabtu ketiga, rutan
-                                                    if (
-                                                        $tanggalKromosom === 'Saturday'
-                                                        && bindec($dataKromosom['gen'][2]) >= 14
-                                                        && bindec($dataKromosom['gen'][2]) <= 21
-                                                    ) {
-                                                        $dataKromosom['nilaiFitness']++;
-                                                    } else {
-                                                        $dataKromosom['nilaiFitness']--;
-                                                    }
-                                                } else
-                                                if ($dataPiket[0]->kode_piket === 'Prolanis') {
-                                                    // Tanggal 24, prolanis
-                                                    if (bindec($dataKromosom['gen'][2]) === 24) {
-                                                        $dataKromosom['nilaiFitness']++;
-                                                    } else {
-                                                        $dataKromosom['nilaiFitness']--;
-                                                    }
-                                                } else
-                                                if ($dataPiket[0]->kode_piket === 'PKD') {
                                                 }
                                             } else
 
-                                                // constraint untuk Ari S
-                                                // Sabtu ketiga senin keempat, posbindu
-                                                if ($dataPegawai[0]->nama_pegawai === 'Ari S') {
-                                                    $dataKromosom['nilaiFitness']++;
+                                                // constraint untuk Suripah
+                                                // Selasa keempat, posbindu
+
+                                                if ($dataPegawai[0]->nama_pegawai === 'Suripah') {
+                                                    $kromosom[$i]['nilaiFitness']++;
                                                     if ($dataPiket[0]->kode_piket === 'PB') {
-                                                        if (($tanggalKromosom === 'Saturday'
-                                                                && bindec($dataKromosom['gen'][2]) >= 14
-                                                                && bindec($dataKromosom['gen'][2]) <= 21)
-                                                            ||
-                                                            ($tanggalKromosom === 'Monday'
-                                                                && bindec($dataKromosom['gen'][2]) >= 21)
+                                                        if (
+                                                            $tanggalKromosom === 'Tuesday'
+                                                            && bindec($kromosom[$i]['gen'][2]) >= 21
                                                         ) {
-                                                            $dataKromosom['nilaiFitness']++;
+                                                            $kromosom[$i]['nilaiFitness']++;
                                                         } else {
-                                                            $dataKromosom['nilaiFitness']--;
+                                                            $kromosom[$i]['nilaiFitness']--;
                                                         }
                                                     }
                                                 } else
+                                                    // constraint untuk Heriah
+                                                    // Senin MTBS
 
-                                                    // constraint untuk Suripah
-                                                    // Selasa keempat, posbindu
-
-                                                    if ($dataPegawai[0]->nama_pegawai === 'Suripah') {
-                                                        $dataKromosom['nilaiFitness']++;
-                                                        if ($dataPiket[0]->kode_piket === 'PB') {
+                                                    if ($dataPegawai[0]->nama_pegawai === 'Heriyah Safari') {
+                                                        $kromosom[$i]['nilaiFitness']++;
+                                                        if ($dataPiket[0]->kode_piket === "Mtbs/RT") {
                                                             if (
-                                                                $tanggalKromosom === 'Tuesday'
-                                                                && bindec($dataKromosom['gen'][2]) >= 21
+                                                                $tanggalKromosom === 'Monday'
                                                             ) {
-                                                                $dataKromosom['nilaiFitness']++;
+                                                                $kromosom[$i]['nilaiFitness']++;
                                                             } else {
-                                                                $dataKromosom['nilaiFitness']--;
+                                                                $kromosom[$i]['nilaiFitness']--;
                                                             }
                                                         }
                                                     } else
-                                                        // constraint untuk Heriah
-                                                        // Senin MTBS
+                                                        // constraint untuk Ukhulul
+                                                        // Setiap hari surveillance
+                                                        // Selalu surveillance
 
-                                                        if ($dataPegawai[0]->nama_pegawai === 'Heriyah Safari') {
-                                                            $dataKromosom['nilaiFitness']++;
-                                                            if ($dataPiket[0]->kode_piket === 'Mtbs/RTS') {
-                                                                if (
-                                                                    $tanggalKromosom === 'Monday'
-                                                                ) {
-                                                                    $dataKromosom['nilaiFitness']++;
-                                                                } else {
-                                                                    $dataKromosom['nilaiFitness']--;
-                                                                }
+                                                        if ($dataPegawai[0]->nama_pegawai === "Ukhulul") {
+                                                            $kromosom[$i]['nilaiFitness']++;
+                                                            if ($dataPiket[0]->kode_piket === "Surveillance") {
+                                                                $kromosom[$i]['nilaiFitness']++;
+                                                            } else {
+                                                                $kromosom[$i]['nilaiFitness']--;
                                                             }
                                                         } else
-                                                            // constraint untuk Ukhulul
-                                                            // Setiap hari surveillance
-                                                            // Selalu surveillance
+                                                            // Tanggal 24, prolanis
+                                                            // Setiap senin RPU
 
-                                                            if ($dataPegawai[0]->nama_pegawai === 'Ukhulul') {
-                                                                $dataKromosom['nilaiFitness']++;
-                                                                if ($dataPiket[0]->kode_piket === 'Surveillance') {
-                                                                    $dataKromosom['nilaiFitness']++;
-                                                                } else {
-                                                                    $dataKromosom['nilaiFitness']--;
-                                                                }
-                                                            } else
-                                                                // Tanggal 24, prolanis
-                                                                // Setiap senin RPU
-
-                                                                if ($dataPegawai[0]->nama_pegawai === 'Anisa') {
-                                                                    $dataKromosom['nilaiFitness']++;
-                                                                    if ($dataPiket[0]->kode_piket === 'RPU') {
-                                                                        if ($tanggalKromosom === 'Monday') {
-                                                                            $dataKromosom['nilaiFitness']++;
-                                                                        } else {
-                                                                            $dataKromosom['nilaiFitness']--;
-                                                                        }
-                                                                    } else
-                                                                    if ($dataPiket[0]->kode_piket === 'Prolanis') {
-                                                                        if (bindec($dataKromosom['gen'][2]) === 24) {
-                                                                            $dataKromosom['nilaiFitness']++;
-                                                                        } else {
-                                                                            $dataKromosom['nilaiFitness']--;
-                                                                        }
+                                                            if ($dataPegawai[0]->nama_pegawai === 'Anisa') {
+                                                                $kromosom[$i]['nilaiFitness']++;
+                                                                if ($dataPiket[0]->kode_piket === 'RPU') {
+                                                                    if ($tanggalKromosom === 'Monday') {
+                                                                        $kromosom[$i]['nilaiFitness']++;
                                                                     } else {
-                                                                        $dataKromosom['nilaiFitness']--;
+                                                                        $kromosom[$i]['nilaiFitness']--;
                                                                     }
+                                                                } else
+                                                                        if ($dataPiket[0]->kode_piket === 'Prolanis') {
+                                                                    if (bindec($kromosom[$i]['gen'][2]) === 24) {
+                                                                        $kromosom[$i]['nilaiFitness']++;
+                                                                    } else {
+                                                                        $kromosom[$i]['nilaiFitness']--;
+                                                                    }
+                                                                } else {
+                                                                    $kromosom[$i]['nilaiFitness']--;
                                                                 }
-                } else {
-                    $dataKromosom['nilaiFitness']--;
-                }
+                                                            }
             } else {
-                $dataKromosom['nilaiFitness']--;
+                $kromosom[$i]['nilaiFitness']--;
             }
-            $hitungFitnessKromosom[$i] = $dataKromosom;
-            $i++;
-
-            if ($dataKromosom['nilaiFitness'] > 2) {
-                $totalTiga++;
-            } else
-            if ($dataKromosom['nilaiFitness'] === 2) {
-                $totalDua++;
-            } else
-            if ($dataKromosom['nilaiFitness'] === 1) {
-                $totalSatu++;
-            } else
-            if ($dataKromosom['nilaiFitness'] === 0) {
-                $totalNol++;
-            } else
-            if ($dataKromosom['nilaiFitness'] === -1) {
-                $totalMinSatu++;
-            }
-
-
-            // echo $dataPegawai[0]->nama_pegawai . ' ' . $dataPiket[0]->kode_piket . ' ' . $tanggalKromosom . ' ' . bindec($dataKromosom['gen'][2]) . ' ' . $dataTanggal['nomorBulan'] . ' ' . $dataTanggal['tahun'] . ' ' .  $dataKromosom['nilaiFitness'] . '<br>';
-
-            // $totalTiga = 0;
-            // $totalDua = 0;
-            // $totalSatu = 0;
-            // $totalNol = 0;
-            // $totalMinSatu = 0;
         }
-        // echo 'Total > 2 == ' . $totalTiga . '<br>';
-        // echo 'Total = 2 == ' . $totalDua . '<br>';
-        // echo 'Total = 1 == ' . $totalSatu . '<br>';
-        // echo 'Total = 0 == ' . $totalNol . '<br>';
-        // echo 'Total = -1 == ' . $totalMinSatu . '<br>';
-        // $total = $totalMinSatu + $totalNol + $totalSatu
-        //     + $totalDua + $totalTiga;
-        // echo 'Total Data == ' . $total . '<br>';
 
 
-        return $hitungFitnessKromosom;
+
+
+        $hitungFitnessKromosom = $kromosom;
+        return $kromosom;
+    }
+
+
+    // hitung nilai fitness baru
+    public static function hitungNilaiFitnessBaru($kromosom, $dataTanggal)
+    {
+        $jumlahKromosom = count($kromosom);
+        echo $jumlahKromosom;
+
+        // menghitung nilai fitness sebanyak jumlah kromosom
+        for ($i = 0; $i < $jumlahKromosom; $i++) {
+
+            // ambil data pegawai dari database
+            $dataPegawai[$i] = AdminModel::getDataPegawaiById(bindec($kromosom[$i]['gen'][0]));
+
+            // ambil data piket dari database
+            $dataPiket[$i] = Adminmodel::getDataPiketById(bindec($kromosom[$i]['gen'][1]));
+
+            // ambil data tanggal dari input
+            $tanggalKromosom[$i] = date("l", mktime(0, 0, 0, $dataTanggal['nomorBulan'], bindec($kromosom[$i]['gen'][2]), $dataTanggal['tahun']));
+
+            // cek apakah data pegawai tidak ada di database
+            // jika tidak ada fitness - 1
+            if ($dataPegawai[$i] === []) {
+                // nilai fitness -1
+                $kromosom[$i]['nilaiFitness']--;
+            } else {
+                // jika data pegawai ada di database
+                // cek apakah data piket tidak ada di database
+                // jika tidak ada fitness - 1
+                if ($dataPiket[$i] === []) {
+                    // nilai fitness -1
+                    $kromosom[$i]['nilaiFitness']--;
+                } else {
+                    // jika data ada di db
+
+                    // jika hari Minggu, libur maka fitness - 1
+
+                    if ($tanggalKromosom[$i] === "Sunday") {
+                        $kromosom[$i]['nilaiFitness']--;
+                        dump($kromosom[$i]);
+                    } else {
+                        $kromosom[$i]['nilaiFitness']++;
+                    }
+                }
+            }
+        }
+        // echo count($dataBaru);
+        // dump($kromosom);
     }
 
     public static function seleksiBasedOnFitness($kromosom)
@@ -988,9 +1005,82 @@ class AdminModel extends Model
         return $kromosomMax;
     }
 
-    public static function singlePointCrossover($kromosom, $dataMemetika)
+
+    // single point crossover
+    public static function singlePointCrossoverBaru($kromosom, $crossoverRateInput)
     {
-        $dataMemetikaAll = $dataMemetika->all();
+        $nilaiFitness = 0;
+        $jumlahKromosom = count($kromosom);
+        // menghilangkan gen agar tidak tertimpa
+        for ($i = 0; $i < $jumlahKromosom; $i++) {
+            unset($kromosom[$i]['gen']);
+        }
+
+        $splitKromosomA = str_split($kromosom[0]['kromosom']);
+        $splitKromosomB = str_split($kromosom[1]['kromosom']);
+        dump($kromosom);
+
+        // dump($splitKromosomA, $splitKromosomB);
+        $tempKromosomA = [];
+        $tempKromosomB = [];
+        $tempGenKromosomA = [];
+        $tempGenKromosomB = [];
+        $kromosomBaruA = [];
+        $kromosomBaruB = [];
+        $kromosomBaru = [];
+        $kromosomHasilCrossover = [];
+        $jumlahGen = count($splitKromosomA);
+
+        $crossoverRateRandom = mt_rand(0, 100) / 100;
+        $singlePoint = mt_rand(1, $jumlahGen);
+        echo $singlePoint;
+
+        if ($crossoverRateRandom > $crossoverRateInput) {
+            echo "Berhasil Crossover";
+            $kromosomBaruA = $splitKromosomA;
+            $kromosomBaruB = $splitKromosomB;
+            for ($i = $singlePoint - 1; $i < $jumlahGen; $i++) {
+
+                // simpan hasil data crossover di temp
+                $tempKromosomA[$i] = $splitKromosomA[$i];
+                $tempKromosomB[$i] = $splitKromosomB[$i];
+
+                // coba replace langsung
+                $tempGenKromosomA = array_replace($splitKromosomA, $tempKromosomB);
+                $tempGenKromosomB = array_replace($splitKromosomB, $tempKromosomA);
+
+                // $kromosom_a_baru = array_replace($split_kromosom_a, $array_b);
+                // $kromosom_b_baru = array_replace($split_kromosom_b, $array_a);
+            }
+        } else {
+            $tempGenKromosomA = $splitKromosomA;
+            $tempGenKromosomB = $splitKromosomB;
+        }
+
+        $kromosomBaruA = implode($tempGenKromosomA);
+        $kromosomBaruB = implode($tempGenKromosomB);
+
+
+
+        // dump($kromosomBaruA, $kromosomBaruB);
+        // memasukkan kromosom hasi crossover ke variabel kromosom baru
+        $kromosomBaru = [$kromosomBaruA, $kromosomBaruB];
+
+        // memasukkan data kromomom baru ke kromosom hasil
+        for ($i = 0; $i < $jumlahKromosom; $i++) {
+            $kromosomHasilCrossover[$i]['kromosom'] = $kromosomBaru[$i];
+            $kromosomHasilCrossover[$i]['nilaiFitness'] = 0;
+        }
+
+        // dump($kromosomHasilCrossover);
+
+        $splitKromosomBaru = AdminModel::splitKromosom($kromosomHasilCrossover);
+        // dump($splitKromosomBaru);
+        return $splitKromosomBaru;
+    }
+
+    public static function singlePointCrossover($kromosom, $dataTanggalInput)
+    {
 
         // crossover rate
         // jika kurang dari random bilangan
@@ -1009,14 +1099,17 @@ class AdminModel extends Model
         $kromosom_b_baru = [];
         $split_kromosom_a = str_split($kromosom[0]['kromosom']);
         $split_kromosom_b = str_split($kromosom[1]['kromosom']);
-        $singlePoint = mt_rand(0, count($split_kromosom_a) - 1);
-        // echo $singlePoint . '<br>';
+        $singlePoint = mt_rand(0, count($split_kromosom_a));
+        echo $singlePoint . count($split_kromosom_a) .  '<br>';
 
-
-        for ($i = $singlePoint - 1; $i < count($split_kromosom_a); $i++) {
+        // error 3,11
+        // nanti coba kalo replace langsung
+        for ($i = $singlePoint; $i < count($split_kromosom_a); $i++) {
             $array_a[$i] = $split_kromosom_a[$i];
+            // echo $array_a[$i] ;
             $array_b[$i] = $split_kromosom_b[$i];
         }
+        echo '<br>';
 
         // echo "Sebelum Crossover " . '<br>';
         // print_r($split_kromosom_a) . '<br>';
@@ -1032,7 +1125,7 @@ class AdminModel extends Model
 
         $kromosom[0]['kromosom'] = implode($kromosom_a_baru);
         $kromosom[1]['kromosom'] = implode($kromosom_b_baru);
-        $dataTanggal = AdminModel::dataTanggalToBiner($dataMemetikaAll['inputBulanPiket']);
+        $dataTanggal = AdminModel::dataTanggalToBiner($dataTanggalInput);
         // dump($dataTanggal);
         $nilaiFitness = 0;
         for ($i = 0; $i < count($kromosom); $i++) {
@@ -1055,7 +1148,7 @@ class AdminModel extends Model
     {
         $split_kromosom_a = str_split($kromosom[0]['kromosom']);
         $split_kromosom_b = str_split($kromosom[1]['kromosom']);
-        $indexRandom = mt_rand(0, count($split_kromosom_a));
+        $indexRandom = mt_rand(1, count($split_kromosom_a));
         // echo $indexRandom . '<br>';
 
         // echo "Sebelum Mutasi" . '<br>';
@@ -1080,6 +1173,20 @@ class AdminModel extends Model
         }
 
         // echo "Setelah Mutasi" . '<br>';
+
+        // untuk menggabungkan kromosom hasil mutasi
+        $hasilKromosomMutasiA = join("", $split_kromosom_a);
+        $hasilKromosomMutasiB = join("", $split_kromosom_b);
+
+        $kromosomHasilMutasi = [$hasilKromosomMutasiA, $hasilKromosomMutasiB];
+        $kromosomBaru = [];
+
+        // untuk menambahkan array kromomosom
+        for ($i = 0; $i < 2; $i++) {
+            $kromosomBaru[$i]['kromosom'] = $kromosomHasilMutasi[$i];
+            $kromosomBaru[$i]['nilaiFitness'] = 0;
+        }
+        return $kromosomBaru;
         // dump($split_kromosom_a);
         // dump($split_kromosom_b);
     }
@@ -1097,17 +1204,20 @@ class AdminModel extends Model
         $jumlahGenerasi = intval($dataMemetika['inputJumlahGenerasi']);
 
         // untuk menyimpan data nilai mutation rate
-        $mutationRate = floatval($dataMemetika['inputMutationRate']);
+        $mutationRateInput = floatval($dataMemetika['inputMutationRate']);
 
         // untuk menyimpan data nilai crossover rate
         $crossoverRateInput = floatval($dataMemetika['inputCrossoverRate']);
 
+        // untuk menyimpan data tanggal
         $dataTanggal = $dataMemetika['inputBulanPiket'];
 
 
-        echo $crossoverRateInput . '<br>';
-        echo $mutationRate  . '<br>';
-        echo $jumlahPopulasi . '<br>';
+
+
+        // echo $crossoverRateInput . '<br>';
+        // echo $mutationRateInput  . '<br>';
+        // echo $jumlahPopulasi . '<br>';
 
         // =============== Data Pegawai ===============
         // mengambil data pegawai
@@ -1145,31 +1255,79 @@ class AdminModel extends Model
         $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
         // dump($convertKromosomToGen);
 
+        // ambil cek data baru
+        // $dataPegawaiCari = AdminModel::getDataPegawaiById(bindec(00001));
+        // if($dataPegawaiCari === []){
+        //     echo "ada datanya";
+        // }
+        // else{
+        //     echo "Gak ada datanya";
+        // }
+
+        $nilaiFitness = AdminModel::hitungNilaiFitnessBaru($convertKromosomToGen, $dataTanggalBiner);
+        // // dump($nilaiFitness);
+
+
 
         // kondisi selesai
         // hitung perhitungan crossover berdasarkan total populasi hasil input
-        for ($i = 0; $i < $jumlahGenerasi; $i++) {
-            $nilaiFitness = AdminModel::hitungTotalNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
-            // dump($nilaiFitness);
-        }
+        // for ($i = 0; $i < $jumlahGenerasi; $i++) {
 
-        // krsort($nilaiFitness);
-        // $nilaiFitnessKromosom = $nilaiFitness;
+        //     // menghituhg nilai fitness
+        //     $nilaiFitness = AdminModel::hitungTotalNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
+        //     // dump($nilaiFitness);
 
 
-        // dump($nilaiFitnessKromosom);
-        // array_multisort(
-        //     $nilaiFitness,
-        //     SORT_NUMERIC,
-        //     SORT_ASC
+        //     // buat urut nilai fitness tertinggi
+        //     $kolomNilaiFitness = array_column($nilaiFitness, 'nilaiFitness');
+        //     // dump($columns);
+        //     array_multisort($kolomNilaiFitness, SORT_DESC, $nilaiFitness);
 
-        // );
+        //     $kromosomTertinggi = AdminModel::seleksiBasedOnFitness($nilaiFitness);
+        //     // // dump($kromosomTertinggi);
 
-        // buat urut nilai fitness tertinggi
-        $columns = array_column($nilaiFitness, 'nilaiFitness');
-        // dump($columns);
-        array_multisort($columns, SORT_DESC, $nilaiFitness);
+        //     // $hasilCrossover = AdminModel::singlePointCrossover($kromosomTertinggi, $dataTanggal);
+        //     // dump($hasilCrossover);
 
-        dump($columns);
+
+        //     // tes crossover
+        //     $hasilCrossover = AdminModel::singlePointCrossoverBaru($kromosomTertinggi, $crossoverRateInput);
+        //     // dump($hasilCrossover);
+
+        //     // nilai fitness cek
+        //     $hasilFitnessCrossover = AdminModel::hitungTotalNilaiFitness($hasilCrossover, $dataTanggalBiner);
+        //     echo 'Nilai Fitness hasil crossover';
+        //     dump($hasilFitnessCrossover);
+        // }
+
+        // echo "Kromosom Hasil Tertinggi" . '<br>';
+        // dump($kromosomTertinggi);
+        // dump($nilaiFitness);
+
+        // echo "Kromosom Hasil Crossover" . '<br>';
+        // $hasilCrossover = AdminModel::singlePointCrossover($kromosomTertinggi, $dataTanggal);
+        // dump($hasilCrossover);
+
+        // tes crossover
+        // $hasilCrossover = AdminModel::singlePointCrossoverBaru($kromosomTertinggi, $crossoverRateInput);
+        // dump($hasilCrossover);
+
+        // // nilai fitness cek
+        // $hasilFitnessCrossover = AdminModel::hitungTotalNilaiFitness($hasilCrossover, $dataTanggalBiner);
+        // echo 'Nilai Fitness hasil crossover';
+        // dump($hasilFitnessCrossover);
+
+        // echo "Kromosom hasil Mutasi" . '<br>';\
+
+
+        // $kromosomHasilMutasi = AdminModel::bitFlipMutation($hasilCrossover);
+        // dump($kromosomHasilMutasi);
+
+        // $convertKromosomToGenHasilMutasi = AdminModel::splitKromosom($kromosomHasilMutasi);
+        // // dump($convertKromosomToGenHasilMutasi);
+
+        // $nilaiFitnessHasilMutasi = AdminModel::hitungTotalNilaiFitness($convertKromosomToGenHasilMutasi, $dataTanggalBiner);
+        // echo "Sesudah Mutasi" . '<br>';
+        // dump($nilaiFitnessHasilMutasi);
     }
 }
