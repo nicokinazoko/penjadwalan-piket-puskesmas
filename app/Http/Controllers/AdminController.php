@@ -280,62 +280,8 @@ class AdminController extends Controller
         // dump($dataMemetika->all());
 
         $hasilAlgoritmaMemetika = AdminModel::prosesMemetika($dataMemetikaAll);
+        // ['piket' => $dataPiket, 'dataTotal' => $dataTotal]
 
-
-        // // mengambil semua data pegawai
-        // $dataPegawai = AdminModel::getDataPegawaiAll();
-        // // dump($dataPegawai);
-
-        // // mengubah data pegawai menjadi binary
-        // $dataPegawaiBiner = AdminModel::dataPegawaiToBiner($dataPegawai);
-        // // dump($dataPegawaiBiner);
-
-        // // mengubah data tanggal menjadi binary
-        // $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataMemetikaAll['inputBulanPiket']);
-        // // dump($dataTanggalBiner);
-
-
-        // // mengambil semua data piket
-        // $dataPiket = AdminModel::getAllDataPiket();
-
-        // // mengubah data piket menjadi binary
-        // $dataPiketBiner = AdminModel::dataPiketToBiner($dataPiket);
-        // // dump($dataPiketBiner);
-
-        // // generate populasi awal
-        // $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataMemetikaAll);
-        // // dump($populasiAwal);
-
-        // // split kromosom menjadi gen
-        // $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
-        // // dump($convertKromosomToGen);
-
-        // // combine gen menjadi kromosom
-        // // ini belum begitu perlu
-        // // echo "memetika" . '<br>';
-        // // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
-        // // dump($combineGenToKromosom);
-
-
-        // // menghitung nilai fitness
-        // // $nilaiFitness = AdminModel::hitungNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
-        // // dump($nilaiFitness);
-
-        // // $dataHari = AdminModel::tesHari($convertKromosomToGen, $dataTanggalBiner);
-        // // dump($dataHari);
-
-
-
-        // $nilaiFitness = AdminModel::hitungTotalNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
-        // // dump($nilaiFitness);
-
-        // $kromosomTertinggi = AdminModel::seleksiBasedOnFitness($nilaiFitness);
-        // // dump($kromosomTertinggi);
-
-        // $hasilCrossover = AdminModel::singlePointCrossover($kromosomTertinggi, $dataMemetika);
-        // // dump($hasilCrossover);
-
-        // $hasilMutasi = AdminModel::bitFlipMutation($hasilCrossover);
     }
 
     // untuk melihat menu algoritma neuro fuzzy
@@ -357,42 +303,7 @@ class AdminController extends Controller
         // proses algoritma neuro fuzzy
         $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesMemetika($dataNeuroFuzzyAll);
 
-        // // mengambil semua data pegawai
-        // $dataPegawai = AdminModel::getDataPegawaiAll();
-        // // dump($dataPegawai);
 
-        // // mengubah data pegawai menjadi binary
-        // $dataPegawaiBiner = AdminModel::dataPegawaiToBiner($dataPegawai);
-        // // dump($dataPegawaiBiner);
-
-        // // mengubah data tanggal menjadi binary
-        // $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataNeuroFuzzyAll['inputBulanPiket']);
-        // // dump($dataTanggalBiner);
-
-
-        // // mengambil semua data piket
-        // $dataPiket = AdminModel::getAllDataPiket();
-
-        // // mengubah data piket menjadi binary
-        // $dataPiketBiner = AdminModel::dataPiketToBiner($dataPiket);
-        // // dump($dataPiketBiner);
-
-        // // generate populasi awal
-        // $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $dataNeuroFuzzyAll);
-        // // dump($populasiAwal);
-
-        // // split kromosom menjadi gen
-        // $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
-        // // dump($convertKromosomToGen);
-
-        // // combine gen menjadi kromosom
-        // // ini belum begitu perlu
-        // // $combineGenToKromosom = AdminModel::combineGen($convertKromosomToGen);
-        // // dump($combineGenToKromosom);
-
-        // // menghitung nilai fitness
-        // $nilaiFitness = AdminModel::hitungNilaiFitness($convertKromosomToGen, $dataTanggalBiner);
-        // // dump($nilaiFitness);
 
 
     }
