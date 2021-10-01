@@ -9,7 +9,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Input Data Algoritma Memetika</h1>
+                        <h1>Hasil Algoritma Memetika</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -26,60 +26,27 @@
         <section class="content">
             <div class="container-fluid">
                 {{-- form --}}
-                <div class="card card-default">
-                    <div class="card-header">
-                        <h3 class="card-title">Data Algoritma Memetika</h3>
-                    </div>
-                    <!-- /.card-header -->
-                    <!-- form start -->
-                    <form method="POST" action="{{ route('proses-memetika') }}">
-                        @csrf
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="inputJumlahPopulasi">Jumlah Populasi</label>
-                                <input type="text" class="form-control" id="inputJumlahPopulasi"
-                                    placeholder="Jumlah Populasi" name="inputJumlahPopulasi">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputJumlahGenerasi">Jumlah Generasi</label>
-                                <input type="text" class="form-control" id="inputJumlahGenerasi"
-                                    placeholder="Jumlah Generasi" name="inputJumlahGenerasi">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputMutationRate">Mutation Rate</label>
-                                <input type="text" class="form-control" id="inputMutationRate" placeholder="Mutation Rate"
-                                    name="inputMutationRate">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputCrossovernRate">Crossover Rate</label>
-                                <input type="text" class="form-control" id="inputCrossoverRate"
-                                    placeholder="Crossover Rate" name="inputCrossoverRate">
-                            </div>
-                            <div class="form-group">
-                                <label for="inputBulanPiket">Bulan Piket</label>
-                                <input type="month" class="form-control" id="inputBulanPiket" placeholder="Bulan Piket"
-                                    name="inputBulanPiket">
-                            </div>
 
-                        </div>
-                        <!-- /.card-body -->
-
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-                </div>
-
-                {{-- <h5 class="mt-4 mb-2">Data Pegawai yang Sudah Ada</h5>
-                <div class="row">
-                    <div class="col-12">
-
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">DataTable with default features</h3>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
+                <div class="card">
+                    <div class="card-header d-flex p-0">
+                        <h3 class="card-title p-3">Hasil Proses Algoritma Memetika</h3>
+                        <ul class="nav nav-pills ml-auto p-2">
+                            <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Hasil</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Populasi
+                                    Awal</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Populasi
+                                    Akhir</a>
+                            <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab">Fitness
+                                    Populasi Awal</a>
+                            <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab">Fitness
+                                    Populasi Akhir</a>
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
@@ -90,18 +57,25 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($pegawai as $dataPiket)
-                                            <tr>
-                                                <td>{{ $dataPiket->nama_pegawai }}</td>
-                                                <td>{{ $dataPiket->nama_jenis_kelamin }}</td>
-                                                <td>{{ $dataPiket->nama_jabatan }}</td>
-                                                <td>
-                                                    <a href="#"><i class="fas fa-edit"></i></a>
-                                                    <a href="#"><i class="fas fa-trash-alt"></i></a>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <td>Nama Pegawai</td>
+                                            <td>Jenis Kelamin</td>
+                                            <td>Aksi</td>
+                                            <td>
+                                                <a href="#"><i class="fas fa-edit"></i></a>
+                                                <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama Pegawai</td>
+                                            <td>Jenis Kelamin</td>
+                                            <td>Aksi</td>
+                                            <td>
+                                                <a href="#"><i class="fas fa-edit"></i></a>
+                                                <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                            </td>
+                                        </tr>
 
-                                        @endforeach
                                     </tbody>
                                     <tfoot>
                                         <tr>
@@ -110,15 +84,96 @@
                                             <th>Jabatan</th>
                                             <th>Aksi</th>
                                         </tr>
+
                                     </tfoot>
                                 </table>
                             </div>
-                            <!-- /.card-body -->
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_2">
+                                <table id="" class=" table table-bordered table-striped display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Pegawai</th>
+                                            <th>ID Piket</th>
+                                            <th>Hari</th>
+                                            <th>Tanggal Piket</th>
+                                            <th>Nilai Fitness</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($populasiAwal as $dataPopulasiAwal)
+                                            <tr>
+                                                <td>{{ $dataPopulasiAwal['idPegawai'] }}</td>
+                                                <td>{{ $dataPopulasiAwal['idPiket'] }}</td>
+                                                <td>{{ $dataPopulasiAwal['hari'] }}</td>
+                                                <td>{{ $dataPopulasiAwal['tanggal'] }}</td>
+                                                <td>{{ $dataPopulasiAwal['nilaiFitness'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID Pegawai</th>
+                                            <th>ID Piket</th>
+                                            <th>Hari</th>
+                                            <th>Tanggal Piket</th>
+                                            <th>Nilai Fitness</th>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.tab-pane -->
+                            <div class="tab-pane" id="tab_3">
+                                <table id="" class=" table table-bordered table-striped display" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>ID Pegawai</th>
+                                            <th>ID Piket</th>
+                                            <th>Hari</th>
+                                            <th>Tanggal Piket</th>
+                                            <th>Nilai Fitness</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($populasiAkhir as $dataPopulasiAkhir)
+                                            <tr>
+                                                <td>{{ $dataPopulasiAkhir['idPegawai'] }}</td>
+                                                <td>{{ $dataPopulasiAkhir['idPiket'] }}</td>
+                                                <td>{{ $dataPopulasiAkhir['hari'] }}</td>
+                                                <td>{{ $dataPopulasiAkhir['tanggal'] }}</td>
+                                                <td>{{ $dataPopulasiAkhir['nilaiFitness'] }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID Pegawai</th>
+                                            <th>ID Piket</th>
+                                            <th>Hari</th>
+                                            <th>Tanggal Piket</th>
+                                            <th>Nilai Fitness</th>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <div class="tab-pane" id="tab_4">
+                                <canvas id="donutChartAwal"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                            <div class="tab-pane text-center" id="tab_5">
+                                <canvas id="donutChartAkhir"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            </div>
+                            <!-- /.tab-pane -->
                         </div>
-                        <!-- /.card -->
-                    </div>
-                    <!-- /.col -->
-                </div> --}}
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
+                </div>
+
+
+
 
             </div>
             <!-- /.container-fluid -->
@@ -131,6 +186,100 @@
 
 
 @section('addons-scripts')
-    @include('layouts.footer.form-scripts')
+    {{-- @include('layouts.footer.form-scripts') --}}
     @include('layouts.footer.table-data-scripts')
+    <script>
+        /* Initialization of datatables */
+        $(document).ready(function() {
+            $('table.display').DataTable();
+        });
+    </script>
+    <!-- FLOT CHARTS -->
+    <script src="{{ asset('vendor/plugins/flot/jquery.flot.js') }}"></script>
+    <!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+    <script src="{{ asset('vendor/plugins/flot/plugins/jquery.flot.resize.js') }}"></script>
+    <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+    <script src="{{ asset('vendor/plugins/flot/plugins/jquery.flot.pie.js') }}"></script>
+    <script>
+        $(function() {
+
+            //-------------
+            //- DONUT CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            var donutChartCanvasAwal = $('#donutChartAwal').get(0).getContext('2d')
+            var donutData = {
+                labels: [
+                    'Fitness 3',
+                    'Fitness 2',
+                    'Fitness 1',
+                    'Fitness 0',
+                    'Fitness -1',
+                ],
+                datasets: [{
+                    data: [
+                        {{ $totalFitnessPopulasiAwal[0] }},
+                        {{ $totalFitnessPopulasiAwal[1] }},
+                        {{ $totalFitnessPopulasiAwal[2] }},
+                        {{ $totalFitnessPopulasiAwal[3] }},
+                        {{ $totalFitnessPopulasiAwal[4] }}
+                    ],
+                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc'],
+                }]
+            }
+            var donutOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            new Chart(donutChartCanvasAwal, {
+                type: 'doughnut',
+                data: donutData,
+                options: donutOptions
+            })
+
+        })
+
+
+        $(function() {
+
+            //-------------
+            //- DONUT CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            var donutChartCanvasAkhir = $('#donutChartAkhir').get(0).getContext('2d')
+            var donutData = {
+                labels: [
+                    'Fitness 3',
+                    'Fitness 2',
+                    'Fitness 1',
+                    'Fitness 0',
+                    'Fitness -1',
+                ],
+                datasets: [{
+                    data: [
+                        {{ $totalFitnessPopulasiAkhir[0] }},
+                        {{ $totalFitnessPopulasiAkhir[1] }},
+                        {{ $totalFitnessPopulasiAkhir[2] }},
+                        {{ $totalFitnessPopulasiAkhir[3] }},
+                        {{ $totalFitnessPopulasiAkhir[4] }}
+                    ],
+                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc'],
+                }]
+            }
+            var donutOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            new Chart(donutChartCanvasAkhir, {
+                type: 'doughnut',
+                data: donutData,
+                options: donutOptions
+            })
+
+        })
+    </script>
 @endsection
