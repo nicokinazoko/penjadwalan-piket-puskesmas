@@ -54,3 +54,11 @@
 <script src="{{ asset('vendor/plugins/bs-stepper/js/bs-stepper.min.js') }}"></script>
 <!-- dropzonejs -->
 <script src="{{ asset('vendor/plugins/dropzone/min/dropzone.min.js') }}"></script>
+
+{{-- <!--jQuery library file -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js">
+</script>
+
+<!--Datatable plugin JS library file -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">
+</script> --}}
