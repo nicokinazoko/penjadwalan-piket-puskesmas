@@ -1431,7 +1431,7 @@ class AdminModel extends Model
         // jika crossover rate di sini lebih besar dari crossover rate input
         // lakukan crossover
         if ($crossoverRateRandom > $crossoverRateInput) {
-            echo "Dilakukan Crossover" . '<br>';
+            // echo "Dilakukan Crossover" . '<br>';
             $kromosomBaruA = $splitKromosomA;
             $kromosomBaruB = $splitKromosomB;
             for ($i = $singlePoint - 1; $i < $jumlahGen; $i++) {
@@ -1448,7 +1448,7 @@ class AdminModel extends Model
                 // $kromosom_b_baru = array_replace($split_kromosom_b, $array_a);
             }
         } else {
-            echo "Tidak dilakukan crossover" . '<br>';
+            // echo "Tidak dilakukan crossover" . '<br>';
             $tempGenKromosomA = $splitKromosomA;
             $tempGenKromosomB = $splitKromosomB;
         }
@@ -1569,7 +1569,7 @@ class AdminModel extends Model
         // jika mutation rate dari input lebih kecil dari mutation rate di sini
         // tidak lakukan mutasi
         if ($mutationRate < $mutationRateInput) {
-            echo "Dilakukan Mutasi" . '<br>';
+            // echo "Dilakukan Mutasi" . '<br>';
             // ubah 1 menjadi 0 dan sebaliknya untuk kromosom A
             if ($splitKromosomA[$indexRandom - 1] === "0") {
                 $splitKromosomA[$indexRandom - 1] = "1";
@@ -1586,7 +1586,7 @@ class AdminModel extends Model
                 $splitKromosomB[$indexRandom - 1] = "0";
             }
         } else {
-            echo "Tidak dilakukan Mutasi" . '<br>';
+            // echo "Tidak dilakukan Mutasi" . '<br>';
         }
         // echo "Sesudah mutasi";
         // dump($splitKromosomA, $splitKromosomB);
@@ -1669,14 +1669,12 @@ class AdminModel extends Model
         // replace data nya
         $jumlahKromosomMutasi = count($kromosomHasilMutasi);
         $jumlahKromosomPopulasi = count($kromosom);
-        // dump($jumlahKromosomMutasi);
-        // dump($jumlahKromosomPopulasi);
         $hasilPop = [];
         // lakukan perulangan sebanyak jumlah data mutasi
         for ($i = 0; $i < $jumlahKromosomMutasi; $i++) {
 
             // urutkan data berdasarkan nilai fitness
-            $kromosomUrutFitness = AdminModel::urutanFitnessTertinggi($kromosom);
+            $kromosom = AdminModel::urutanFitnessTertinggi($kromosom);
 
             // jika kromosom hasil mutasi sama dengan kromosom populasi
             // tidak dilakukan replace data
@@ -1684,31 +1682,77 @@ class AdminModel extends Model
             // jadi tidak butuh kromosom yang sama
 
             // untuk kromosom pertama populasi
-            if ($kromosomHasilMutasi[$i]['kromosom'] === $kromosomUrutFitness[0]['kromosom']) {
+            if ($kromosomHasilMutasi[$i]['kromosom'] === $kromosom[0]['kromosom']) {
 
-                echo "Tidak replace data" . '<br>';
+                // echo "Tidak replace data" . '<br>';
             } else
                 // untuk kromosom kedua populasi
-                if ($kromosomHasilMutasi[$i]['kromosom'] === $kromosomUrutFitness[1]['kromosom']) {
-                    echo "Tidak replace data" . '<br>';
+                if ($kromosomHasilMutasi[$i]['kromosom'] === $kromosom[1]['kromosom']) {
+                    // echo "Tidak replace data" . '<br>';
                 } else {
                     // jika kromosom hasil mutasi tidak sama dengan dua kromosom populasi awal
-                    echo "Replace data" . '<br>';
-                    if ($kromosomHasilMutasi[$i]['nilaiFitness'] > $kromosomUrutFitness[$jumlahKromosomPopulasi - 1]['nilaiFitness']) {
-                        echo "Keluarkan Array" . '<br>';
-                        $kromosomUrutFitness[$jumlahKromosomPopulasi - 1] = $kromosomHasilMutasi[$i];
-                        dump($kromosomUrutFitness[$jumlahKromosomPopulasi - 1]);
+                    // echo "Replace data" . $i . '<br>';
+                    if ($kromosomHasilMutasi[$i]['nilaiFitness'] > $kromosom[$jumlahKromosomPopulasi - 1]['nilaiFitness']) {
+                        // echo "Keluarkan Array Kromosom " . $i . '<br>';
+                        $kromosom[$jumlahKromosomPopulasi - 1] = $kromosomHasilMutasi[$i];
+                        // dump($kromosom[$jumlahKromosomPopulasi - 1]);
                     }
                 }
-
         }
+
+        // lakukan manual aja
+        // untuk kromosom pertama hasil mutasi
+        // jika kromosom hasil mutasi sama dengan kromosom populasi
+        // tidak dilakukan replace data
+        // karena nilai fitness pasti sama
+        // jadi tidak butuh kromosom yang sama
+        // if ($kromosomHasilMutasi[0]['kromosom'] === $kromosom[0]['kromosom']) {
+        //     echo "Kromosom 1 mutasi = kromosom 1 populasi " . ' <br>';
+        //     echo $kromosomHasilMutasi[0]['kromosom'] . ' = ' . $kromosom[0]['kromosom'] . '<br>';
+        // } else
+        // if ($kromosomHasilMutasi[0]['kromosom'] === $kromosom[1]['kromosom']) {
+        //     echo "Kromosom 1 mutasi = kromosom 2 populasi " . ' <br>';
+        //     echo $kromosomHasilMutasi[0]['kromosom'] . ' = ' . $kromosom[1]['kromosom'] . '<br>';
+        // } else {
+        //     if ($kromosomHasilMutasi[0]['nilaiFitness'] > $kromosom[$jumlahKromosomPopulasi - 1]['nilaiFitness']) {
+        //         echo "Kromosom 1 mutasi > kromosom terakhir populasi " . ' <br>';
+        //         dump($kromosom[$jumlahKromosomPopulasi - 1]);
+        //         // echo $kromosomHasilMutasi[0]['kromosom'] . ' = ' . $kromosom[$jumlahKromosomPopulasi - 1]['kromosom'] . '<br>';
+        //         $kromosom[$jumlahKromosomPopulasi - 1] = $kromosomHasilMutasi[0];
+        //         dump($kromosom[$jumlahKromosomPopulasi - 1]);
+        //     }
+        // }
+
         // dump($kromosomUrutFitness);
         // dump($hasilPop);
         // dump($kromosomHasilMutasi);
         // echo gettype($kromosomHasilMutasi[0]['nilaiFitness']);
         // dump($jumlahSatuKromosom);
         // dump($jumlahSatuHasil);
-        return $kromosomUrutFitness;
+        $hasilCekDataMutasi = AdminModel::urutanFitnessTertinggi($kromosom);
+        return $hasilCekDataMutasi;
+    }
+
+    // untuk convert dari kromosom menjadi data asli
+    public static function convertKromosomToData($kromosom, $dataTanggal)
+    {
+        // dump($kromosom, $dataTanggal);
+        $jumlahKromosom = count($kromosom);
+        $tanggal = explode('-', $dataTanggal);
+        $dataHasilConvert = $kromosom;
+        // $tanggal[$i] = $dataTanggal['tahun'] . '-' . $dataTanggal['nomorBulan'] . '-' . bindec($kromosom[$i]['gen'][2]);
+        // $tanggalKromosom[$i] = date('l', strtotime($tanggal[$i]));
+        // dump($tanggal);
+        for ($i = 0; $i < $jumlahKromosom; $i++) {
+            $dataHasilConvert[$i]['idPegawai'] = bindec($kromosom[$i]['gen'][0]);
+            $dataHasilConvert[$i]['idPiket'] = bindec($kromosom[$i]['gen'][1]);
+            $convertTanggal[$i] = $tanggal['0'] . '-' . $tanggal['1'] . '-' . bindec($kromosom[$i]['gen'][2]);
+            $dataHasilConvert[$i]['tanggal'] = $convertTanggal[$i];
+            $dataHasilConvert[$i]['hari'] = date('l', strtotime($dataHasilConvert[$i]['tanggal']));
+            unset($dataHasilConvert[$i]['kromosom'], $dataHasilConvert[$i]['gen']);
+        }
+        // dump($dataHasilConvert);
+        return $dataHasilConvert;
     }
 
     public static function prosesMemetika($dataMemetika)
@@ -1778,13 +1822,43 @@ class AdminModel extends Model
         $hitungNilaiFitnessKromosom = AdminModel::hitungNilaiFitnessBaru($convertKromosomToGen, $dataTanggalBiner);
         // dump($hitungNilaiFitnessKromosom);
 
+        $urutFitnessTertinggi = AdminModel::urutanFitnessTertinggi($hitungNilaiFitnessKromosom);
+        // dump($urutFitnessTertinggi);
         // // ======================= INI PERCOBAAN  ========================
 
+        // untuk menghitung jumlah kromosom fitness
+        $dataSatuPopulasiAwalMinimum = 0;
+        $dataSatuPopulasiAwalDua = 0;
+        $dataSatuPopulasiAwalSatu = 0;
+        $dataSatuPopulasiAwalNol = 0;
+        $dataSatuPopulasiAwalMaksimum = 0;
+
+        for ($i = 0; $i < count($urutFitnessTertinggi); $i++) {
+            if ($urutFitnessTertinggi[$i]['nilaiFitness'] === -1) {
+                $dataSatuPopulasiAwalMinimum++;
+            } else
+            if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 0) {
+                $dataSatuPopulasiAwalNol++;
+            } else
+            if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 1) {
+                $dataSatuPopulasiAwalSatu++;
+            } else
+            if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 2) {
+                $dataSatuPopulasiAwalDua++;
+            } else
+            if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 3) {
+                $dataSatuPopulasiAwalMaksimum++;
+            }
+        }
+
+        $populasiAwalHasilConvert = AdminModel::convertKromosomToData($urutFitnessTertinggi, $dataTanggal);
+        // dump($populasiAwalHasilConvert);
 
         // kondisi selesai
         // hitung perhitungan crossover berdasarkan total populasi hasil input
         for ($i = 0; $i < $jumlahGenerasi; $i++) {
 
+            // ini parameter nya harus diganti
             $urutanKromosomFitnessTertinggi = AdminModel::urutanFitnessTertinggi($hitungNilaiFitnessKromosom);
             // dump($urutanKromosomFitnessTertinggi);
 
@@ -1798,8 +1872,8 @@ class AdminModel extends Model
             // dump($hasilCrossover);
 
             // hitung nilai fitness baru hasil crossover
-            $hitungNilaiFitnessHasilCrossover = AdminModel::hitungNilaiFitnessBaru($hasilCrossoverKromosom, $dataTanggalBiner);
-            // dump($hitungNilaiFitnessHasilCrossover);
+            // $hitungNilaiFitnessHasilCrossover = AdminModel::hitungNilaiFitnessBaru($hasilCrossoverKromosom, $dataTanggalBiner);
+            // // dump($hitungNilaiFitnessHasilCrossover);
 
             // mutasi dua kromosom hasil crossover
             $kromosomHasilMutasi = AdminModel::bitFlipMutationBaru($hasilCrossoverKromosom, $mutationRateInput);
@@ -1815,29 +1889,60 @@ class AdminModel extends Model
             $hitungNilaiFitnessHasilMutasi = AdminModel::hitungNilaiFitnessBaru($splitKromosomHasilMutasi, $dataTanggalBiner);
             // dump($hitungNilaiFitnessHasilMutasi);
 
-            $cekDataHasilMutasi = AdminModel::cekDataMutasiKePopulasi($urutanKromosomFitnessTertinggi, $hitungNilaiFitnessHasilMutasi);
-            // dump($cekDataHasilMutasi);
+            $hitungNilaiFitnessKromosom = AdminModel::cekDataMutasiKePopulasi($urutanKromosomFitnessTertinggi, $hitungNilaiFitnessHasilMutasi);
+            // dump($urutanKromosomFitnessTertinggi);
         }
-        // dump($cekDataHasilMutasi);
-        $dataSatuPopulasiAwal = 0;
-        $dataSatuPopulasiAkhir = 0;
-        for ($i = 0; $i < count($urutanKromosomFitnessTertinggi); $i++) {
-            if ($urutanKromosomFitnessTertinggi[$i]['nilaiFitness'] === -1) {
-                $dataSatuPopulasiAwal++;
+        // dump($hitungNilaiFitnessKromosom);
+
+        $dataSatuPopulasiAkhirMinimum = 0;
+        $dataSatuPopulasiAkhirDua = 0;
+        $dataSatuPopulasiAkhirSatu = 0;
+        $dataSatuPopulasiAkhirNol = 0;
+        $dataSatuPopulasiAkhirMaksimum = 0;
+
+
+
+        for ($i = 0; $i < count($hitungNilaiFitnessKromosom); $i++) {
+            if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === -1) {
+                $dataSatuPopulasiAkhirMinimum++;
+            } else
+            if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 0) {
+                $dataSatuPopulasiAkhirNol++;
+            } else
+            if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 1) {
+                $dataSatuPopulasiAkhirSatu++;
+            } else
+            if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 2) {
+                $dataSatuPopulasiAkhirDua++;
+            } else
+            if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 3) {
+                $dataSatuPopulasiAkhirMaksimum++;
             }
         }
 
-        for ($i = 0; $i < count($cekDataHasilMutasi); $i++) {
-            if ($cekDataHasilMutasi[$i]['nilaiFitness'] === -1) {
-                $dataSatuPopulasiAkhir++;
-            }
-        }
-        dump($dataSatuPopulasiAwal, $dataSatuPopulasiAkhir);
-        // $hasilMemetika = [
-        //     'populasiAwal' => $populasiAwal,
-        //     'convertKromosomToGen' => $convertKromosomToGen,
-        //     'hitungNilaiFitness' => $hitungNilaiFitnessKromosom
+        $populasiAkhirHasilConvert = AdminModel::convertKromosomToData($hitungNilaiFitnessKromosom, $dataTanggal);
+        // dump($populasiAkhirHasilConvert);
+        // dump($dataSatuPopulasiAwalMinimum, $dataSatuPopulasiAkhirMinimum);
+        // dump($dataSatuPopulasiAwalMaksimum, $dataSatuPopulasiAkhirMaksimum);
+        $hasilMemetika = [
+            'populasiAwal' => $populasiAwalHasilConvert,
+            'populasiAkhir' => $populasiAkhirHasilConvert,
+            'totalKromosomPopulasiAwal' => [
+                $dataSatuPopulasiAwalMaksimum,
+                $dataSatuPopulasiAwalDua,
+                $dataSatuPopulasiAwalSatu,
+                $dataSatuPopulasiAwalNol,
+                $dataSatuPopulasiAwalMinimum
+            ],
+            'totalKromosomPopulasiAkhir' => [
+                $dataSatuPopulasiAkhirMaksimum,
+                $dataSatuPopulasiAkhirDua,
+                $dataSatuPopulasiAkhirSatu,
+                $dataSatuPopulasiAkhirNol,
+                $dataSatuPopulasiAkhirMinimum
+            ],
+        ];
 
-        // ];
+        return $hasilMemetika;
     }
 }
