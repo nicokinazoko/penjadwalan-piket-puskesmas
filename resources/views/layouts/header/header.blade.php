@@ -46,11 +46,14 @@
         href="{{ asset('vendor/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
+
     <!-- Forms -->
     <!-- Bootstrap Color Picker -->
-    <link rel="stylesheet" href="{{ asset('vendor/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('vendor/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
     <!-- Bootstrap Color Picker -->
-    <link rel="stylesheet" href="{{ asset('vendor/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('vendor/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css') }}">
     <!-- Tempusdominus Bootstrap 4 -->
     <link rel="stylesheet"
         href="{{ asset('vendor/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css') }}">
@@ -63,4 +66,9 @@
     <link rel="stylesheet" href="{{ asset('vendor/plugins/bs-stepper/css/bs-stepper.min.css') }}">
     <!-- dropzonejs -->
     <link rel="stylesheet" href="{{ asset('vendor/plugins/dropzone/min/dropzone.min.css') }}">
+    {{-- <!--Datatable plugin CSS file -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"> --}}
+    {{-- div.dataTables_wrapper {
+    margin-bottom: 3em;
+    } --}}
 </head>
