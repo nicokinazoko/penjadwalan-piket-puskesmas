@@ -257,9 +257,8 @@ class AdminController extends Controller
 
 
 
-    // dump($dataPiketHapus);
 
-
+    // ===================== Algoritma Memetika =====================
 
     // untuk melihat menu Algoritma memetika
     public function viewAlgoritmaMemetika()
@@ -279,11 +278,52 @@ class AdminController extends Controller
         $dataMemetikaAll = $dataMemetika->all();
         // dump($dataMemetika->all());
 
+        // lakukan proses algoritma memetika
         $hasilAlgoritmaMemetika = AdminModel::prosesMemetika($dataMemetikaAll);
         // ['piket' => $dataPiket, 'dataTotal' => $dataTotal]
 
+
+        // dump($hasilAlgoritmaMemetika);
+
+        // simpan data populasi awal sebagai perbandingan
+        $populasiAwal = $hasilAlgoritmaMemetika['populasiAwal'];
+        // dump($populasiAwal);
+
+        // ini buat biar data duplicate ilang
+        // $unique_multi_dimension = array_map("unserialize", array_unique(array_map("serialize", $populasiAwal)));
+        // dump($unique_multi_dimension);
+
+        // simpan data populasi akhir sebagai perbandingan
+        $populasiAkhir = $hasilAlgoritmaMemetika['populasiAkhir'];
+        // dump($populasiAkhir);
+
+        // simpan data fitness di populasi awal
+        $fitnessPopulasiAwal = $hasilAlgoritmaMemetika['totalKromosomPopulasiAwal'];
+        // dump($fitnessPopulasiAwal);
+
+
+        // simpan data fitness di populasi akhir
+        $fitnessPopulasiAkhir = $hasilAlgoritmaMemetika['totalKromosomPopulasiAkhir'];
+        // dump($fitnessTertinggiPopulasiAkhir);
+
+
+        return view('content.memetic.hasil-memetic', [
+            'populasiAwal' => $populasiAwal,
+            'populasiAkhir' => $populasiAkhir,
+            'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
+            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
+        ]);
     }
 
+    public function hasilProsesAlgoritmaMemetika()
+    {
+        return view('content.memetic.hasil-memetic');
+    }
+
+
+
+
+    // ===================== Algoritma Neuro Fuzzy =====================
     // untuk melihat menu algoritma neuro fuzzy
     public function viewAlgoritmaNeuroFuzzy()
     {
@@ -302,9 +342,5 @@ class AdminController extends Controller
 
         // proses algoritma neuro fuzzy
         $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesMemetika($dataNeuroFuzzyAll);
-
-
-
-
     }
 }
