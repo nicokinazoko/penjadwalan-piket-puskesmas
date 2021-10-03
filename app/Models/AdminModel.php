@@ -53,6 +53,13 @@ class AdminModel extends Model
         // dump($dataPiket);
     }
 
+    // ambil semua data piket unique
+    public static function getAllDataPiketUnique()
+    {
+        $dataPiketUnique = DB::table('pikets')->distinct()->get();
+        return $dataPiketUnique;
+    }
+
     // cari data piket berdasarkan Id
     public static function getDataPiketById($idPiket)
     {
@@ -130,6 +137,14 @@ class AdminModel extends Model
         $dataPegawai = DB::table('pegawais')->get();
 
         return $dataPegawai;
+    }
+
+    // ambil data pegawai unique
+    public static function getAllDataPegawaiUnique()
+    {
+        $dataPegawaiUnique = DB::table('pegawais')->distinct()->get();
+
+        return $dataPegawaiUnique;
     }
 
     // cari data pegawai berdasarkan Id
@@ -953,19 +968,6 @@ class AdminModel extends Model
         }
         // dump($dataPiketIdAll);
 
-        // dump($cekDecimal);
-        // if (in_array(bindec($kromosom[0]['gen'][0]), $dataPegawaiIdAll)) {
-        //     echo "Benar adanya";
-        // }
-        // else{
-        //     echo "tidak benar";
-        // }
-        // $dataPegawai = AdminModel::getDataPegawaiById(0);
-        // foreach ($dataPegawaiAll as $dataPegawaiCari) {
-        //     if (in_array(1, $dataPegawaiCari)) {
-        //         echo "Benar adanya";
-        //     }
-        // }
 
         // menyimpan data tanggal dari kromosom
         $tanggalHasilInput = $dataTanggal['tahun'] . '-' . $dataTanggal['nomorBulan'] . '-' . '01';
@@ -1755,6 +1757,56 @@ class AdminModel extends Model
         return $dataHasilConvert;
     }
 
+
+    public static function ConvertIdKromosom($kromosom)
+    {
+
+        $jumlahKromosom = count($kromosom);
+        // getDataPegawaiById
+        // getDataPiketById
+        for ($i = 0; $i < $jumlahKromosom; $i++) {
+            $dataPegawai[$i] = AdminModel::getDataPegawaiById($kromosom[$i]['idPegawai']);
+            $kromosom[$i]['namaPegawai'] = $dataPegawai[$i][0]->nama_pegawai;
+            $dataPiket[$i] = AdminModel::getDataPiketById($kromosom[$i]['idPiket']);
+            $kromosom[$i]['namaPiket'] = $dataPiket[$i][0]->nama_piket;
+        }
+
+        // dump($dataPegawai);
+        // dump($dataPiket);
+        // dump($kromosom)
+        return $kromosom;
+    }
+
+    public static function hasilAkhirPenjadwalan($kromosom, $tanggal)
+    {
+        // dump($tanggal);
+        // menyimpan data tanggal dari kromosom
+        $tanggalHasilInput = $tanggal['tahun'] . '-' . $tanggal['nomorBulan'] . '-' . '01';
+
+        // menghitung jumlah hari berdasarkan input
+        $jumlahHariDalamBulan = intval(date('t', strtotime($tanggalHasilInput)));
+        // dump($jumlahHariDalamBulan);
+
+        // ini buat biar data duplicate ilang
+        $kromosomUnique = array_map("unserialize", array_unique(array_map("serialize", $kromosom)));
+        // dump($kromosomUnique);
+
+        $dataPegawaiUnique = AdminModel::getAllDataPegawaiUnique();
+        // dump($dataPegawaiUnique);
+
+        $dataHasil = [
+            'namaPegawai' => 'Nico',
+            // disini isi per hari
+            'daftarPiket' =>
+            [
+                'tanggal' => 'start tanggal 1',
+                'kodePiket' => 'namaPiket'
+            ]
+
+        ];
+    }
+
+
     public static function prosesMemetika($dataMemetika)
     {
         // dump($dataMemetika);
@@ -1854,6 +1906,9 @@ class AdminModel extends Model
         $populasiAwalHasilConvert = AdminModel::convertKromosomToData($urutFitnessTertinggi, $dataTanggal);
         // dump($populasiAwalHasilConvert);
 
+        $convertDataKromosomAwal = AdminModel::ConvertIdKromosom($populasiAwalHasilConvert);
+        // dump($convertDataKromosomAwal);
+
         // kondisi selesai
         // hitung perhitungan crossover berdasarkan total populasi hasil input
         for ($i = 0; $i < $jumlahGenerasi; $i++) {
@@ -1922,11 +1977,18 @@ class AdminModel extends Model
 
         $populasiAkhirHasilConvert = AdminModel::convertKromosomToData($hitungNilaiFitnessKromosom, $dataTanggal);
         // dump($populasiAkhirHasilConvert);
+
+        $convertDataKromosomAkhir = AdminModel::ConvertIdKromosom($populasiAkhirHasilConvert);
+        // dump($convertDataKromosomAkhir);
+
         // dump($dataSatuPopulasiAwalMinimum, $dataSatuPopulasiAkhirMinimum);
         // dump($dataSatuPopulasiAwalMaksimum, $dataSatuPopulasiAkhirMaksimum);
+
+        $hasilAkhirPerhitungan = AdminModel::hasilAkhirPenjadwalan($convertDataKromosomAkhir, $dataTanggalBiner);
+        // dump($hasilAkhirPerhitungan);
         $hasilMemetika = [
-            'populasiAwal' => $populasiAwalHasilConvert,
-            'populasiAkhir' => $populasiAkhirHasilConvert,
+            'populasiAwal' => $convertDataKromosomAwal,
+            'populasiAkhir' => $convertDataKromosomAkhir,
             'totalKromosomPopulasiAwal' => [
                 $dataSatuPopulasiAwalMaksimum,
                 $dataSatuPopulasiAwalDua,
