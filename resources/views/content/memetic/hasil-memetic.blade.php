@@ -94,7 +94,9 @@
                                     <thead>
                                         <tr>
                                             <th>ID Pegawai</th>
+                                            <th>Nama Pegawai</th>
                                             <th>ID Piket</th>
+                                            <th>Nama Piket</th>
                                             <th>Hari</th>
                                             <th>Tanggal Piket</th>
                                             <th>Nilai Fitness</th>
@@ -104,7 +106,9 @@
                                         @foreach ($populasiAwal as $dataPopulasiAwal)
                                             <tr>
                                                 <td>{{ $dataPopulasiAwal['idPegawai'] }}</td>
+                                                <td>{{ $dataPopulasiAwal['namaPegawai'] }}</td>
                                                 <td>{{ $dataPopulasiAwal['idPiket'] }}</td>
+                                                <td>{{ $dataPopulasiAwal['namaPiket'] }}</td>
                                                 <td>{{ $dataPopulasiAwal['hari'] }}</td>
                                                 <td>{{ $dataPopulasiAwal['tanggal'] }}</td>
                                                 <td>{{ $dataPopulasiAwal['nilaiFitness'] }}</td>
@@ -114,7 +118,9 @@
                                     <tfoot>
                                         <tr>
                                             <th>ID Pegawai</th>
+                                            <th>Nama Pegawai</th>
                                             <th>ID Piket</th>
+                                            <th>Nama Piket</th>
                                             <th>Hari</th>
                                             <th>Tanggal Piket</th>
                                             <th>Nilai Fitness</th>
@@ -129,7 +135,9 @@
                                     <thead>
                                         <tr>
                                             <th>ID Pegawai</th>
+                                            <th>Nama Pegawai</th>
                                             <th>ID Piket</th>
+                                            <th>Nama Piket</th>
                                             <th>Hari</th>
                                             <th>Tanggal Piket</th>
                                             <th>Nilai Fitness</th>
@@ -139,7 +147,9 @@
                                         @foreach ($populasiAkhir as $dataPopulasiAkhir)
                                             <tr>
                                                 <td>{{ $dataPopulasiAkhir['idPegawai'] }}</td>
+                                                <td>{{ $dataPopulasiAkhir['namaPegawai'] }}</td>
                                                 <td>{{ $dataPopulasiAkhir['idPiket'] }}</td>
+                                                <td>{{ $dataPopulasiAkhir['namaPiket'] }}</td>
                                                 <td>{{ $dataPopulasiAkhir['hari'] }}</td>
                                                 <td>{{ $dataPopulasiAkhir['tanggal'] }}</td>
                                                 <td>{{ $dataPopulasiAkhir['nilaiFitness'] }}</td>
@@ -149,7 +159,9 @@
                                     <tfoot>
                                         <tr>
                                             <th>ID Pegawai</th>
+                                            <th>Nama Pegawai</th>
                                             <th>ID Piket</th>
+                                            <th>Nama Piket</th>
                                             <th>Hari</th>
                                             <th>Tanggal Piket</th>
                                             <th>Nilai Fitness</th>
