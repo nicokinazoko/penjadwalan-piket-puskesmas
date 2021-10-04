@@ -50,41 +50,39 @@
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Nama Pegawai</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>Jabatan</th>
-                                            <th>Aksi</th>
+                                            <th rowspan="2" class="text-center">Tanggal</th>
+                                            <th colspan="{{ count($dataPegawai) }}" rowspan="1" class="text-center">
+                                                Nama Pegawai</th>
+                                        </tr>
+                                        <tr>
+                                            @foreach ($dataPegawai as $dataPegawaiUnique)
+                                                <th>{{ $dataPegawaiUnique->nama_pegawai }}</th>
+                                            @endforeach
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Nama Pegawai</td>
-                                            <td>Jenis Kelamin</td>
-                                            <td>Aksi</td>
-                                            <td>
-                                                <a href="#"><i class="fas fa-edit"></i></a>
-                                                <a href="#"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nama Pegawai</td>
-                                            <td>Jenis Kelamin</td>
-                                            <td>Aksi</td>
-                                            <td>
-                                                <a href="#"><i class="fas fa-edit"></i></a>
-                                                <a href="#"><i class="fas fa-trash-alt"></i></a>
-                                            </td>
-                                        </tr>
+                                        @for ($i = 0; $i < $jumlahHari; $i++)
+                                            <tr>
+                                                <td>{{ $i + 1 }}</td>
+                                                @foreach ($dataPegawai as $dataPegawaiUnique)
+                                                    <td>{{ $dataPegawaiUnique->nama_pegawai }}</td>
+                                                @endforeach
+
+                                            </tr>
+                                        @endfor
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th>Nama Pegawai</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>Jabatan</th>
-                                            <th>Aksi</th>
+                                            <th rowspan="2" class="text-center">Tanggal</th>
+                                            <th colspan="{{ count($dataPegawai) }}" rowspan="1" class="text-center">
+                                                Nama Pegawai</th>
                                         </tr>
-
+                                        <tr>
+                                            @foreach ($dataPegawai as $dataPegawaiUnique)
+                                                <th>{{ $dataPegawaiUnique->nama_pegawai }}</th>
+                                            @endforeach
+                                        </tr>
                                     </tfoot>
                                 </table>
                             </div>
