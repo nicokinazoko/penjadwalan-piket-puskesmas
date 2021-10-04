@@ -301,15 +301,31 @@ class AdminController extends Controller
         $fitnessPopulasiAwal = $hasilAlgoritmaMemetika['totalKromosomPopulasiAwal'];
         // dump($fitnessPopulasiAwal);
 
+        // simpan data tanggal
+        $dataTanggal = $hasilAlgoritmaMemetika['dataTanggal'];
+        // dump($dataTanggal);
+
+        // ambil jumlah hari total
+        $jumlahHari = $hasilAlgoritmaMemetika['jumlahHari'];
+        // dump($jumlahHari);
 
         // simpan data fitness di populasi akhir
         $fitnessPopulasiAkhir = $hasilAlgoritmaMemetika['totalKromosomPopulasiAkhir'];
         // dump($fitnessTertinggiPopulasiAkhir);
 
+        // simpan data hasil akhir perhitungan yang akan digunakan sebagai jadwal asli
+        $jadwalAkhir = $hasilAlgoritmaMemetika['populasiAkhirPerhitungan'];
+        // dump($jadwalAkhir);
+
+        // simpan data pegawai unique
+        $dataPegawaiUnique = $hasilAlgoritmaMemetika['dataPegawai'];
 
         return view('content.memetic.hasil-memetic', [
+            'jumlahHari' => $jumlahHari,
+            'dataPegawai' => $dataPegawaiUnique,
             'populasiAwal' => $populasiAwal,
             'populasiAkhir' => $populasiAkhir,
+            'jadwalAkhir' => $jadwalAkhir,
             'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
             'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
         ]);
