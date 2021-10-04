@@ -1804,7 +1804,10 @@ class AdminModel extends Model
             ]
 
         ];
+
+        return $kromosomUnique;
     }
+
 
 
     public static function prosesMemetika($dataMemetika)
@@ -1849,7 +1852,6 @@ class AdminModel extends Model
         // mengubah data tanggal menjadi binary
         $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataTanggal);
         // dump($dataTanggalBiner);
-
 
 
         // =============== Data Piket ===============
@@ -1986,9 +1988,16 @@ class AdminModel extends Model
 
         $hasilAkhirPerhitungan = AdminModel::hasilAkhirPenjadwalan($convertDataKromosomAkhir, $dataTanggalBiner);
         // dump($hasilAkhirPerhitungan);
+
+        // ambil data pegawai
+        $dataPegawaiUnique = AdminModel::getAllDataPegawaiUnique();
         $hasilMemetika = [
+            'dataTanggal' => $dataTanggalBiner,
+            'jumlahHari' => count($dataTanggalBiner['hari']),
+            'dataPegawai' => $dataPegawaiUnique,
             'populasiAwal' => $convertDataKromosomAwal,
             'populasiAkhir' => $convertDataKromosomAkhir,
+            'populasiAkhirPerhitungan' => $hasilAkhirPerhitungan,
             'totalKromosomPopulasiAwal' => [
                 $dataSatuPopulasiAwalMaksimum,
                 $dataSatuPopulasiAwalDua,
