@@ -69,6 +69,9 @@ Route::prefix('/algoritma')->group(function () {
     Route::post('memetika',[AdminController::class, 'prosesAlgoritmaMemetika'])->name('proses-memetika');
     Route::get('memetika/hasil', [AdminController::class, 'hasilProsesAlgoritmaMemetika'])->name('hasil-algoritma-memetika');
 
+    Route::get('memetika/lihat-data', [AdminController::class, 'viewDataHasilAlgoritmaMemetika'])->name('view-data-algoritma-memetika');
+    Route::post('memetika/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-memetika');
+
     Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
     Route::post('neuro-fuzzy',[AdminController::class, 'prosesAlgoritmaNeuroFuzzy'])->name('proses-neuro-fuzzy');
 
