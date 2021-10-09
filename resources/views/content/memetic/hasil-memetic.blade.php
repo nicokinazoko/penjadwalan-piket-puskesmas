@@ -47,41 +47,62 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_1">
+                                <form action="{{ route('proses-simpan-data-algoritma-memetika') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="dataJadwal" value="{{ serialize($jadwalAkhir) }}">
+
+                                    <a class="btn btn-app">
+                                        <i class="fas fa-save">
+                                            <button type="submit">
+                                                Simpan Data</button></i> Save
+                                    </a>
+
+
+                                </form>
+
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th rowspan="2" class="text-center">Tanggal</th>
-                                            <th colspan="{{ count($dataPegawai) }}" rowspan="1" class="text-center">
-                                                Nama Pegawai</th>
+                                            <th rowspan="2" class="text-center">Nama Pegawai</th>
+                                            <th colspan="{{ $jumlahHari }}" rowspan="1" class="text-center">
+                                                Tanggal</th>
                                         </tr>
                                         <tr>
-                                            @foreach ($dataPegawai as $dataPegawaiUnique)
-                                                <th>{{ $dataPegawaiUnique->nama_pegawai }}</th>
-                                            @endforeach
+                                            @for ($i = 0; $i < $jumlahHari; $i++)
+                                                <th>{{ $i + 1 }}</th>
+                                            @endfor
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for ($i = 0; $i < $jumlahHari; $i++)
+                                        @for ($i = 0; $i < count($jadwalAkhir); $i++)
                                             <tr>
-                                                <td>{{ $i + 1 }}</td>
-                                                @foreach ($dataPegawai as $dataPegawaiUnique)
-                                                    <td>{{ $dataPegawaiUnique->nama_pegawai }}</td>
-                                                @endforeach
+                                                <td>{{ $jadwalAkhir[$i]['namaPegawai'] }}</td>
+                                                @for ($j = 0; $j < $jumlahHari; $j++)
+                                                    @if (date('l', strtotime($jadwalAkhir[$i]['dataPiket'][$j]['tanggalPiket'])) === 'Sunday')
+                                                        <td>Libur</td>
+                                                    @else
+                                                        <td>{{ $jadwalAkhir[$i]['dataPiket'][$j]['nilaiFitness'] }}</td>
+                                                    @endif
 
+                                                @endfor
+                                                {{-- @foreach
+                                                <td>{{$jadwalAkhir['dataPiket']}}</td>
+                                                @endforeach --}}
                                             </tr>
                                         @endfor
+
 
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th rowspan="2" class="text-center">Tanggal</th>
-                                            <th colspan="{{ count($dataPegawai) }}" rowspan="1" class="text-center">
-                                                Nama Pegawai</th>
+                                            <th rowspan="2" class="text-center">Nama Pegawai</th>
+                                            <th colspan="{{ $jumlahHari }}" rowspan="1" class="text-center">
+                                                Tanggal</th>
                                         </tr>
                                         <tr>
-                                            @foreach ($dataPegawai as $dataPegawaiUnique)
-                                                <th>{{ $dataPegawaiUnique->nama_pegawai }}</th>
-                                            @endforeach
+                                            @for ($i = 0; $i < $jumlahHari; $i++)
+                                                <th>{{ $i + 1 }}</th>
+                                            @endfor
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -292,4 +313,5 @@
 
         })
     </script>
+
 @endsection
