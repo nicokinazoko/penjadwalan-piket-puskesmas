@@ -317,11 +317,19 @@ class AdminController extends Controller
         $jadwalAkhir = $hasilAlgoritmaMemetika['populasiAkhirPerhitungan'];
         // dump($jadwalAkhir);
 
+
+
         // simpan data pegawai unique
         $dataPegawaiUnique = $hasilAlgoritmaMemetika['dataPegawai'];
 
+        // simpan data jumlah pegawai
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
         return view('content.memetic.hasil-memetic', [
             'jumlahHari' => $jumlahHari,
+            'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
             'dataPegawai' => $dataPegawaiUnique,
             'populasiAwal' => $populasiAwal,
             'populasiAkhir' => $populasiAkhir,
@@ -336,6 +344,22 @@ class AdminController extends Controller
         return view('content.memetic.hasil-memetic');
     }
 
+
+    // lihat data hasil Algoritma Memetika
+    public function viewDataHasilAlgoritmaMemetika()
+    {
+        return view('content.memetic.view-data-memetic');
+    }
+
+    public function prosesSimpanHasilPenjadwalan(Request $dataPenjadwalanMemetika)
+    {
+        // dump($dataPenjadwalanMemetika->all());
+        $hasilData = $dataPenjadwalanMemetika->all();
+        // dump($hasilData);
+        $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
+        dump($dataPenjadwalan);
+        // return view('content.memetic.view-data-memetic');
+    }
 
 
 
