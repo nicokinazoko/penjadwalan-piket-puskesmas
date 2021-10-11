@@ -218,27 +218,80 @@ class AdminModel extends Model
         return $result;
     }
 
-    // ---------- Data Penjadwalan -----------
+    // ---------- Data Penjadwalan Memetika -----------
 
     // ambil semua data penjadwalan
-    public static function getAllDataPenjadwalan()
+    public static function getAllDataPenjadwalanMemetika()
     {
     }
 
     // input data piket
-    public static function inputDataPenjadwalan()
+    public static function inputDataPenjadwalanMemetika()
     {
     }
 
     // edit data piket
-    public static function editDataPenjadwalan()
+    public static function editDataPenjadwalanMemetika()
     {
     }
 
     // hapus data piket
-    public static function deleteDataPenjadwalan()
+    public static function deleteDataPenjadwalanMemetika()
     {
     }
+
+
+    // simpan data penjadwalan ke database
+    public static function simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan)
+    {
+        dump($dataPenjadwalan);
+        $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
+        $waktuDefault = date_create('now')->format('Y-m-d');
+        // $waktuPembuatan =  date('Y-m-d H:i:s');
+        // echo gettype($dataPenjadwalan[0]['dataPiket'][0]['idPiket']);
+
+        $dataPegawaiUnique = AdminModel::getAllDataPegawaiUnique();
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        $dataPiketUnique = AdminModel::getAllDataPiketUnique();
+        $jumlahPiketUnique = count($dataPiketUnique);
+        // dump($jumlahPiketUnique);
+
+        $jumlahDataPenjadwalan = count($dataPenjadwalan);
+        $jumlahDataHari = count($dataPenjadwalan[0]['dataPiket']);
+        $jumlahDataTotal = $jumlahDataPenjadwalan * $jumlahDataHari;
+        // dump($jumlahDataHari);
+
+        for ($i = 0; $i < $jumlahDataPenjadwalan; $i++) {
+            for ($j = 0; $j < $jumlahDataHari; $j++) {
+                // id_penjadwalan_memetika	id_pegawai	id_piket	tanggal_penjadwalan	tanggal_pembuatan_jadwal
+                $pisahTanggal = explode('-', $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket']);
+                if (
+                    $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'] === ''
+                ) {
+                    $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
+                        // 'id_penjadwalan_memetika' => '',
+                        'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
+                        'id_piket' => 37,
+                        'tanggal_penjadwalan' => $waktuDefault
+                    ]);
+                } else {
+                    $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
+                        // 'id_penjadwalan_memetika' => '',
+                        'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
+                        'id_piket' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'],
+                        'tanggal_penjadwalan' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket']
+                    ]);
+                }
+            }
+        }
+
+        // echo $insertDataDatabase;
+
+        // dump($dataPenjadwalanDatabase);
+    }
+
 
     // ---------- Ubah Data ke Biner -----------
 
