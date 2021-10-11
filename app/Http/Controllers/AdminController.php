@@ -357,7 +357,9 @@ class AdminController extends Controller
         $hasilData = $dataPenjadwalanMemetika->all();
         // dump($hasilData);
         $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
-        dump($dataPenjadwalan);
+        // dump($dataPenjadwalan);
+
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
         // return view('content.memetic.view-data-memetic');
     }
 
