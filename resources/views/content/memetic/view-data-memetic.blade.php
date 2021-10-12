@@ -29,7 +29,60 @@
         <section class="content">
             <div class="container-fluid">
                 {{-- form --}}
+                <div class="card">
+                    <div class="card-header d-flex p-0">
+                        <h3 class="card-title p-3">Hasil Proses Algoritma Memetika</h3>
+                        <ul class="nav nav-pills ml-auto p-2">
+                            <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Hasil</a>
+                            </li>
+                            {{-- <li class="nav-item"><a class="nav-link" href="#tab_2" data-toggle="tab">Populasi
+                                    Awal</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="#tab_3" data-toggle="tab">Populasi
+                                    Akhir</a>
+                            <li class="nav-item"><a class="nav-link" href="#tab_4" data-toggle="tab">Fitness
+                                    Populasi Awal</a>
+                            <li class="nav-item"><a class="nav-link" href="#tab_5" data-toggle="tab">Fitness
+                                    Populasi Akhir</a> --}}
+                        </ul>
+                    </div><!-- /.card-header -->
+                    <div class="card-body">
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tab_1">
 
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">Tanggal Jadwal</th>
+                                            <th class="text-center">Tanggal Pembuatan </th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($dataPembuatanJadwal as $dataTanggalPembuatanJadwal)
+                                            <tr>
+
+                                                {{-- $waktuPembuatanBaru = date("Y-m-d H:i:s", strtotime($waktuPembuatan)); --}}
+                                                <td>{{ date('F Y', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}
+                                                </td>
+                                                <td>{{ date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th class="text-center">Tanggal Jadwal</th>
+                                            <th class="text-center">Tanggal Pembuatan </th>
+                                        </tr>
+
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.tab-pane -->
+                        </div>
+                        <!-- /.tab-content -->
+                    </div><!-- /.card-body -->
+                </div>
             </div>
             <!-- /.container-fluid -->
         </section>
