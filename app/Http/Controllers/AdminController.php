@@ -266,8 +266,8 @@ class AdminController extends Controller
 
         // $waktuAwal = new DateTime('09:00:59');
         // $tesWaktu = date("h:i:sa");
-        $dataPegawai = AdminModel::getAllDataPegawai();
-        return view('content.memetic.memetic', ['pegawai' => $dataPegawai]);
+        $dataPenjadwalan = AdminModel::getAllDataPenjadwalanMemetika();
+        return view('content.memetic.memetic', ['pegawai' => $dataPenjadwalan]);
     }
 
 
@@ -348,7 +348,9 @@ class AdminController extends Controller
     // lihat data hasil Algoritma Memetika
     public function viewDataHasilAlgoritmaMemetika()
     {
-        return view('content.memetic.view-data-memetic');
+        $dataPenjadwalan = AdminModel::getAllDataPenjadwalanMemetika();
+        // dump($dataPenjadwalan);
+        return view('content.memetic.view-data-memetic', ['dataPembuatanJadwal' => $dataPenjadwalan]);
     }
 
     public function prosesSimpanHasilPenjadwalan(Request $dataPenjadwalanMemetika)
@@ -360,7 +362,7 @@ class AdminController extends Controller
         // dump($dataPenjadwalan);
 
         $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
-        // return view('content.memetic.view-data-memetic');
+        return redirect()->route('view-data-algoritma-memetika');
     }
 
 
