@@ -223,6 +223,18 @@ class AdminModel extends Model
     // ambil semua data penjadwalan
     public static function getAllDataPenjadwalanMemetika()
     {
+        $dataTanggalPembuatan = DB::table('penjadwalan_memetika')
+            ->select('tanggal_pembuatan_jadwal')
+            ->distinct()
+            ->get();
+        // dump($dataTanggalPembuatan);
+
+        // $dataPenjadwalan = DB::table('penjadwalan_memetika')
+        // ->where('tanggal_pembuatan_jadwal', '=', $dataTanggalPembuatan[0]->tanggal_pembuatan_jadwal)
+        // ->get();
+        // dump($dataPenjadwalan);
+
+        return $dataTanggalPembuatan;
     }
 
     // input data piket
@@ -244,9 +256,11 @@ class AdminModel extends Model
     // simpan data penjadwalan ke database
     public static function simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan)
     {
-        dump($dataPenjadwalan);
+        // dump($dataPenjadwalan);
         $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
         $waktuDefault = date_create('now')->format('Y-m-d');
+        $waktuPembuatanBaru = date("Y-m-d H:i:s", strtotime($waktuPembuatan));
+        // dump($waktuPembuatanBaru);
         // $waktuPembuatan =  date('Y-m-d H:i:s');
         // echo gettype($dataPenjadwalan[0]['dataPiket'][0]['idPiket']);
 
@@ -268,20 +282,24 @@ class AdminModel extends Model
                 // id_penjadwalan_memetika	id_pegawai	id_piket	tanggal_penjadwalan	tanggal_pembuatan_jadwal
                 $pisahTanggal = explode('-', $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket']);
                 if (
-                    $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'] === ''
+                    $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'] === '' ||
+                    $pisahTanggal[2] < 1 ||
+                    $pisahTanggal[2] > 31
                 ) {
                     $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
                         // 'id_penjadwalan_memetika' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
                         'id_piket' => 37,
-                        'tanggal_penjadwalan' => $waktuDefault
+                        'tanggal_penjadwalan' => 0000-00-00,
+                        'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
                     ]);
                 } else {
                     $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
                         // 'id_penjadwalan_memetika' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
                         'id_piket' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'],
-                        'tanggal_penjadwalan' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket']
+                        'tanggal_penjadwalan' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket'],
+                        'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
                     ]);
                 }
             }
