@@ -237,6 +237,142 @@ class AdminModel extends Model
         return $dataTanggalPembuatan;
     }
 
+    // lihat data penjadwalan piket base on tanggal pembuatan
+    public static function getDataPenjadwalanByTanggalPembuatan($tanggalPembuatan)
+    {
+        // dump($tanggalPembuatan);
+        $dataPenjadwalanDatabase = DB::table('penjadwalan_memetika')
+            ->where('tanggal_pembuatan_jadwal', '=', $tanggalPembuatan)
+            ->get();
+
+        // dump($dataPenjadwalanDatabase);
+        $dataPegawaiUnique = DB::table('pegawais')->get();
+
+        // dump($pisahTanggal);
+
+        $jumlahHari = intval(date('t', strtotime($tanggalPembuatan)));
+        // dump($jumlahHari);
+
+        for ($j = 0; $j < $jumlahHari; $j++) {
+            $dataPiket[$j] = [
+                'idPenjadwalanMemetika' => '',
+                'idPiket' => '',
+                'kodePiket' => '',
+                'tanggalPenjadwalan' => ''
+            ];
+        }
+
+
+        // $dataPiket[$i] = [
+        //     'idPiket' => '',
+        //     'namaPiket' => '',
+        //     'tanggalPiket' => '',
+        //     'nilaiFitness' => ''
+        // ];
+
+        $jumlahDataPenjadwalanDatabase = count($dataPenjadwalanDatabase);
+        // dump($jumlahDataPenjadwalanDatabase);
+
+        // for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+        //     $dataBaru[$k] = DB::table('pikets')
+        //         ->where('id_piket', $dataPenjadwalanDatabase[$k]->id_piket)
+        //         ->limit(1)
+        //         ->get();
+
+        //         $dataPenjadwalanDatabase[$k]->kode_piket = $dataBaru[$k][0]->kode_piket;
+        // }
+
+        // dump($dataPenjadwalanDatabase);
+
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        for ($i = 0; $i < $jumlahPegawaiUnique; $i++) {
+            $dataPenjadwalan[$i] = [
+                'idPegawai' => $dataPegawaiUnique[$i]->id_pegawai,
+                'namaPegawai' => $dataPegawaiUnique[$i]->nama_pegawai,
+                'dataPiket' => $dataPiket
+
+            ];
+            for ($j = 0; $j < $jumlahHari; $j++) {
+                // $dataPenjadwalan[$i]['dataPiket'][$j] = [];
+
+                for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+                    if ($dataPenjadwalanDatabase[$k]->id_pegawai === $dataPenjadwalan[$i]['idPegawai']) {
+                        $pisahTanggal = explode('-', $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan);
+                        $hasilTanggal = intval($pisahTanggal[2]);
+
+                        // if ($pisahTanggal[2] === 0) {
+                        //     // $dataPenjadwalan[$i]['dataPiket'][$pisahTanggal[2] - 1]['idPenjadwalanMemetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_memetika;
+                        // } else {
+                        //     $dataPenjadwalan[$i]['dataPiket'][$pisahTanggal[2] - 1]['idPenjadwalanMemetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_memetika;
+                        //     $dataPenjadwalan[$i]['dataPiket'][$pisahTanggal[2] - 1]['idPiket'] = $dataPenjadwalanDatabase[$k]->id_piket;
+                        //     $dataPenjadwalan[$i]['dataPiket'][$pisahTanggal[2] - 1]['kodePiket'] = $dataPenjadwalanDatabase[$k]->kode_piket;
+                        //     $dataPenjadwalan[$i]['dataPiket'][$pisahTanggal[2] - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
+                        // }
+
+                        if ($dataPenjadwalanDatabase[$k]->tanggal_penjadwalan !== "0000-00-00") {
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPenjadwalanMemetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_memetika;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPiket'] = $dataPenjadwalanDatabase[$k]->id_piket;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['kodePiket'] = $dataPenjadwalanDatabase[$k]->kode_piket;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
+                        }
+                    }
+                }
+            }
+        }
+
+        // untuk tanggal yang kosong
+        for ($i = 0; $i < $jumlahPegawaiUnique; $i++) {
+            for ($j = 0; $j < $jumlahHari; $j++) {
+                for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+                    if ($dataPenjadwalan[$i]['idPegawai'] === $dataPenjadwalanDatabase[$k]->id_pegawai) {
+                        if (
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] === ''
+                            && $dataPenjadwalanDatabase[$k]->kode_piket === ''
+                        ) {
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_memetika;
+                        }
+                    }
+                }
+            }
+        }
+
+
+        // if (intval($pisahTanggal[2]) === 0) {
+        //     if ($dataJadwal[$i]['dataPiket'][$pisahTanggal[2]]['idPiket'] === '') {
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2]]['idPiket'] = $kromosom[$j]['idPiket'];
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2]]['namaPiket'] = $kromosom[$j]['namaPiket'];
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2]]['tanggalPiket'] = $kromosom[$j]['tanggal'];
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2]]['nilaiFitness'] = $kromosom[$j]['nilaiFitness'];
+        //     } else {
+        //         if ($dataJadwal[$i]['dataPiket'][$pisahTanggal[2]]['nilaiFitness'] < $kromosom[$j]['nilaiFitness']) {
+        //             $dataJadwal[$i] = $kromosom[$j];
+        //         }
+        //     }
+        // } else {
+        //     if ($dataJadwal[$i]['dataPiket'][$pisahTanggal[2] - 1]['idPiket'] === '') {
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2] - 1]['idPiket'] = $kromosom[$j]['idPiket'];
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2] - 1]['namaPiket'] = $kromosom[$j]['namaPiket'];
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2] - 1]['tanggalPiket'] = $kromosom[$j]['tanggal'];
+        //         $dataJadwal[$i]['dataPiket'][$pisahTanggal[2] - 1]['nilaiFitness'] = $kromosom[$j]['nilaiFitness'];
+        //     } else {
+        //         if ($dataJadwal[$i]['dataPiket'][$pisahTanggal[2] - 1]['nilaiFitness'] < $kromosom[$j]['nilaiFitness']) {
+        //             $dataJadwal[$i] = $kromosom[$j];
+        //         }
+        //     }
+        // }
+
+        // dump($pisahTanggal);
+        // $dataPenjadwalan = [
+        //     'idPegawai' => '',
+        //     'namaPegawai' => ''
+        // ];
+        // dump($dataPegawaiUnique);
+        // dump($dataPenjadwalan);
+        return $dataPenjadwalan;
+    }
+
     // input data piket
     public static function inputDataPenjadwalanMemetika()
     {
@@ -259,7 +395,7 @@ class AdminModel extends Model
         // dump($dataPenjadwalan);
         $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
         $waktuDefault = date_create('now')->format('Y-m-d');
-        $waktuPembuatanBaru = date("Y-m-d H:i:s", strtotime($waktuPembuatan));
+        $waktuPembuatanBaru = date("Y-m-d H:i:s");
         // dump($waktuPembuatanBaru);
         // $waktuPembuatan =  date('Y-m-d H:i:s');
         // echo gettype($dataPenjadwalan[0]['dataPiket'][0]['idPiket']);
@@ -281,6 +417,9 @@ class AdminModel extends Model
             for ($j = 0; $j < $jumlahDataHari; $j++) {
                 // id_penjadwalan_memetika	id_pegawai	id_piket	tanggal_penjadwalan	tanggal_pembuatan_jadwal
                 $pisahTanggal = explode('-', $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket']);
+                $dataPiket = DB::table('pikets')
+                    ->where('id_piket', $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'])
+                    ->get();
                 if (
                     $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'] === '' ||
                     $pisahTanggal[2] < 1 ||
@@ -290,7 +429,8 @@ class AdminModel extends Model
                         // 'id_penjadwalan_memetika' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
                         'id_piket' => 37,
-                        'tanggal_penjadwalan' => 0000-00-00,
+                        'kode_piket' => '',
+                        'tanggal_penjadwalan' => 0000 - 00 - 00,
                         'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
                     ]);
                 } else {
@@ -298,6 +438,7 @@ class AdminModel extends Model
                         // 'id_penjadwalan_memetika' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
                         'id_piket' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'],
+                        'kode_piket' => $dataPiket[0]->kode_piket,
                         'tanggal_penjadwalan' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket'],
                         'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
                     ]);
