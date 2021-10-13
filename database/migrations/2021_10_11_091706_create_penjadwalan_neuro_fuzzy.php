@@ -17,6 +17,7 @@ class CreatePenjadwalanNeuroFuzzy extends Migration
             $table->id('id_penjadwalan_neuro_fuzzy');
             $table->unsignedBigInteger('id_pegawai');
             $table->unsignedBigInteger('id_piket');
+            $table->string('kode_piket');
             $table->date('tanggal_penjadwalan');
             $table->dateTime('tanggal_pembuatan_jadwal');
             $table->foreign('id_pegawai')->references('id_pegawai')->on('pegawais');
