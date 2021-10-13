@@ -65,7 +65,12 @@
                                                 {{-- $waktuPembuatanBaru = date("Y-m-d H:i:s", strtotime($waktuPembuatan)); --}}
                                                 <td>{{ date('F Y', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}
                                                 </td>
-                                                <td>{{ date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}</td>
+                                                <td><a
+                                                        href="{{ route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}">
+                                                        {{ date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}
+                                                    </a>
+                                                </td>
+
                                             </tr>
                                         @endforeach
                                     </tbody>
