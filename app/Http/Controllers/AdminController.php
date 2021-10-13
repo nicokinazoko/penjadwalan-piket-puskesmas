@@ -365,6 +365,20 @@ class AdminController extends Controller
         return redirect()->route('view-data-algoritma-memetika');
     }
 
+    public function getDataPenjadwalanByTanggalPembuatan($tanggalPenjadwalan)
+    {
+        // dump($tanggalPenjadwalan);
+        $dataPenjadwalan = AdminModel::getDataPenjadwalanByTanggalPembuatan($tanggalPenjadwalan);
+        // dump($dataPenjadwalan);
+
+        // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
+        $jumlahHari = count($dataPenjadwalan[0]['dataPiket']);
+        // dump($jumlahHari);
+        return view('content.memetic.view-data-memetic-tanggal-buat',[
+            'jumlahHari' => $jumlahHari,
+            'dataPenjadwalan' => $dataPenjadwalan
+        ]);
+    }
 
 
     // ===================== Algoritma Neuro Fuzzy =====================
