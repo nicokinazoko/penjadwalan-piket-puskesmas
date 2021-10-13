@@ -55,7 +55,7 @@ Route::prefix('/piket')->group(function () {
     Route::get('/edit-data/{id_piket}', [AdminController::class, 'editDataPiketById'])->name('piket-edit-data-by-id');
     Route::patch('/edit-data/{id_piket}', [AdminController::class, 'prosesEditDataPiketById'])->name('piket-edit-data-by-id-proses');
 
-    Route::get('/delete-data/{id_piket}',[AdminController::class, 'deleteDataPiketById'])->name('piket-delete-data-by-id');
+    Route::get('/delete-data/{id_piket}', [AdminController::class, 'deleteDataPiketById'])->name('piket-delete-data-by-id');
 });
 
 Route::get('/dashboard', [AdminController::class, 'viewDashboard'])->name('dashboard');
@@ -66,13 +66,15 @@ Route::get('/tabel-data', function () {
 
 Route::prefix('/algoritma')->group(function () {
     Route::get('memetika', [AdminController::class, 'viewAlgoritmaMemetika'])->name('view-memetika');
-    Route::post('memetika',[AdminController::class, 'prosesAlgoritmaMemetika'])->name('proses-memetika');
+    Route::post('memetika', [AdminController::class, 'prosesAlgoritmaMemetika'])->name('proses-memetika');
     Route::get('memetika/hasil', [AdminController::class, 'hasilProsesAlgoritmaMemetika'])->name('hasil-algoritma-memetika');
 
     Route::get('memetika/lihat-data', [AdminController::class, 'viewDataHasilAlgoritmaMemetika'])->name('view-data-algoritma-memetika');
     Route::post('memetika/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-memetika');
 
-    Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
-    Route::post('neuro-fuzzy',[AdminController::class, 'prosesAlgoritmaNeuroFuzzy'])->name('proses-neuro-fuzzy');
+    Route::get('memetika/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatan'])->name('view-data-penjadwalan-algoritma-memetika');
 
+
+    Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
+    Route::post('neuro-fuzzy', [AdminController::class, 'prosesAlgoritmaNeuroFuzzy'])->name('proses-neuro-fuzzy');
 });
