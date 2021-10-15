@@ -73,6 +73,9 @@ Route::prefix('/algoritma')->group(function () {
     Route::post('memetika/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-memetika');
 
     Route::get('memetika/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatan'])->name('view-data-penjadwalan-algoritma-memetika');
+    Route::get('memetika/edit-data/{tanggal_piket}/{id_penjadwalan_memetika}', [AdminController::class, 'editDataPenjadwalanByIdPenjadwalanMemetika'])->name('edit-data-penjadwalan-algoritma-memetika');
+
+    Route::patch('memetika/edit-data/{id_penjadwalan_memetika}', [AdminController::class, 'prosesEditDataPenjadwalanByIdPenjadwalanMemetika'])->name('edit-data-penjadwalan-algoritma-memetika-proses');
 
 
     Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
