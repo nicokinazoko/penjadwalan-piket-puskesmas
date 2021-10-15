@@ -374,10 +374,44 @@ class AdminController extends Controller
         // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
         $jumlahHari = count($dataPenjadwalan[0]['dataPiket']);
         // dump($jumlahHari);
-        return view('content.memetic.view-data-memetic-tanggal-buat',[
+        return view('content.memetic.view-data-memetic-tanggal-buat', [
             'jumlahHari' => $jumlahHari,
             'dataPenjadwalan' => $dataPenjadwalan
         ]);
+    }
+
+    public function editDataPenjadwalanByIdPenjadwalanMemetika($tanggalPenjadwalan, $idPenjadwalan)
+    {
+        // dump($tanggalPenjadwalan, $idPenjadwalan);
+
+        $editDataPenjadwalan = AdminModel::editDataPenjadwalanMemetika($idPenjadwalan, $tanggalPenjadwalan);
+        // dump($editDataPenjadwalan);
+
+        $dataPiketUnique = AdminModel::getAllDataPiketUnique();
+        // dump($dataPiketUnique);
+
+        $jumlahDataPiketUnique = count($dataPiketUnique);
+        // dump($jumlahDataPiketUnique);
+
+        $dataPegawai = AdminModel::getDataPegawaiById($editDataPenjadwalan[0]->id_pegawai);
+        // dump($dataPegawai);
+
+        return view('content.memetic.form-edit-memetic', [
+            'dataPiket' => $dataPiketUnique,
+            'dataPenjadwalan' => $editDataPenjadwalan,
+            'dataPegawai' => $dataPegawai,
+            'jumlahDataPiket' => $jumlahDataPiketUnique
+        ]);
+    }
+
+    public function prosesEditDataPenjadwalanByIdPenjadwalanMemetika(Request $dataInput)
+    {
+        $dataPenjadwalan = $dataInput->all();
+        $hasilEditDataPenjadwalanMemetika = AdminModel::editDataPenjadwalanMemetikaByIdProses($dataPenjadwalan);
+        // dump($hasilEditDataPenjadwalanMemetika);
+
+        alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
+        return redirect()->route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanMemetika[0]->tanggal_pembuatan_jadwal]);
     }
 
 
