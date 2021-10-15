@@ -55,16 +55,18 @@
                                         <tr>
                                             <td>{{ $dataPenjadwalan[$i]['namaPegawai'] }}</td>
                                             @for ($j = 0; $j < $jumlahHari; $j++)
+                                                {{-- {{  }} --}}
                                                 <td>
-                                                    <a href="{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }}">
+                                                    <a
+                                                        href="{{ route('edit-data-penjadwalan-algoritma-memetika', ['id_penjadwalan_memetika' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'], 'tanggal_piket' => $j + 1]) }}">
                                                         @if (date('l', strtotime($dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'])) === 'Sunday')
 
-                                                                Libur
+                                                            Libur
                                                         @elseif ($dataPenjadwalan[$i]['dataPiket'][$j]['kodePiket'] ===
                                                             '')
-                                                                -
+                                                            -
                                                         @else
-                                                                {{ $dataPenjadwalan[$i]['dataPiket'][$j]['kodePiket'] }}
+                                                            {{ $dataPenjadwalan[$i]['dataPiket'][$j]['kodePiket'] }}
                                                     </a>
                                                 </td>
 
