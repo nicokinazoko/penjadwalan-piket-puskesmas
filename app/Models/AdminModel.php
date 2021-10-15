@@ -379,8 +379,54 @@ class AdminModel extends Model
     }
 
     // edit data piket
-    public static function editDataPenjadwalanMemetika()
+    public static function editDataPenjadwalanMemetika($idPenjadwalanMemetika, $tanggalPenjadwalan)
     {
+        // dump($idPenjadwalanMemetika, $tanggalPenjadwalan);
+        $dataPenjadwalan = DB::table('penjadwalan_memetika')
+            ->where('id_penjadwalan_memetika', $idPenjadwalanMemetika)
+            ->get();
+        // dump($dataPenjadwalan[0]->tanggal_pembuatan_jadwal);
+        $dataJadwalDatabase = explode('-', $dataPenjadwalan[0]->tanggal_pembuatan_jadwal);
+        // dump($dataJadwalDatabase);
+        $dataHariBaru = $dataJadwalDatabase[0] . '-' . $dataJadwalDatabase[1] . '-' . $tanggalPenjadwalan;
+        // dump($dataHariBaru);
+        $dataPenjadwalanUpdate = DB::table('penjadwalan_memetika')
+            ->where('id_penjadwalan_memetika', $idPenjadwalanMemetika)
+            ->update([
+                'tanggal_penjadwalan' => $dataHariBaru,
+            ]);
+        // dump($dataPenjadwalan);
+
+        $dataPenjadwalanHasilUpdateTanggal = DB::table('penjadwalan_memetika')
+            ->where('id_penjadwalan_memetika', $idPenjadwalanMemetika)
+            ->get();
+        return $dataPenjadwalanHasilUpdateTanggal;
+    }
+
+    // edit data penjadwalan base id penjadwalan memetika
+    public static function editDataPenjadwalanMemetikaByIdProses($dataPenjadwalanMemetika)
+    {
+        // dump($dataPenjadwalanMemetika);
+        $dataPenjadwalan = DB::table('penjadwalan_memetika')
+            ->where('id_penjadwalan_memetika', $dataPenjadwalanMemetika['inputIdPenjadwalan'])
+            ->get();
+        // dump($dataPenjadwalan);
+
+        $dataPiket = DB::table('pikets')
+        ->where('id_piket', $dataPenjadwalanMemetika['inputIdPiket'])
+        ->get();
+
+        // dump($dataPiket);
+
+        $updateDataPenjadwalan = DB::table('penjadwalan_memetika')
+            ->where('id_penjadwalan_memetika', $dataPenjadwalanMemetika['inputIdPenjadwalan'])
+            ->update([
+                'id_piket' => $dataPenjadwalanMemetika['inputIdPiket'],
+                'kode_piket' => $dataPiket[0]->nama_piket
+            ]);
+
+        return $dataPenjadwalan;
+
     }
 
     // hapus data piket
@@ -420,17 +466,19 @@ class AdminModel extends Model
                 $dataPiket = DB::table('pikets')
                     ->where('id_piket', $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'])
                     ->get();
+                // $tanggal = $pisahTanggal[0] . '-' . $pisahTanggal[1] . '-' . 00;
                 if (
                     $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'] === '' ||
                     $pisahTanggal[2] < 1 ||
                     $pisahTanggal[2] > 31
                 ) {
+
                     $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
                         // 'id_penjadwalan_memetika' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
                         'id_piket' => 37,
                         'kode_piket' => '',
-                        'tanggal_penjadwalan' => 0000 - 00 - 00,
+                        'tanggal_penjadwalan' => "0000-00-00",
                         'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
                     ]);
                 } else {
