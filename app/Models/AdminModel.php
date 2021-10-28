@@ -470,7 +470,9 @@ class AdminModel extends Model
                 if (
                     $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'] === '' ||
                     $pisahTanggal[2] < 1 ||
-                    $pisahTanggal[2] > 31
+                    // INI BARU DIEDIT
+                    // COBA KALO PAKE VARIABEL LANGSUNG
+                    $pisahTanggal[2] > $jumlahDataHari
                 ) {
 
                     $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
