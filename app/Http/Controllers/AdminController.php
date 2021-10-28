@@ -7,6 +7,8 @@ use App\Models\AdminModel;
 use DateTime;
 use RealRashid\SweetAlert\Facades\Alert;
 
+ini_set('max_execution_time', 300);
+
 class AdminController extends Controller
 {
     // untuk lihat dashboard utama
