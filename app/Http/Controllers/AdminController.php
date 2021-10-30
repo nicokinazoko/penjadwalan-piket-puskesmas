@@ -435,6 +435,6 @@ class AdminController extends Controller
 
 
         // proses algoritma neuro fuzzy
-        $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesMemetika($dataNeuroFuzzyAll);
+        $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesNeuroFuzzy($dataNeuroFuzzyAll);
     }
 }
