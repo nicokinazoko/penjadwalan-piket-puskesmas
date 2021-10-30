@@ -1,6 +1,6 @@
 @extends('master.master')
 
-@section('title', 'SPP | Proses Algoritma Memetika')
+@section('title', 'SPP | Lihat Data Penjadwalan Algoritma Memetika')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
