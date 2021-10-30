@@ -1,6 +1,6 @@
 @extends('master.master')
 
-@section('title', 'SPP | Edit Data Pegawai')
+@section('title', 'SPP | Edit Data Penjadwalan')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -9,16 +9,19 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Input Data Pegawai</h1>
+                        <h1>Edit Data Penjadwalan</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item active"><a href="{{ route('pegawai-view-data') }}">Data Pegawai</a>
+                            <li class="breadcrumb-item active"><a href="{{ route('view-data-algoritma-memetika') }}">
+                                    Algoritma Memetika</a>
                             </li>
-                            <li class="breadcrumb-item active"><a href="{{ route('pegawai-view-data') }}">Data Pegawai</a>
+                            <li class="breadcrumb-item active"><a
+                                    href="{{ route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $dataPenjadwalan[0]->tanggal_pembuatan_jadwal]) }}">Lihat
+                                    Data Algoritma Memetika</a>
                             </li>
-                            <li class="breadcrumb-item active">Input Data Pegawai</li>
+                            <li class="breadcrumb-item active">{{ $dataPegawai[0]->nama_pegawai }}</li>
                         </ol>
                     </div>
                 </div>
@@ -31,7 +34,7 @@
                 {{-- form --}}
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title">Data Pegawai</h3>
+                        <h3 class="card-title">Data Penjadwalan Algoritma Memetika</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
