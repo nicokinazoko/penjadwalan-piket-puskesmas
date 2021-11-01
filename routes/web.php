@@ -101,5 +101,21 @@ Route::prefix('/algoritma')->group(function () {
     Route::post('neuro-fuzzy', [AdminController::class, 'prosesAlgoritmaNeuroFuzzy'])->name('proses-neuro-fuzzy');
 
     // untuk lihat hasil proses sebelum simpan ke db memetika
-    Route::post('neuro-fuzzy/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-memetika');
+    Route::post('neuro-fuzzy/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-neuro-fuzzy');
+
+    // untuk lihat data dari db memetika
+    Route::get('neuro-fuzzy/lihat-data', [AdminController::class, 'viewDataHasilAlgoritmaNeuroFuzzy'])->name('view-data-algoritma-neuro-fuzzy');
+
+    // untuk lihat data penjadwalan neuro fuzzy dari tanggal pembuatan
+    Route::get('neuro-fuzzy/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatanNeuroFuzzy'])->name('view-data-penjadwalan-algoritma-neuro-fuzzy');
+
+
+    // untuk hapus data penjadwalan neuro fuzzy
+    Route::get('neuro-fuzzy/{tanggal_pembuatan}', [AdminController::class, 'deleteDataPenjadwalanByTanggalPembuatanJadwal'])->name('delete-data-penjadwalan-neuro-fuzzy');
+
+    // untuk lihat data dari tanggal piket dan tanggal penjadwalan
+    Route::get('neuro-fuzzy/edit-data/{tanggal_piket}/{id_penjadwalan_neuro_fuzzy}', [AdminController::class, 'editDataPenjadwalanByIdPenjadwalanNeuroFuzzy'])->name('edit-data-penjadwalan-algoritma-neuro-fuzzy');
+
+    // untuk simpan data hasil edit data memetika
+    Route::patch('neuro-fuzzy/edit-data/{id_penjadwalan_neuro_fuzzy}', [AdminController::class, 'prosesEditDataPenjadwalanByIdPenjadwalanNeuroFuzzy'])->name('edit-data-penjadwalan-algoritma-neuro-fuzzy-proses');
 });
