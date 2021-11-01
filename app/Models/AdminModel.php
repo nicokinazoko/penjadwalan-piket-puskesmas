@@ -223,13 +223,32 @@ class AdminModel extends Model
     // ambil semua data penjadwalan
     public static function getAllDataPenjadwalanMemetika()
     {
-        $dataTanggalPembuatan = DB::table('penjadwalan_memetika')
+        $dataPenjadwalanMemetika = DB::table('penjadwalan_memetika')
             ->select('tanggal_pembuatan_jadwal')
             ->distinct()
             ->get();
-        // dump($dataTanggalPembuatan);
+        // dump($dataPenjadwalanMemetika);
 
-        return $dataTanggalPembuatan;
+        // ambil jumlah data pembuatan jadwal berbeda
+        $jumlahData = count($dataPenjadwalanMemetika);
+        // dump($jumlahData);
+        // ambil data tanggal dari database berdasarkan tanggal pembuatan
+
+        for ($i = 0; $i < $jumlahData; $i++) {
+            $dataTanggalPenjadwalan[$i] = DB::table('penjadwalan_memetika')->where('tanggal_pembuatan_jadwal', $dataPenjadwalanMemetika[$i]->tanggal_pembuatan_jadwal)->first();
+            // $dataTanggalPenjadwalan[$i]->tanggal_pecah = explode('-', $dataTanggalPenjadwalan[$i]->tanggal_penjadwalan);
+            $dataTanggalPenjadwalan[$i]->tanggal = date("F Y", strtotime($dataTanggalPenjadwalan[$i]->tanggal_penjadwalan));
+            // date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal))
+        }
+
+        // dump($dataTanggalPenjadwalan);
+        // $user = DB::table('users')->where('name', 'John')->first();
+        // dump($dataPenjadwalanNeuroFuzzy);
+        // echo gettype($dataPenjadwalanNeuroFuzzy);
+
+        return $dataTanggalPenjadwalan;
+
+        // return $dataTanggalPembuatan;
     }
 
     // lihat data penjadwalan piket base on tanggal pembuatan
