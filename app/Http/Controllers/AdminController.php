@@ -7,7 +7,7 @@ use App\Models\AdminModel;
 use DateTime;
 use RealRashid\SweetAlert\Facades\Alert;
 
-ini_set('max_execution_time', 300);
+ini_set('max_execution_time', 1200);
 
 class AdminController extends Controller
 {
@@ -363,7 +363,8 @@ class AdminController extends Controller
         $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
         // dump($dataPenjadwalan);
 
-        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseNeuroFuzzy($dataPenjadwalan);
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
         return redirect()->route('view-data-algoritma-memetika');
     }
 
@@ -426,15 +427,99 @@ class AdminController extends Controller
     }
 
 
+    // untuk lihat data penjadwalan
+    public function viewDataHasilAlgoritmaNeuroFuzzy()
+    {
+        $dataPenjadwalan = AdminModel::getAllDataPenjadwalanNeuroFuzzy();
+        // dump($dataPenjadwalan);
+        return view('content.memetic.view-data-memetic', ['dataPembuatanJadwal' => $dataPenjadwalan]);
+    }
+
+
+
+    // --------- Ada error di bagian penjadwalan
+    // nanti coba di cek lagi
     public function prosesAlgoritmaNeuroFuzzy(Request $dataNeuroFuzzy)
     {
-
         // mengambil semua data dari input
         $dataNeuroFuzzyAll = $dataNeuroFuzzy->all();
-        // dump($dataNeuroFuzzy);
+        // dump($dataNeuroFuzzyAll);
 
-
-        // proses algoritma neuro fuzzy
+        // // lakukan proses algoritma memetika
+        // $hasilAlgoritmaMemetika = AdminModel::prosesMemetika($dataMemetikaAll);
         $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesNeuroFuzzy($dataNeuroFuzzyAll);
+        // dump($hasilAlgoritmaNeuroFuzzy);
+        // // ['piket' => $dataPiket, 'dataTotal' => $dataTotal]
+
+
+
+        // simpan data populasi awal sebagai perbandingan
+        $populasiAwal = $hasilAlgoritmaNeuroFuzzy['populasiAwal'];
+        // dump($populasiAwal);
+
+        // ini buat biar data duplicate ilang
+        // $unique_multi_dimension = array_map("unserialize", array_unique(array_map("serialize", $populasiAwal)));
+        // dump($unique_multi_dimension);
+
+        // simpan data populasi akhir sebagai perbandingan
+        $populasiAkhir = $hasilAlgoritmaNeuroFuzzy['populasiAkhir'];
+        // dump($populasiAkhir);
+
+        // simpan data fitness di populasi awal
+        $fitnessPopulasiAwal = $hasilAlgoritmaNeuroFuzzy['totalKromosomPopulasiAwal'];
+        // dump($fitnessPopulasiAwal);
+
+        // simpan data tanggal
+        $dataTanggal = $hasilAlgoritmaNeuroFuzzy['dataTanggal'];
+        // dump($dataTanggal);
+
+        // // ambil jumlah hari total
+        $jumlahHari = $hasilAlgoritmaNeuroFuzzy['jumlahHari'];
+        // dump($jumlahHari);
+
+        // simpan data fitness di populasi akhir
+        $fitnessPopulasiAkhir = $hasilAlgoritmaNeuroFuzzy['totalKromosomPopulasiAkhir'];
+        // dump($fitnessPopulasiAkhir);
+
+        // simpan data hasil akhir perhitungan yang akan digunakan sebagai jadwal asli
+        $jadwalAkhir = $hasilAlgoritmaNeuroFuzzy['populasiAkhirPerhitungan'];
+        // dump($jadwalAkhir);
+
+
+
+        // simpan data pegawai unique
+        $dataPegawaiUnique = $hasilAlgoritmaNeuroFuzzy['dataPegawai'];
+        // dump($dataPegawaiUnique);
+
+        // simpan data jumlah pegawai
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
+
+
+        // return view('content.neuro-fuzzy.hasil-neuro-fuzzy', [
+        //     'jumlahHari' => $jumlahHari,
+        //     'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
+        //     'dataPegawai' => $dataPegawaiUnique,
+        //     'populasiAwal' => $populasiAwal,
+        //     'populasiAkhir' => $populasiAkhir,
+        //     'jadwalAkhir' => $jadwalAkhir,
+        //     'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
+        //     'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
+        // ]);
+    }
+
+    public function prosesSimpanHasilPenjadwalanNeuroFuzzy(Request $dataPenjadwalanNeuroFuzzy)
+    {
+        // dump($dataPenjadwalanMemetika->all());
+        $hasilData = $dataPenjadwalanNeuroFuzzy->all();
+        // dump($hasilData);
+        $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
+        // dump($dataPenjadwalan);
+
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseNeuroFuzzy($dataPenjadwalan);
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        return redirect()->route('view-data-algoritma-memetika');
     }
 }
