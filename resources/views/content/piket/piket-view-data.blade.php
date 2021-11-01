@@ -74,12 +74,15 @@
                                                 <td>{{ $dataPiket->kode_piket }}</td>
                                                 <td>{{ $dataPiket->nama_piket }}</td>
                                                 <td>
-                                                    <a
-                                                        href="{{ route('piket-edit-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
-                                                            class="fas fa-edit"></i></a>
-                                                    <a
-                                                        href="{{ route('piket-delete-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
-                                                            class="fas fa-trash-alt"></i></a>
+                                                    <center>
+                                                        <a
+                                                            href="{{ route('piket-edit-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
+                                                                class="fas fa-edit"></i></a>
+                                                        <a
+                                                            href="{{ route('piket-delete-data-by-id', ['id_piket' => $dataPiket->id_piket]) }}"><i
+                                                                class="fas fa-trash-alt"></i></a>
+                                                    </center>
+
 
                                                 </td>
                                             </tr>
