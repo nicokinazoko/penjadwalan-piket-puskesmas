@@ -55,6 +55,7 @@
                                         <tr>
                                             <th class="text-center">Tanggal Jadwal</th>
                                             <th class="text-center">Tanggal Pembuatan </th>
+                                            <th class="text-center">Aksi </th>
                                         </tr>
 
                                     </thead>
@@ -63,12 +64,18 @@
                                             <tr>
 
                                                 {{-- $waktuPembuatanBaru = date("Y-m-d H:i:s", strtotime($waktuPembuatan)); --}}
-                                                <td>{{ date('F Y', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}
+                                                <td>{{ date('F Y', strtotime($dataTanggalPembuatanJadwal->tanggal)) }}
                                                 </td>
                                                 <td><a
                                                         href="{{ route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}">
                                                         {{ date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}
                                                     </a>
+                                                </td>
+                                                <td>
+                                                    <center>
+                                                        {{-- {{ route('delete-data-penjadwalan-neuro-fuzzy', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }} --}}
+                                                        <a href="#"><i class="fas fa-trash-alt"></i></a>
+                                                    </center>
                                                 </td>
 
                                             </tr>
@@ -78,6 +85,7 @@
                                         <tr>
                                             <th class="text-center">Tanggal Jadwal</th>
                                             <th class="text-center">Tanggal Pembuatan </th>
+                                            <th class="text-center">Aksi </th>
                                         </tr>
 
                                     </tfoot>
