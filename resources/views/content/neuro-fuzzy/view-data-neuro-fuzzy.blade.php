@@ -76,7 +76,8 @@
                                                         <a
                                                             href="{{ route('delete-data-penjadwalan-neuro-fuzzy', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}"><i
                                                                 class="fas fa-trash-alt"></i></a>
-                                                    </center><a </td>
+                                                    </center>
+                                                </td>
 
                                             </tr>
                                         @endforeach
