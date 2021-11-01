@@ -65,19 +65,41 @@ Route::get('/tabel-data', function () {
 });
 
 Route::prefix('/algoritma')->group(function () {
+
+    // ========================= Memetika =========================
+    // untuk input data jadwal
     Route::get('memetika', [AdminController::class, 'viewAlgoritmaMemetika'])->name('view-memetika');
+
+    // untuk proses data jadwal
     Route::post('memetika', [AdminController::class, 'prosesAlgoritmaMemetika'])->name('proses-memetika');
+
+    // untuk lihat hasil proses
     Route::get('memetika/hasil', [AdminController::class, 'hasilProsesAlgoritmaMemetika'])->name('hasil-algoritma-memetika');
 
+    // untuk lihat data dari db memetika
     Route::get('memetika/lihat-data', [AdminController::class, 'viewDataHasilAlgoritmaMemetika'])->name('view-data-algoritma-memetika');
+
+    // untuk lihat hasil proses sebelum simpan ke db memetika
     Route::post('memetika/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-memetika');
 
+    // untuk lihat data penjadwalan memetika dari tanggal pembuatan
     Route::get('memetika/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatan'])->name('view-data-penjadwalan-algoritma-memetika');
+
+    // untuk lihat data dari tanggal piket dan tanggal penjadwalan
     Route::get('memetika/edit-data/{tanggal_piket}/{id_penjadwalan_memetika}', [AdminController::class, 'editDataPenjadwalanByIdPenjadwalanMemetika'])->name('edit-data-penjadwalan-algoritma-memetika');
 
+    // untuk simpan data hasil edit data memetika
     Route::patch('memetika/edit-data/{id_penjadwalan_memetika}', [AdminController::class, 'prosesEditDataPenjadwalanByIdPenjadwalanMemetika'])->name('edit-data-penjadwalan-algoritma-memetika-proses');
 
 
+    // ========================= Neuro Fuzzy =========================
+
+    // lihat form neuro fuzzy
     Route::get('neuro-fuzzy', [AdminController::class, 'viewAlgoritmaNeuroFuzzy'])->name('view-neuro-fuzzy');
+
+    // untuk proses neuro fuzzy
     Route::post('neuro-fuzzy', [AdminController::class, 'prosesAlgoritmaNeuroFuzzy'])->name('proses-neuro-fuzzy');
+
+    // untuk lihat hasil proses sebelum simpan ke db memetika
+    Route::post('neuro-fuzzy/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-memetika');
 });
