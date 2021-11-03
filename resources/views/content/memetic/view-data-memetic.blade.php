@@ -73,8 +73,10 @@
                                                 </td>
                                                 <td>
                                                     <center>
-                                                        {{-- {{ route('delete-data-penjadwalan-neuro-fuzzy', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }} --}}
-                                                        <a href="#"><i class="fas fa-trash-alt"></i></a>
+
+                                                        <a
+                                                            href="{{ route('delete-data-penjadwalan-memetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}"><i
+                                                                class="fas fa-trash-alt"></i></a>
                                                     </center>
                                                 </td>
 
