@@ -323,6 +323,7 @@ class AdminController extends Controller
 
         // simpan data pegawai unique
         $dataPegawaiUnique = $hasilAlgoritmaMemetika['dataPegawai'];
+        // dump($dataPegawaiUnique);
 
         // simpan data jumlah pegawai
         $jumlahPegawaiUnique = count($dataPegawaiUnique);
@@ -331,6 +332,7 @@ class AdminController extends Controller
         // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
         return view('content.memetic.hasil-memetic', [
             'jumlahHari' => $jumlahHari,
+            'dataTanggal' => $dataTanggal,
             'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
             'dataPegawai' => $dataPegawaiUnique,
             'populasiAwal' => $populasiAwal,
