@@ -10,6 +10,7 @@
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1>Hasil Algoritma Memetika</h1>
+                        {{-- <h1>{{print_r($dataPenjadwalan[0]['dataPiket'][31])}}</h1> --}}
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -55,12 +56,12 @@
                                         <tr>
                                             <td>{{ $dataPenjadwalan[$i]['namaPegawai'] }}</td>
                                             @for ($j = 0; $j < $jumlahHari; $j++)
-                                                {{-- {{  }} --}}
-                                                <td>
-                                                    <a {{-- 'id_penjadwalan_memetika' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'], --}} {{-- {{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }} --}}
-                                                        {{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'], 'tanggal_piket' => $j + 1]) }}
-                                                        href="http://127.0.0.1:8000/algoritma/memetika/edit-data/{{ $j + 1 }}/{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }}">
 
+                                                <td>
+                                                    {{-- {{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'], 'tanggal_piket' => $j + 1]) }} --}}
+
+                                                    <a
+                                                        href="http://127.0.0.1:8000/algoritma/memetika/edit-data/{{ $j + 1 }}/{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }}">
                                                         @if (date('l', strtotime($dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'])) === 'Sunday')
 
                                                             Libur
@@ -72,12 +73,12 @@
                                                     </a>
                                                 </td>
 
-                                            @endif
-                                            </td>
-                                    @endfor
+                                                @endif
+                                                </td>
+                                            @endfor
 
 
-                                    </tr>
+                                        </tr>
                                     @endfor
 
 
