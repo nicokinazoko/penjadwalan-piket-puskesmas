@@ -87,9 +87,14 @@ Route::prefix('/algoritma')->group(function () {
 
     // untuk lihat data dari tanggal piket dan tanggal penjadwalan
     Route::get('memetika/edit-data/{tanggal_piket}/{id_penjadwalan_memetika}', [AdminController::class, 'editDataPenjadwalanByIdPenjadwalanMemetika'])->name('edit-data-penjadwalan-algoritma-memetika');
+    Route::get('neuro-fuzzy/edit-data/{tanggal_piket}/{id_penjadwalan_neuro_fuzzy}', [AdminController::class, 'editDataPenjadwalanByIdPenjadwalanNeuroFuzzy'])->name('edit-data-penjadwalan-algoritma-neuro-fuzzy');
 
     // untuk simpan data hasil edit data memetika
     Route::patch('memetika/edit-data/{id_penjadwalan_memetika}', [AdminController::class, 'prosesEditDataPenjadwalanByIdPenjadwalanMemetika'])->name('edit-data-penjadwalan-algoritma-memetika-proses');
+
+    // untuk hapus data memetika
+    Route::get('memetika/{tanggal_pembuatan}', [AdminController::class, 'deleteDataPenjadwalanMemetikaByTanggalPembuatanJadwal'])->name('delete-data-penjadwalan-memetika');
+
 
 
     // ========================= Neuro Fuzzy =========================
