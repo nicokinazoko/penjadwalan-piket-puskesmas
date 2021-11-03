@@ -363,9 +363,9 @@ class AdminController extends Controller
         $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
         // dump($dataPenjadwalan);
 
-        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseNeuroFuzzy($dataPenjadwalan);
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
         alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
-        return redirect()->route('view-data-algoritma-neuro-fuzzy');
+        return redirect()->route('view-data-algoritma-memetika');
     }
 
     public function getDataPenjadwalanByTanggalPembuatan($tanggalPenjadwalan)
@@ -417,6 +417,21 @@ class AdminController extends Controller
         return redirect()->route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanMemetika[0]->tanggal_pembuatan_jadwal]);
     }
 
+
+    // hapus data penjadwalan memetika
+    public function deleteDataPenjadwalanMemetikaByTanggalPembuatanJadwal($tanggalPembuatan)
+    {
+        // dump($tanggalPembuatan);
+
+        $hapusDataPenjadwalan = AdminModel::deleteDataPenjadwalanMemetika($tanggalPembuatan);
+        // dump($dataPenjadwalanCari);
+        if ($hapusDataPenjadwalan) {
+            alert()->success('Hapus Berhasil', 'Data Telah Berhasil Dihapus');
+        } else {
+            alert()->error('Oops', 'Data Tidak Ditemukan');
+        }
+        return redirect()->route('view-data-algoritma-memetika');
+    }
 
     // ===================== Algoritma Neuro Fuzzy =====================
     // untuk melihat menu algoritma neuro fuzzy
