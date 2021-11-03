@@ -57,8 +57,10 @@
                                             @for ($j = 0; $j < $jumlahHari; $j++)
                                                 {{-- {{  }} --}}
                                                 <td>
-                                                    <a
-                                                        href="{{ route('edit-data-penjadwalan-algoritma-memetika', ['id_penjadwalan_memetika' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'], 'tanggal_piket' => $j + 1]) }}">
+                                                    <a {{-- 'id_penjadwalan_memetika' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'], --}} {{-- {{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }} --}}
+                                                        {{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'], 'tanggal_piket' => $j + 1]) }}
+                                                        href="http://127.0.0.1:8000/algoritma/memetika/edit-data/{{ $j + 1 }}/{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }}">
+
                                                         @if (date('l', strtotime($dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'])) === 'Sunday')
 
                                                             Libur
