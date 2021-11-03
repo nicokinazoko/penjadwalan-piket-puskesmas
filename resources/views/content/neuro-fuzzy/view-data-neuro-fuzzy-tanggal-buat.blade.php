@@ -59,7 +59,8 @@
                                             @for ($j = 0; $j < $jumlahHari; $j++)
                                                 {{-- {{  }} --}}
                                                 <td>
-                                                    <a href="{{route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanNeuroFuzzy'], 'tanggal_piket' => $j + 1])}}">
+                                                    <a
+                                                        href="{{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanNeuroFuzzy'], 'tanggal_piket' => $j + 1]) }}">
                                                         @if (date('l', strtotime($dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'])) === 'Sunday')
 
                                                             Libur
