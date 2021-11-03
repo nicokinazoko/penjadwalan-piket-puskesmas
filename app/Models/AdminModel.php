@@ -411,8 +411,16 @@ class AdminModel extends Model
     }
 
     // hapus data piket
-    public static function deleteDataPenjadwalanMemetika()
+    public static function deleteDataPenjadwalanMemetika($tanggalPenjadwalanMemetika)
     {
+        // dump($tanggalPenjadwalanMemetika);
+        // $dataPenjadwalanCari = AdminModel::getDataPenjadwalanNeuroFuzzyByTanggalPembuatan($dataPenjadwalanNeuroFuzzy);
+        // dump($dataPenjadwalanCari);
+        $hasilDeleteDataPenjadwalanMemetika = DB::table('penjadwalan_memetika')
+            ->where('tanggal_pembuatan_jadwal', $tanggalPenjadwalanMemetika)
+            ->delete();
+
+        return $hasilDeleteDataPenjadwalanMemetika;
     }
 
 
