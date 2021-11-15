@@ -3296,4 +3296,11 @@ class AdminModel extends Model
 
         return $hasilMemetika;
     }
+
+
+    // proses algoritma Genetika
+
+    public static function prosesGenetika($dataGenetika){
+
+    }
 }
