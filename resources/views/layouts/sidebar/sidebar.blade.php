@@ -112,10 +112,16 @@
                             <p>Algoritma Memetika</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    {{-- <li class="nav-item">
                         <a href="{{ route('view-neuro-fuzzy') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Algoritma Neuro Fuzzy</p>
+                        </a>
+                    </li> --}}
+                    <li class="nav-item">
+                        <a href="{{ route('view-genetika') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Algoritma Genetika</p>
                         </a>
                     </li>
                 </ul>
@@ -138,10 +144,17 @@
                             <p>Algoritma Memetika</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{route('view-data-algoritma-neuro-fuzzy')}}" class="nav-link">
+                    {{-- <li class="nav-item">
+                        <a href="{{ route('view-data-algoritma-neuro-fuzzy') }}" class="nav-link">
                             <i class="far fa-circle nav-icon"></i>
                             <p>Algoritma Neuro Fuzzy</p>
+                        </a>
+                    </li> --}}
+                    <li class="nav-item">
+
+                        <a href="{{ route('view-data-algoritma-genetika') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Algoritma Genetika</p>
                         </a>
                     </li>
                 </ul>
