@@ -105,10 +105,10 @@ Route::prefix('/algoritma')->group(function () {
     // untuk proses neuro fuzzy
     Route::post('neuro-fuzzy', [AdminController::class, 'prosesAlgoritmaNeuroFuzzy'])->name('proses-neuro-fuzzy');
 
-    // untuk lihat hasil proses sebelum simpan ke db memetika
+    // untuk lihat hasil proses sebelum simpan ke db neuro fuzzy
     Route::post('neuro-fuzzy/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalan'])->name('proses-simpan-data-algoritma-neuro-fuzzy');
 
-    // untuk lihat data dari db memetika
+    // untuk lihat data dari db neuro fuzzy
     Route::get('neuro-fuzzy/lihat-data', [AdminController::class, 'viewDataHasilAlgoritmaNeuroFuzzy'])->name('view-data-algoritma-neuro-fuzzy');
 
     // untuk lihat data penjadwalan neuro fuzzy dari tanggal pembuatan
@@ -123,4 +123,24 @@ Route::prefix('/algoritma')->group(function () {
 
     // untuk simpan data hasil edit data memetika
     Route::patch('neuro-fuzzy/edit-data/{id_penjadwalan_neuro_fuzzy}', [AdminController::class, 'prosesEditDataPenjadwalanByIdPenjadwalanNeuroFuzzy'])->name('edit-data-penjadwalan-algoritma-neuro-fuzzy-proses');
+
+
+
+
+    // ========================= Genetika =========================
+
+    // untuk input data algoritma genetika
+    Route::get('genetika', [AdminController::class, 'viewAlgoritmaGenetika'])->name('view-genetika');
+
+    // untuk proses genetika
+    Route::post('genetika', [AdminController::class, 'prosesAlgoritmaGenetika'])->name('proses-genetika');
+
+    // untuk lihat hasil proses sebelum simpan ke db genetika
+    Route::post('genetika/hasil', [AdminController::class, 'prosesSimpanHasilPenjadwalanGenetika'])->name('proses-simpan-data-algoritma-genetika');
+
+    // untuk lihat data dari db genetika
+    Route::get('genetika/lihat-data', [AdminController::class, 'viewDataHasilAlgoritmaGenetika'])->name('view-data-algoritma-genetika');
+
+    // untuk lihat data penjadwalan genetika dari tanggal pembuatan
+    Route::get('genetika/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatanGenetika'])->name('view-data-penjadwalan-algoritma-genetika');
 });
