@@ -75,7 +75,7 @@
                                                     <center>
 
                                                         <a
-                                                            href="{{ route('delete-data-penjadwalan-memetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}"><i
+                                                            href="{{ route('delete-data-penjadwalan-genetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}"><i
                                                                 class="fas fa-trash-alt"></i></a>
                                                     </center>
                                                 </td>
