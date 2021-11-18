@@ -143,4 +143,7 @@ Route::prefix('/algoritma')->group(function () {
 
     // untuk lihat data penjadwalan genetika dari tanggal pembuatan
     Route::get('genetika/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatanGenetika'])->name('view-data-penjadwalan-algoritma-genetika');
+
+    // untuk hapus data penjadwalan neuro fuzzy
+    Route::get('genetika/{tanggal_pembuatan}', [AdminController::class, 'deleteDataPenjadwalanByTanggalPembuatanJadwalGenetika'])->name('delete-data-penjadwalan-genetika');
 });
