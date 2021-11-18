@@ -733,29 +733,29 @@ class AdminController extends Controller
         $dataPenjadwalanGenetika = AdminModel::getDataPenjadwalanGenetikaByTanggalPembuatanHasil($tanggalPembuatan);
         // dump($dataPenjadwalanGenetika);
 
-        // // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
-        // $jumlahHari = count($dataPenjadwalanGenetika[0]['dataPiket']);
-        // // dump($jumlahHari);
-        // // return view('content.neuro-fuzzy.view-data-neuro-fuzzy-tanggal-buat', [
-        // //     'jumlahHari' => $jumlahHari,
-        // //     'dataPenjadwalan' => $dataPenjadwalanNeuroFuzzy
-        // // ]);
+        // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
+        $jumlahHari = count($dataPenjadwalanGenetika[0]['dataPiket']);
+        // dump($jumlahHari);
+        return view('content.genetika.view-data-genetika-tanggal-buat', [
+            'jumlahHari' => $jumlahHari,
+            'dataPenjadwalan' => $dataPenjadwalanGenetika
+        ]);
     }
 
     // untuk menghapus data penjadwalan
     public function deleteDataPenjadwalanByTanggalPembuatanJadwalGenetika($dataTanggalPembuatanJadwal)
     {
-        // // dump($dataTanggalPembuatanJadwal);
+        // dump($dataTanggalPembuatanJadwal);
 
-        // $dataPenjadwalanCari = AdminModel::deleteDataPenjadwalanNeuroFuzzy($dataTanggalPembuatanJadwal);
-        // // dump($dataPenjadwalanCari);
-        // if ($dataPenjadwalanCari) {
+        $dataPenjadwalanCari = AdminModel::deleteDataPenjadwalanGenetika($dataTanggalPembuatanJadwal);
+        // dump($dataPenjadwalanCari);
+        if ($dataPenjadwalanCari) {
 
-        //     alert()->success('Hapus Berhasil', 'Data Telah Berhasil Dihapus');
-        // } else {
-        //     alert()->error('Oops', 'Data Tidak Ditemukan');
-        // }
-        // return redirect()->route('view-data-algoritma-neuro-fuzzy');
+            alert()->success('Hapus Berhasil', 'Data Telah Berhasil Dihapus');
+        } else {
+            alert()->error('Oops', 'Data Tidak Ditemukan');
+        }
+        return redirect()->route('view-data-algoritma-genetika');
     }
 
     // untuk edit data penjadwalan
