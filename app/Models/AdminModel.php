@@ -869,13 +869,11 @@ class AdminModel extends Model
     }
 
     // hapus data piket
-    public static function deleteDataPenjadwalanGenetika($dataPenjadwalanNeuroFuzzy)
+    public static function deleteDataPenjadwalanGenetika($dataPenjadwalanGenetika)
     {
-        // dump($dataPenjadwalanNeuroFuzzy);
-        // $dataPenjadwalanCari = AdminModel::getDataPenjadwalanNeuroFuzzyByTanggalPembuatan($dataPenjadwalanNeuroFuzzy);
-        // dump($dataPenjadwalanCari);
-        $hasilDeleteDataPenjadwalan = DB::table('penjadwalan_neuro_fuzzy')
-            ->where('tanggal_pembuatan_jadwal', $dataPenjadwalanNeuroFuzzy)
+        // dump($dataPenjadwalanGenetika);
+        $hasilDeleteDataPenjadwalan = DB::table('penjadwalan_genetikas')
+            ->where('tanggal_pembuatan_jadwal', $dataPenjadwalanGenetika)
             ->delete();
 
         return $hasilDeleteDataPenjadwalan;
@@ -987,7 +985,8 @@ class AdminModel extends Model
                 'idPenjadwalanGenetika' => '',
                 'idPiket' => '',
                 'kodePiket' => '',
-                'tanggalPenjadwalan' => ''
+                'tanggalPenjadwalan' => '',
+                'nilaiFitness' => ''
             ];
         }
 
@@ -1002,14 +1001,14 @@ class AdminModel extends Model
         $jumlahDataPenjadwalanDatabase = count($dataPenjadwalanDatabase);
         // dump($jumlahDataPenjadwalanDatabase);
 
-        // for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
-        //     $dataBaru[$k] = DB::table('pikets')
-        //         ->where('id_piket', $dataPenjadwalanDatabase[$k]->id_piket)
-        //         ->limit(1)
-        //         ->get();
+        for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+            $dataBaru[$k] = DB::table('pikets')
+                ->where('id_piket', $dataPenjadwalanDatabase[$k]->id_piket)
+                ->limit(1)
+                ->get();
 
-        //         $dataPenjadwalanDatabase[$k]->kode_piket = $dataBaru[$k][0]->kode_piket;
-        // }
+            $dataPenjadwalanDatabase[$k]->kode_piket = $dataBaru[$k][0]->kode_piket;
+        }
 
         // dump($dataPenjadwalanDatabase);
 
@@ -1031,11 +1030,13 @@ class AdminModel extends Model
                         $pisahTanggal = explode('-', $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan);
                         $hasilTanggal = intval($pisahTanggal[2]);
                         if ($dataPenjadwalanDatabase[$k]->tanggal_penjadwalan !== "0000-00-00") {
-                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPenjadwalanNeuroFuzzy'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_neuro_fuzzy;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPenjadwalanGenetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_genetikas;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPiket'] = $dataPenjadwalanDatabase[$k]->id_piket;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['kodePiket'] = $dataPenjadwalanDatabase[$k]->kode_piket;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['nilaiFitness'] = $dataPenjadwalanDatabase[$k]->nilai_fitness;
                         }
+
                     }
                 }
             }
@@ -1047,10 +1048,10 @@ class AdminModel extends Model
                 for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
                     if ($dataPenjadwalan[$i]['idPegawai'] === $dataPenjadwalanDatabase[$k]->id_pegawai) {
                         if (
-                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanNeuroFuzzy'] === ''
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] === ''
                             && $dataPenjadwalanDatabase[$k]->kode_piket === ''
                         ) {
-                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanNeuroFuzzy'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_neuro_fuzzy;
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_genetikas;
                         }
                     }
                 }
