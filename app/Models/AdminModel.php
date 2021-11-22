@@ -233,22 +233,39 @@ class AdminModel extends Model
         $jumlahData = count($dataPenjadwalanMemetika);
         // dump($jumlahData);
         // ambil data tanggal dari database berdasarkan tanggal pembuatan
+        // dump($dataPenjadwalanMemetika);
 
-        for ($i = 0; $i < $jumlahData; $i++) {
-            $dataTanggalPenjadwalan[$i] = DB::table('penjadwalan_memetika')->where('tanggal_pembuatan_jadwal', $dataPenjadwalanMemetika[$i]->tanggal_pembuatan_jadwal)->first();
-            // $dataTanggalPenjadwalan[$i]->tanggal_pecah = explode('-', $dataTanggalPenjadwalan[$i]->tanggal_penjadwalan);
-            $dataTanggalPenjadwalan[$i]->tanggal = date("F Y", strtotime($dataTanggalPenjadwalan[$i]->tanggal_penjadwalan));
-            // date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal))
+        // cek data apakah data penjadwalan kosong atau tidak
+        // echo $dataPenjadwalanMemetika->isEmpty();
+        if ($dataPenjadwalanMemetika->isEmpty()) {
+            $dataTanggalPenjadwalan = $dataPenjadwalanMemetika;
+        } else {
+            for ($i = 0; $i < $jumlahData; $i++) {
+                $dataTanggalPenjadwalan[$i] = DB::table('penjadwalan_memetika')->where('tanggal_pembuatan_jadwal', $dataPenjadwalanMemetika[$i]->tanggal_pembuatan_jadwal)->first();
+                // $dataTanggalPenjadwalan[$i]->tanggal_pecah = explode('-', $dataTanggalPenjadwalan[$i]->tanggal_penjadwalan);
+                $dataTanggalPenjadwalan[$i]->tanggal = date("F Y", strtotime($dataTanggalPenjadwalan[$i]->tanggal_penjadwalan));
+                // date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal))
+            }
         }
+        // dump($dataPenjadwalanMemetikaArray);|
+        // echo isset($dataPenjadwalanMemetikaArray);
+        // if (isset($dataPenjadwalanMemetikaArray)) {
+        //     // do something
+        //     echo "ini kosong loh";
+        // } else {
+        //     echo "ini kosong";
+        // }
 
-        // dump($dataTanggalPenjadwalan);
-        // $user = DB::table('users')->where('name', 'John')->first();
-        // dump($dataPenjadwalanNeuroFuzzy);
-        // echo gettype($dataPenjadwalanNeuroFuzzy);
+
+
+        // // dump($dataTanggalPenjadwalan);
+        // // $user = DB::table('users')->where('name', 'John')->first();
+        // // dump($dataPenjadwalanNeuroFuzzy);
+        // // echo gettype($dataPenjadwalanNeuroFuzzy);
 
         return $dataTanggalPenjadwalan;
 
-        // return $dataTanggalPembuatan;
+        // // return $dataTanggalPembuatan;
     }
 
     // lihat data penjadwalan piket base on tanggal pembuatan
@@ -469,10 +486,11 @@ class AdminModel extends Model
                     $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
                         // 'id_penjadwalan_memetika' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
-                        'id_piket' => 37,
+                        'id_piket' => $dataPiketUnique[14]->id_piket,
                         'kode_piket' => '',
                         'tanggal_penjadwalan' => "0000-00-00",
                         'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
+
                     ]);
                 } else {
                     $insertDataDatabase = DB::table('penjadwalan_memetika')->insert([
@@ -481,7 +499,8 @@ class AdminModel extends Model
                         'id_piket' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPiket'],
                         'kode_piket' => $dataPiket[0]->kode_piket,
                         'tanggal_penjadwalan' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket'],
-                        'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
+                        'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru,
+                        'nilai_fitness' => $dataPenjadwalan[$i]['dataPiket'][$j]['nilaiFitness']
                     ]);
                 }
             }
@@ -789,12 +808,17 @@ class AdminModel extends Model
         // dump($jumlahData);
         // ambil data tanggal dari database berdasarkan tanggal pembuatan
 
-        for ($i = 0; $i < $jumlahData; $i++) {
-            $dataTanggalPenjadwalan[$i] = DB::table('penjadwalan_genetikas')->where('tanggal_pembuatan_jadwal', $dataPenjadwalanGenetika[$i]->tanggal_pembuatan_jadwal)->first();
-            // $dataTanggalPenjadwalan[$i]->tanggal_pecah = explode('-', $dataTanggalPenjadwalan[$i]->tanggal_penjadwalan);
-            $dataTanggalPenjadwalan[$i]->tanggal = date("F Y", strtotime($dataTanggalPenjadwalan[$i]->tanggal_penjadwalan));
-            // date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal))
+        if ($dataPenjadwalanGenetika->isEmpty()) {
+            $dataTanggalPenjadwalan = $dataPenjadwalanGenetika;
+        } else {
+            for ($i = 0; $i < $jumlahData; $i++) {
+                $dataTanggalPenjadwalan[$i] = DB::table('penjadwalan_genetikas')->where('tanggal_pembuatan_jadwal', $dataPenjadwalanGenetika[$i]->tanggal_pembuatan_jadwal)->first();
+                // $dataTanggalPenjadwalan[$i]->tanggal_pecah = explode('-', $dataTanggalPenjadwalan[$i]->tanggal_penjadwalan);
+                $dataTanggalPenjadwalan[$i]->tanggal = date("F Y", strtotime($dataTanggalPenjadwalan[$i]->tanggal_penjadwalan));
+                // date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal))
+            }
         }
+
 
         // dump($dataTanggalPenjadwalan);
         // $user = DB::table('users')->where('name', 'John')->first();
@@ -923,7 +947,7 @@ class AdminModel extends Model
                     $insertDataDatabase = DB::table('penjadwalan_genetikas')->insert([
                         // 'id_penjadwalan_neuro_fuzzy' => '',
                         'id_pegawai' => $dataPenjadwalan[$i]['idPegawai'],
-                        'id_piket' => 37,
+                        'id_piket' => $dataPiketUnique[0]->id_piket,
                         'kode_piket' => '',
                         'nilai_fitness' => '',
                         'tanggal_penjadwalan' => "0000-00-00",
@@ -937,7 +961,8 @@ class AdminModel extends Model
                         'kode_piket' => $dataPiket[0]->kode_piket,
                         'nilai_fitness' => $dataPenjadwalan[$i]['dataPiket'][$j]['nilaiFitness'],
                         'tanggal_penjadwalan' => $dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPiket'],
-                        'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru
+                        'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru,
+                        'nilai_fitness' => $dataPenjadwalan[$i]['dataPiket'][$j]['nilaiFitness']
                     ]);
                 }
             }
@@ -1036,7 +1061,6 @@ class AdminModel extends Model
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['nilaiFitness'] = $dataPenjadwalanDatabase[$k]->nilai_fitness;
                         }
-
                     }
                 }
             }
