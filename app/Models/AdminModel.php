@@ -436,7 +436,7 @@ class AdminModel extends Model
 
 
     // simpan data penjadwalan ke database
-    public static function simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan)
+    public static function  simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan)
     {
         // dump($dataPenjadwalan);
         $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
