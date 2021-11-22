@@ -22,6 +22,7 @@ class CreatePenjadwalanMemetika extends Migration
             $table->dateTime('tanggal_pembuatan_jadwal');
             $table->foreign('id_pegawai')->references('id_pegawai')->on('pegawais');
             $table->foreign('id_piket')->references('id_piket')->on('pikets');
+            $table->string('nilai_fitness');
         });
     }
 
