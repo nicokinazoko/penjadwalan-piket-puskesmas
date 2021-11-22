@@ -76,12 +76,15 @@
                                                 <td>{{ $dataPegawai->nama_jenis_kelamin }}</td>
                                                 <td>{{ $dataPegawai->nama_jabatan }}</td>
                                                 <td>
-                                                    <a
-                                                        href="{{ route('pegawai-edit-data-by-id', ['id_pegawai' => $dataPegawai->id_pegawai]) }}"><i
-                                                            class="fas fa-edit"></i></a>
-                                                    <a
-                                                        href="{{ route('pegawai-delete-data', ['id_pegawai' => $dataPegawai->id_pegawai]) }}"><i
-                                                            class="fas fa-trash-alt"></i></a>
+                                                    <center>
+                                                        <a
+                                                            href="{{ route('pegawai-edit-data-by-id', ['id_pegawai' => $dataPegawai->id_pegawai]) }}"><i
+                                                                class="fas fa-edit"></i></a>
+                                                        <a
+                                                            href="{{ route('pegawai-delete-data', ['id_pegawai' => $dataPegawai->id_pegawai]) }}"><i
+                                                                class="fas fa-trash-alt"></i></a>
+                                                    </center>
+
                                                 </td>
                                             </tr>
 

@@ -15,11 +15,11 @@
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             <li class="breadcrumb-item active"><a href="{{ route('view-data-algoritma-memetika') }}">
-                                    Algoritma Memetika</a>
+                                    Algoritma Neuro Fuzzy</a>
                             </li>
                             <li class="breadcrumb-item active"><a
                                     href="{{ route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $dataPenjadwalan[0]->tanggal_pembuatan_jadwal]) }}">Lihat
-                                    Data Algoritma Memetika</a>
+                                    Data Algoritma Neuro Fuzzy</a>
                             </li>
                             <li class="breadcrumb-item active">{{ $dataPegawai[0]->nama_pegawai }}</li>
                         </ol>
@@ -34,18 +34,18 @@
                 {{-- form --}}
                 <div class="card card-default">
                     <div class="card-header">
-                        <h3 class="card-title">Data Penjadwalan Algoritma Memetika</h3>
+                        <h3 class="card-title">Data Penjadwalan Algoritma Neuro Fuzzy</h3>
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
                     <form
-                        action="{{ route('edit-data-penjadwalan-algoritma-memetika-proses', ['id_penjadwalan_memetika' => $dataPenjadwalan[0]->id_penjadwalan_memetika]) }}"
+                        action="{{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy-proses', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[0]->id_penjadwalan_neuro_fuzzy]) }}"
                         method="POST">
                         @method('PATCH')
                         @csrf
                         <div class="card-body">
                             <input type="hidden" class="form-control" id="inputNamaPegawai" placeholder="Nama Pegawai"
-                                name="inputIdPenjadwalan" value="{{ $dataPenjadwalan[0]->id_penjadwalan_memetika }}"
+                                name="inputIdPenjadwalan" value="{{ $dataPenjadwalan[0]->id_penjadwalan_neuro_fuzzy }}"
                                 readonly>
                             <div class="form-group">
                                 <label for="inputIdPegawai">Nama Pegawai</label>

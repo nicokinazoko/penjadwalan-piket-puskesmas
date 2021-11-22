@@ -1,6 +1,6 @@
 @extends('master.master')
 
-@section('title', 'SPP | Proses Algoritma Memetika')
+@section('title', 'SPP | Proses Algoritma Neuro Fuzzy')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -9,14 +9,15 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Hasil Algoritma Memetika</h1>
-                        {{-- <h1>{{print_r($dataPenjadwalan[0]['dataPiket'][31])}}</h1> --}}
+                        <h1>Hasil Algoritma Neuro Fuzzy</h1>
+                        <h1>Bulan {{ date('F Y', strtotime($dataPenjadwalan[0]['dataPiket'][0]['tanggalPenjadwalan'])) }}
+                        </h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             {{-- <li class="breadcrumb-item"><a href="{{ route('piket-view-data') }}">Data Piket</a></li> --}}
-                            <li class="breadcrumb-item active">Algoritma Memetika</li>
+                            <li class="breadcrumb-item active">Algoritma Neuro Fuzzy</li>
                         </ol>
                     </div>
                 </div>
@@ -30,7 +31,7 @@
 
                 <div class="card">
                     <div class="card-header d-flex p-0">
-                        <h3 class="card-title p-3">Hasil Proses Algoritma Memetika</h3>
+                        <h3 class="card-title p-3">Hasil Proses Algoritma Neuro Fuzzy</h3>
                         <ul class="nav nav-pills ml-auto p-2">
                             <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Hasil</a>
                             </li>
@@ -56,12 +57,10 @@
                                         <tr>
                                             <td>{{ $dataPenjadwalan[$i]['namaPegawai'] }}</td>
                                             @for ($j = 0; $j < $jumlahHari; $j++)
-
+                                                {{-- {{  }} --}}
                                                 <td>
-                                                    {{-- {{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'], 'tanggal_piket' => $j + 1]) }} --}}
-
                                                     <a
-                                                        href="http://127.0.0.1:8000/algoritma/memetika/edit-data/{{ $j + 1 }}/{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanMemetika'] }}">
+                                                        href="{{ route('edit-data-penjadwalan-algoritma-neuro-fuzzy', ['id_penjadwalan_neuro_fuzzy' => $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanNeuroFuzzy'], 'tanggal_piket' => $j + 1]) }}">
                                                         @if (date('l', strtotime($dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'])) === 'Sunday')
 
                                                             Libur
@@ -73,12 +72,12 @@
                                                     </a>
                                                 </td>
 
-                                                @endif
-                                                </td>
-                                            @endfor
+                                            @endif
+                                            </td>
+                                    @endfor
 
 
-                                        </tr>
+                                    </tr>
                                     @endfor
 
 

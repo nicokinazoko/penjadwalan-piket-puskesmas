@@ -1,6 +1,6 @@
 @extends('master.master')
 
-@section('title', 'SPP | Proses Algoritma Memetika')
+@section('title', 'SPP | Proses Algoritma Genetika')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -9,14 +9,14 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Hasil Algoritma Memetika</h1>
-                        <h1>Bulan {{$dataTanggal['namaBulan'] . ' ' . $dataTanggal['tahun']}}</h1>
+                        <h1>Hasil Algoritma Genetika</h1>
+                        <h1>Bulan {{ $dataTanggal['namaBulan'] . ' ' . $dataTanggal['tahun'] }}</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             {{-- <li class="breadcrumb-item"><a href="{{ route('piket-view-data') }}">Data Piket</a></li> --}}
-                            <li class="breadcrumb-item active">Algoritma Memetika</li>
+                            <li class="breadcrumb-item active">Algoritma Genetika</li>
                         </ol>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
 
                 <div class="card">
                     <div class="card-header d-flex p-0">
-                        <h3 class="card-title p-3">Hasil Proses Algoritma Memetika</h3>
+                        <h3 class="card-title p-3">Hasil Proses Algoritma Genetika</h3>
                         <ul class="nav nav-pills ml-auto p-2">
                             <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Hasil</a>
                             </li>
@@ -48,17 +48,14 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab_1">
-                                <form action="{{ route('proses-simpan-data-algoritma-memetika') }}" method="POST">
+                                <form action="{{ route('proses-simpan-data-algoritma-genetika') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="dataJadwal" value="{{ serialize($jadwalAkhir) }}">
 
-                                    <a class="btn btn-app">
-                                        <i class="fas fa-save">
-                                            <button type="submit">
-                                                Simpan Data</button></i> Save
-                                    </a>
-
-
+                                    <button type="submit" class="btn btn-primary btn-lg"> Simpan Data
+                                    </button>
+                                    <br>
+                                    <br>
                                 </form>
 
                                 <table id="example1" class="table table-bordered table-striped">

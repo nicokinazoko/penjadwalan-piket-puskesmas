@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePenjadwalanNeuroFuzzy extends Migration
+class CreatePenjadwalanGenetikasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class CreatePenjadwalanNeuroFuzzy extends Migration
      */
     public function up()
     {
-        Schema::create('penjadwalan_neuro_fuzzy', function (Blueprint $table) {
-            $table->id('id_penjadwalan_neuro_fuzzy');
+        Schema::create('penjadwalan_genetikas', function (Blueprint $table) {
+            $table->id('id_penjadwalan_genetikas');
             $table->unsignedBigInteger('id_pegawai');
             $table->unsignedBigInteger('id_piket');
             $table->string('kode_piket');
@@ -33,6 +33,6 @@ class CreatePenjadwalanNeuroFuzzy extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('penjadwalan_neuro_fuzzy');
+        Schema::dropIfExists('penjadwalan_genetikas');
     }
 }

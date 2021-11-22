@@ -1,6 +1,6 @@
 @extends('master.master')
 
-@section('title', 'SPP | Lihat Data Penjadwalan Algoritma Memetika')
+@section('title', 'SPP | Lihat Data Penjadwalan Algoritma Neuro Fuzzy')
 @section('content')
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -9,16 +9,16 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Hasil Algoritma Memetika</h1>
+                        <h1>Hasil Algoritma Neuro Fuzzy</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
                             {{-- <li class="breadcrumb-item"><a href="{{ route('piket-view-data') }}">Data Piket</a></li> --}}
                             <li class="breadcrumb-item active"><a href="{{ route('view-memetika') }}">Algoritma
-                                    Memetika</a>
+                                    Neuro Fuzzy</a>
                             </li>
-                            <li class="breadcrumb-item active">View Data Algoritma Memetika</li>
+                            <li class="breadcrumb-item active">View Data Algoritma Neuro Fuzzy</li>
                         </ol>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                 {{-- form --}}
                 <div class="card">
                     <div class="card-header d-flex p-0">
-                        <h3 class="card-title p-3">Hasil Proses Algoritma Memetika</h3>
+                        <h3 class="card-title p-3">Hasil Proses Algoritma Neuro Fuzzy</h3>
                         <ul class="nav nav-pills ml-auto p-2">
                             <li class="nav-item"><a class="nav-link active" href="#tab_1" data-toggle="tab">Hasil</a>
                             </li>
@@ -67,15 +67,14 @@
                                                 <td>{{ date('F Y', strtotime($dataTanggalPembuatanJadwal->tanggal)) }}
                                                 </td>
                                                 <td><a
-                                                        href="{{ route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}">
+                                                        href="{{ route('view-data-penjadwalan-algoritma-neuro-fuzzy', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}">
                                                         {{ date('d F Y H:i:s', strtotime($dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal)) }}
                                                     </a>
                                                 </td>
                                                 <td>
                                                     <center>
-
                                                         <a
-                                                            href="{{ route('delete-data-penjadwalan-memetika', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}"><i
+                                                            href="{{ route('delete-data-penjadwalan-neuro-fuzzy', ['tanggal_pembuatan' => $dataTanggalPembuatanJadwal->tanggal_pembuatan_jadwal]) }}"><i
                                                                 class="fas fa-trash-alt"></i></a>
                                                     </center>
                                                 </td>

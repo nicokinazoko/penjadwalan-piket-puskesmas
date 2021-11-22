@@ -7,6 +7,8 @@ use App\Models\AdminModel;
 use DateTime;
 use RealRashid\SweetAlert\Facades\Alert;
 
+ini_set('max_execution_time', 1800);
+
 class AdminController extends Controller
 {
     // untuk lihat dashboard utama
@@ -321,6 +323,7 @@ class AdminController extends Controller
 
         // simpan data pegawai unique
         $dataPegawaiUnique = $hasilAlgoritmaMemetika['dataPegawai'];
+        // dump($dataPegawaiUnique);
 
         // simpan data jumlah pegawai
         $jumlahPegawaiUnique = count($dataPegawaiUnique);
@@ -329,6 +332,7 @@ class AdminController extends Controller
         // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
         return view('content.memetic.hasil-memetic', [
             'jumlahHari' => $jumlahHari,
+            'dataTanggal' => $dataTanggal,
             'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
             'dataPegawai' => $dataPegawaiUnique,
             'populasiAwal' => $populasiAwal,
@@ -362,6 +366,7 @@ class AdminController extends Controller
         // dump($dataPenjadwalan);
 
         $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
         return redirect()->route('view-data-algoritma-memetika');
     }
 
@@ -415,6 +420,21 @@ class AdminController extends Controller
     }
 
 
+    // hapus data penjadwalan memetika
+    public function deleteDataPenjadwalanMemetikaByTanggalPembuatanJadwal($tanggalPembuatan)
+    {
+        // dump($tanggalPembuatan);
+
+        $hapusDataPenjadwalan = AdminModel::deleteDataPenjadwalanMemetika($tanggalPembuatan);
+        // dump($dataPenjadwalanCari);
+        if ($hapusDataPenjadwalan) {
+            alert()->success('Hapus Berhasil', 'Data Telah Berhasil Dihapus');
+        } else {
+            alert()->error('Oops', 'Data Tidak Ditemukan');
+        }
+        return redirect()->route('view-data-algoritma-memetika');
+    }
+
     // ===================== Algoritma Neuro Fuzzy =====================
     // untuk melihat menu algoritma neuro fuzzy
     public function viewAlgoritmaNeuroFuzzy()
@@ -424,15 +444,354 @@ class AdminController extends Controller
     }
 
 
+    // untuk lihat data penjadwalan
+    public function viewDataHasilAlgoritmaNeuroFuzzy()
+    {
+        $dataPenjadwalan = AdminModel::getAllDataPenjadwalanNeuroFuzzy();
+        // dump($dataPenjadwalan);
+        return view('content.neuro-fuzzy.view-data-neuro-fuzzy', ['dataPembuatanJadwal' => $dataPenjadwalan]);
+    }
+
+
+
+    // --------- Ada error di bagian penjadwalan
+    // nanti coba di cek lagi
     public function prosesAlgoritmaNeuroFuzzy(Request $dataNeuroFuzzy)
     {
-
         // mengambil semua data dari input
         $dataNeuroFuzzyAll = $dataNeuroFuzzy->all();
-        // dump($dataNeuroFuzzy);
+        // dump($dataNeuroFuzzyAll);
+
+        // // lakukan proses algoritma memetika
+        // $hasilAlgoritmaMemetika = AdminModel::prosesMemetika($dataMemetikaAll);
+        $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesNeuroFuzzy($dataNeuroFuzzyAll);
+        // dump($hasilAlgoritmaNeuroFuzzy);
+        // // ['piket' => $dataPiket, 'dataTotal' => $dataTotal]
 
 
-        // proses algoritma neuro fuzzy
-        $hasilAlgoritmaNeuroFuzzy = AdminModel::prosesMemetika($dataNeuroFuzzyAll);
+        // simpan data tanggal
+        $dataTanggal = $hasilAlgoritmaNeuroFuzzy['dataTanggal'];
+        // dump($dataTanggal);
+
+
+        // simpan data populasi awal sebagai perbandingan
+        $populasiAwal = $hasilAlgoritmaNeuroFuzzy['populasiAwal'];
+        // dump($populasiAwal);
+
+        // ini buat biar data duplicate ilang
+        // $unique_multi_dimension = array_map("unserialize", array_unique(array_map("serialize", $populasiAwal)));
+        // dump($unique_multi_dimension);
+
+        // simpan data populasi akhir sebagai perbandingan
+        $populasiAkhir = $hasilAlgoritmaNeuroFuzzy['populasiAkhir'];
+        // dump($populasiAkhir);
+
+        // simpan data fitness di populasi awal
+        $fitnessPopulasiAwal = $hasilAlgoritmaNeuroFuzzy['totalKromosomPopulasiAwal'];
+        // dump($fitnessPopulasiAwal);
+
+        // simpan data tanggal
+        $dataTanggal = $hasilAlgoritmaNeuroFuzzy['dataTanggal'];
+        // dump($dataTanggal);
+
+        // // ambil jumlah hari total
+        $jumlahHari = $hasilAlgoritmaNeuroFuzzy['jumlahHari'];
+        // dump($jumlahHari);
+
+        // simpan data fitness di populasi akhir
+        $fitnessPopulasiAkhir = $hasilAlgoritmaNeuroFuzzy['totalKromosomPopulasiAkhir'];
+        // dump($fitnessPopulasiAkhir);
+
+        // simpan data hasil akhir perhitungan yang akan digunakan sebagai jadwal asli
+        $jadwalAkhir = $hasilAlgoritmaNeuroFuzzy['populasiAkhirPerhitungan'];
+        // dump($jadwalAkhir);
+
+
+
+        // simpan data pegawai unique
+        $dataPegawaiUnique = $hasilAlgoritmaNeuroFuzzy['dataPegawai'];
+        // dump($dataPegawaiUnique);
+
+        // simpan data jumlah pegawai
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
+
+
+        return view('content.neuro-fuzzy.hasil-neuro-fuzzy', [
+            'dataTanggal' => $dataTanggal,
+            'jumlahHari' => $jumlahHari,
+            'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
+            'dataPegawai' => $dataPegawaiUnique,
+            'populasiAwal' => $populasiAwal,
+            'populasiAkhir' => $populasiAkhir,
+            'jadwalAkhir' => $jadwalAkhir,
+            'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
+            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
+        ]);
+    }
+
+    public function prosesSimpanHasilPenjadwalanNeuroFuzzy(Request $dataPenjadwalanNeuroFuzzy)
+    {
+        // dump($dataPenjadwalanMemetika->all());
+        $hasilData = $dataPenjadwalanNeuroFuzzy->all();
+        // dump($hasilData);
+        $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
+        // dump($dataPenjadwalan);
+
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseNeuroFuzzy($dataPenjadwalan);
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        return redirect()->route('view-data-algoritma-neuro-fuzzy');
+    }
+
+    // untuk lihat data penjadwalan berdasarkan tanggal pembuatan jadwal
+    public static function getDataPenjadwalanByTanggalPembuatanNeuroFuzzy($tanggalPembuatan)
+    {
+        $dataPenjadwalanNeuroFuzzy = AdminModel::getDataPenjadwalanNeuroFuzzyByTanggalPembuatanHasil($tanggalPembuatan);
+        // dump($dataPenjadwalanNeuroFuzzy);
+
+        // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
+        $jumlahHari = count($dataPenjadwalanNeuroFuzzy[0]['dataPiket']);
+        // dump($jumlahHari);
+        return view('content.neuro-fuzzy.view-data-neuro-fuzzy-tanggal-buat', [
+            'jumlahHari' => $jumlahHari,
+            'dataPenjadwalan' => $dataPenjadwalanNeuroFuzzy
+        ]);
+    }
+
+    // untuk menghapus data penjadwalan
+    public function deleteDataPenjadwalanByTanggalPembuatanJadwal($dataTanggalPembuatanJadwal)
+    {
+        // dump($dataTanggalPembuatanJadwal);
+
+        $dataPenjadwalanCari = AdminModel::deleteDataPenjadwalanNeuroFuzzy($dataTanggalPembuatanJadwal);
+        // dump($dataPenjadwalanCari);
+        if ($dataPenjadwalanCari) {
+
+            alert()->success('Hapus Berhasil', 'Data Telah Berhasil Dihapus');
+        } else {
+            alert()->error('Oops', 'Data Tidak Ditemukan');
+        }
+        return redirect()->route('view-data-algoritma-neuro-fuzzy');
+    }
+
+    // untuk edit data penjadwalan
+    public static function editDataPenjadwalanByIdPenjadwalanNeuroFuzzy($tanggalPenjadwalan, $idPenjadwalan)
+    {
+        // dump($tanggalPenjadwalan, $idPenjadwalan);
+
+        $editDataPenjadwalan = AdminModel::editDataPenjadwalanNeuroFuzzy($idPenjadwalan, $tanggalPenjadwalan);
+        // dump($editDataPenjadwalan);
+
+        $dataPiketUnique = AdminModel::getAllDataPiketUnique();
+        // dump($dataPiketUnique);
+
+        $jumlahDataPiketUnique = count($dataPiketUnique);
+        // dump($jumlahDataPiketUnique);
+
+        $dataPegawai = AdminModel::getDataPegawaiById($editDataPenjadwalan[0]->id_pegawai);
+        // dump($dataPegawai);
+
+        return view('content.neuro-fuzzy.form-edit-neuro-fuzzy', [
+            'dataPiket' => $dataPiketUnique,
+            'dataPenjadwalan' => $editDataPenjadwalan,
+            'dataPegawai' => $dataPegawai,
+            'jumlahDataPiket' => $jumlahDataPiketUnique
+        ]);
+    }
+
+    public function prosesEditDataPenjadwalanByIdPenjadwalanNeuroFuzzy(Request $dataPenjadwalanNeuroFuzzy)
+    {
+        $dataPenjadwalan = $dataPenjadwalanNeuroFuzzy->all();
+        $hasilEditDataPenjadwalanNeuroFuzzy = AdminModel::editDataPenjadwalanNeuroFuzzyByIdProses($dataPenjadwalan);
+        // dump($hasilEditDataPenjadwalanNeuroFuzzy);
+
+
+        alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
+
+        return redirect()->route('view-data-penjadwalan-algoritma-neuro-fuzzy', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanNeuroFuzzy[0]->tanggal_pembuatan_jadwal]);
+    }
+
+
+
+    // ===================== Algoritma Genetika =====================
+
+    public function viewAlgoritmaGenetika()
+    {
+        // $dataPegawai = AdminModel::getAllDataPegawai();
+        // return view('content.genetika.genetika', ['pegawai' => $dataPegawai]);
+        return view('content.genetika.genetika');
+    }
+
+
+    // untuk lihat data penjadwalan
+    public function viewDataHasilAlgoritmaGenetika()
+    {
+        $dataPenjadwalan = AdminModel::getAllDataPenjadwalanGenetika();
+        // dump($dataPenjadwalan);
+        return view('content.genetika.view-data-genetika', ['dataPembuatanJadwal' => $dataPenjadwalan]);
+    }
+
+
+
+    // --------- Ada error di bagian penjadwalan
+    // nanti coba di cek lagi
+    public function prosesAlgoritmaGenetika(Request $dataGenetika)
+    {
+        // mengambil semua data dari input
+        $dataGenetikaAll = $dataGenetika->all();
+        // dump($dataGenetikaAll);
+
+        // lakukan proses algoritma memetika
+        // $hasilAlgoritmaMemetika = AdminModel::prosesMemetika($dataMemetikaAll);
+        $hasilAlgoritmaGenetika = AdminModel::prosesGenetika($dataGenetikaAll);
+        // dump($hasilAlgoritmaGenetika);
+        // ['piket' => $dataPiket, 'dataTotal' => $dataTotal]
+
+
+        // simpan data tanggal
+        $dataTanggal = $hasilAlgoritmaGenetika['dataTanggal'];
+        // dump($dataTanggal);
+
+
+        // simpan data populasi awal sebagai perbandingan
+        $populasiAwal = $hasilAlgoritmaGenetika['populasiAwal'];
+        // dump($populasiAwal);
+
+        // ======= gak kepake ========
+        // ini buat biar data duplicate ilang
+        // $unique_multi_dimension = array_map("unserialize", array_unique(array_map("serialize", $populasiAwal)));
+        // dump($unique_multi_dimension);
+
+        // simpan data populasi akhir sebagai perbandingan
+        $populasiAkhir = $hasilAlgoritmaGenetika['populasiAkhir'];
+        // dump($populasiAkhir);
+
+        // simpan data fitness di populasi awal
+        $fitnessPopulasiAwal = $hasilAlgoritmaGenetika['totalKromosomPopulasiAwal'];
+        // dump($fitnessPopulasiAwal);
+
+        // simpan data tanggal
+        $dataTanggal = $hasilAlgoritmaGenetika['dataTanggal'];
+        // dump($dataTanggal);
+
+        // // ambil jumlah hari total
+        $jumlahHari = $hasilAlgoritmaGenetika['jumlahHari'];
+        // dump($jumlahHari);
+
+        // simpan data fitness di populasi akhir
+        $fitnessPopulasiAkhir = $hasilAlgoritmaGenetika['totalKromosomPopulasiAkhir'];
+        // dump($fitnessPopulasiAkhir);
+
+        // simpan data hasil akhir perhitungan yang akan digunakan sebagai jadwal asli
+        $jadwalAkhir = $hasilAlgoritmaGenetika['populasiAkhirPerhitungan'];
+        // dump($jadwalAkhir);
+
+
+
+        // simpan data pegawai unique
+        $dataPegawaiUnique = $hasilAlgoritmaGenetika['dataPegawai'];
+        // dump($dataPegawaiUnique);
+
+        // simpan data jumlah pegawai
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        // // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
+
+
+        return view('content.genetika.hasil-genetika', [
+            'dataTanggal' => $dataTanggal,
+            'jumlahHari' => $jumlahHari,
+            'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
+            'dataPegawai' => $dataPegawaiUnique,
+            'populasiAwal' => $populasiAwal,
+            'populasiAkhir' => $populasiAkhir,
+            'jadwalAkhir' => $jadwalAkhir,
+            'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
+            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
+        ]);
+    }
+
+    public function prosesSimpanHasilPenjadwalanGenetika(Request $dataPenjadwalanGenetika)
+    {
+        // dump($dataPenjadwalanGenetika->all());
+        $hasilData = $dataPenjadwalanGenetika->all();
+        // dump($hasilData);
+        $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
+        // dump($dataPenjadwalan);
+
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan);
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        return redirect()->route('view-data-algoritma-genetika');
+    }
+
+    // untuk lihat data penjadwalan berdasarkan tanggal pembuatan jadwal
+    public static function getDataPenjadwalanByTanggalPembuatanGenetika($tanggalPembuatan)
+    {
+        $dataPenjadwalanGenetika = AdminModel::getDataPenjadwalanGenetikaByTanggalPembuatanHasil($tanggalPembuatan);
+        // dump($dataPenjadwalanGenetika);
+
+        // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
+        $jumlahHari = count($dataPenjadwalanGenetika[0]['dataPiket']);
+        // dump($jumlahHari);
+        return view('content.genetika.view-data-genetika-tanggal-buat', [
+            'jumlahHari' => $jumlahHari,
+            'dataPenjadwalan' => $dataPenjadwalanGenetika
+        ]);
+    }
+
+    // untuk menghapus data penjadwalan
+    public function deleteDataPenjadwalanByTanggalPembuatanJadwalGenetika($dataTanggalPembuatanJadwal)
+    {
+        // dump($dataTanggalPembuatanJadwal);
+
+        $dataPenjadwalanCari = AdminModel::deleteDataPenjadwalanGenetika($dataTanggalPembuatanJadwal);
+        // dump($dataPenjadwalanCari);
+        if ($dataPenjadwalanCari) {
+
+            alert()->success('Hapus Berhasil', 'Data Telah Berhasil Dihapus');
+        } else {
+            alert()->error('Oops', 'Data Tidak Ditemukan');
+        }
+        return redirect()->route('view-data-algoritma-genetika');
+    }
+
+    // untuk edit data penjadwalan
+    public static function editDataPenjadwalanByIdPenjadwalanGenetika($tanggalPenjadwalan, $idPenjadwalan)
+    {
+        // // dump($tanggalPenjadwalan, $idPenjadwalan);
+
+        // $editDataPenjadwalan = AdminModel::editDataPenjadwalanNeuroFuzzy($idPenjadwalan, $tanggalPenjadwalan);
+        // // dump($editDataPenjadwalan);
+
+        // $dataPiketUnique = AdminModel::getAllDataPiketUnique();
+        // // dump($dataPiketUnique);
+
+        // $jumlahDataPiketUnique = count($dataPiketUnique);
+        // // dump($jumlahDataPiketUnique);
+
+        // $dataPegawai = AdminModel::getDataPegawaiById($editDataPenjadwalan[0]->id_pegawai);
+        // // dump($dataPegawai);
+
+        // return view('content.neuro-fuzzy.form-edit-neuro-fuzzy', [
+        //     'dataPiket' => $dataPiketUnique,
+        //     'dataPenjadwalan' => $editDataPenjadwalan,
+        //     'dataPegawai' => $dataPegawai,
+        //     'jumlahDataPiket' => $jumlahDataPiketUnique
+        // ]);
+    }
+
+    public function prosesEditDataPenjadwalanByIdPenjadwalanGenetika(Request $dataPenjadwalanNeuroFuzzy)
+    {
+        // $dataPenjadwalan = $dataPenjadwalanNeuroFuzzy->all();
+        // $hasilEditDataPenjadwalanNeuroFuzzy = AdminModel::editDataPenjadwalanNeuroFuzzyByIdProses($dataPenjadwalan);
+        // // dump($hasilEditDataPenjadwalanNeuroFuzzy);
+
+
+        // alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
+
+        // return redirect()->route('view-data-penjadwalan-algoritma-neuro-fuzzy', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanNeuroFuzzy[0]->tanggal_pembuatan_jadwal]);
     }
 }
