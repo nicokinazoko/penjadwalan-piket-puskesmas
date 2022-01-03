@@ -146,4 +146,10 @@ Route::prefix('/algoritma')->group(function () {
 
     // untuk hapus data penjadwalan neuro fuzzy
     Route::get('genetika/{tanggal_pembuatan}', [AdminController::class, 'deleteDataPenjadwalanByTanggalPembuatanJadwalGenetika'])->name('delete-data-penjadwalan-genetika');
+
+    // untuk lihat data dari tanggal piket dan tanggal penjadwalan
+    Route::get('genetika/edit-data/{tanggal_piket}/{id_penjadwalan_genetika}', [AdminController::class, 'editDataPenjadwalanByIdPenjadwalanGenetika'])->name('edit-data-penjadwalan-algoritma-genetika');
+
+    // untuk simpan data hasil edit data memetika
+    Route::patch('genetika/edit-data/{id_penjadwalan_genetika}', [AdminController::class, 'prosesEditDataPenjadwalanByIdPenjadwalanGenetika'])->name('edit-data-penjadwalan-algoritma-neuro-fuzzy-proses');
 });
