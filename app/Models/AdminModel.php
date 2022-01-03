@@ -289,7 +289,8 @@ class AdminModel extends Model
                 'idPenjadwalanMemetika' => '',
                 'idPiket' => '',
                 'kodePiket' => '',
-                'tanggalPenjadwalan' => ''
+                'tanggalPenjadwalan' => '',
+                'nilaiFitness' => ''
             ];
         }
 
@@ -347,6 +348,7 @@ class AdminModel extends Model
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPiket'] = $dataPenjadwalanDatabase[$k]->id_piket;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['kodePiket'] = $dataPenjadwalanDatabase[$k]->kode_piket;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['nilaiFitness'] = $dataPenjadwalanDatabase[$k]->nilai_fitness;
                         }
                     }
                 }
@@ -843,49 +845,49 @@ class AdminModel extends Model
 
 
     // edit data piket
-    public static function editDataPenjadwalanGenetika($idPenjadwalanNeuroFuzzy, $tanggalPenjadwalan)
+    public static function editDataPenjadwalanGenetika($idPenjadwalanGenetika, $tanggalPenjadwalan)
     {
-        // dump($idPenjadwalanMemetika, $tanggalPenjadwalan);
-        $dataPenjadwalan = DB::table('penjadwalan_neuro_fuzzy')
-            ->where('id_penjadwalan_neuro_fuzzy', $idPenjadwalanNeuroFuzzy)
+        // dump($idPenjadwalanGenetika, $tanggalPenjadwalan);
+        $dataPenjadwalan =         $dataPenjadwalan = DB::table('penjadwalan_genetikas')
+            ->where('id_penjadwalan_genetikas', $idPenjadwalanGenetika)
             ->get();
         // dump($dataPenjadwalan[0]->tanggal_pembuatan_jadwal);
         $dataJadwalDatabase = explode('-', $dataPenjadwalan[0]->tanggal_pembuatan_jadwal);
         // dump($dataJadwalDatabase);
         $dataHariBaru = $dataJadwalDatabase[0] . '-' . $dataJadwalDatabase[1] . '-' . $tanggalPenjadwalan;
         // dump($dataHariBaru);
-        $dataPenjadwalanUpdate = DB::table('penjadwalan_neuro_fuzzy')
-            ->where('id_penjadwalan_neuro_fuzzy', $idPenjadwalanNeuroFuzzy)
+        $dataPenjadwalanUpdate = DB::table('penjadwalan_genetikas')
+            ->where('id_penjadwalan_genetikas', $idPenjadwalanGenetika)
             ->update([
                 'tanggal_penjadwalan' => $dataHariBaru,
             ]);
         // dump($dataPenjadwalan);
 
-        $dataPenjadwalanHasilUpdateTanggal = DB::table('penjadwalan_neuro_fuzzy')
-            ->where('id_penjadwalan_neuro_fuzzy', $idPenjadwalanNeuroFuzzy)
+        $dataPenjadwalanHasilUpdateTanggal = DB::table('penjadwalan_genetikas')
+            ->where('id_penjadwalan_genetikas', $idPenjadwalanGenetika)
             ->get();
         return $dataPenjadwalanHasilUpdateTanggal;
     }
 
     // edit data penjadwalan base id penjadwalan Genetika
-    public static function editDataPenjadwalanGenetikayByIdProses($dataPenjadwalanNeuroFuzzy)
+    public static function editDataPenjadwalanGenetikayByIdProses($dataPenjadwalanGenetika)
     {
         // dump($dataPenjadwalanMemetika);
-        $dataPenjadwalan = DB::table('penjadwalan_neuro_fuzzy')
-            ->where('id_penjadwalan_neuro_fuzzy', $dataPenjadwalanNeuroFuzzy['inputIdPenjadwalan'])
+        $dataPenjadwalan = DB::table('penjadwalan_genetikas')
+            ->where('id_penjadwalan_genetikas', $dataPenjadwalanGenetika['inputIdPenjadwalan'])
             ->get();
         // dump($dataPenjadwalan);
 
         $dataPiket = DB::table('pikets')
-            ->where('id_piket', $dataPenjadwalanNeuroFuzzy['inputIdPiket'])
+            ->where('id_piket', $dataPenjadwalanGenetika['inputIdPiket'])
             ->get();
 
         // dump($dataPiket);
 
-        $updateDataPenjadwalan = DB::table('penjadwalan_neuro_fuzzy')
-            ->where('id_penjadwalan_neuro_fuzzy', $dataPenjadwalanNeuroFuzzy['inputIdPenjadwalan'])
+        $updateDataPenjadwalan = DB::table('penjadwalan_genetikas')
+            ->where('id_penjadwalan_genetikas', $dataPenjadwalanGenetika['inputIdPenjadwalan'])
             ->update([
-                'id_piket' => $dataPenjadwalanNeuroFuzzy['inputIdPiket'],
+                'id_piket' => $dataPenjadwalanGenetika['inputIdPiket'],
                 'kode_piket' => $dataPiket[0]->kode_piket
             ]);
 
@@ -979,7 +981,7 @@ class AdminModel extends Model
     {
         // dump($tanggalPembuatanPenjadwalan);
         $dataPenjadwalanCari = DB::table('penjadwalan_genetikas')
-            ->where('tanggal_pembuatan_jadwal', $tanggalPembuatanPenjadwalan)
+            ->where('tanggal_pembuatan_jadwal', '=', $tanggalPembuatanPenjadwalan)
             ->get();
         // dump($dataPenjadwalanCari);
         return $dataPenjadwalanCari;
@@ -991,7 +993,7 @@ class AdminModel extends Model
     public static function getDataPenjadwalanGenetikaByTanggalPembuatanHasil($tanggalPembuatan)
     {
         // dump($tanggalPembuatan);
-        // $dataPenjadwalanDatabase = DB::table('penjadwalan_memetika')
+        // $dataPenjadwalanDatabase = DB::table('penjadwalan_genetikas')
         //     ->where('tanggal_pembuatan_jadwal', '=', $tanggalPembuatan)
         //     ->get();
 
@@ -1060,6 +1062,106 @@ class AdminModel extends Model
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['kodePiket'] = $dataPenjadwalanDatabase[$k]->kode_piket;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
                             $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['nilaiFitness'] = $dataPenjadwalanDatabase[$k]->nilai_fitness;
+                        } else {
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_genetikas;
+                        }
+                    }
+                }
+            }
+        }
+
+        // untuk tanggal yang kosong
+        for ($i = 0; $i < $jumlahPegawaiUnique; $i++) {
+            for ($j = 0; $j < $jumlahHari; $j++) {
+                for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+                    if ($dataPenjadwalan[$i]['idPegawai'] === $dataPenjadwalanDatabase[$k]->id_pegawai) {
+                        if (
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] === ''
+                            && $dataPenjadwalanDatabase[$k]->kode_piket === ''
+                        ) {
+                            $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_genetikas;
+                        }
+                    }
+                }
+            }
+        }
+
+        // return $dataPenjadwalan;
+        dump($dataPenjadwalan);
+    }
+
+
+    public static function getDataPenjadwalanByTanggalPembuatanGenetikaBaru($tanggalPembuatan)
+    {
+        // dump($tanggalPembuatan);
+        $dataPenjadwalanDatabase = DB::table('penjadwalan_genetikas')
+            ->where('tanggal_pembuatan_jadwal', '=', $tanggalPembuatan)
+            ->get();
+
+        // dump($dataPenjadwalanDatabase);
+        $dataPegawaiUnique = DB::table('pegawais')->get();
+
+        // dump($pisahTanggal);
+
+        $jumlahHari = intval(date('t', strtotime($dataPenjadwalanDatabase[0]->tanggal_penjadwalan)));
+        // dump($jumlahHari);
+
+        for ($j = 0; $j < $jumlahHari; $j++) {
+            $dataPiket[$j] = [
+                'idPenjadwalanGenetika' => '',
+                'idPiket' => '',
+                'kodePiket' => '',
+                'tanggalPenjadwalan' => '',
+                'nilaiFitness' => ''
+            ];
+        }
+
+
+        // $dataPiket[$i] = [
+        //     'idPiket' => '',
+        //     'namaPiket' => '',
+        //     'tanggalPiket' => '',
+        //     'nilaiFitness' => ''
+        // ];
+
+        $jumlahDataPenjadwalanDatabase = count($dataPenjadwalanDatabase);
+        // dump($jumlahDataPenjadwalanDatabase);
+
+        // for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+        //     $dataBaru[$k] = DB::table('pikets')
+        //         ->where('id_piket', $dataPenjadwalanDatabase[$k]->id_piket)
+        //         ->limit(1)
+        //         ->get();
+
+        //         $dataPenjadwalanDatabase[$k]->kode_piket = $dataBaru[$k][0]->kode_piket;
+        // }
+
+        // dump($dataPenjadwalanDatabase);
+
+        $jumlahPegawaiUnique = count($dataPegawaiUnique);
+        // dump($jumlahPegawaiUnique);
+
+        for ($i = 0; $i < $jumlahPegawaiUnique; $i++) {
+            $dataPenjadwalan[$i] = [
+                'idPegawai' => $dataPegawaiUnique[$i]->id_pegawai,
+                'namaPegawai' => $dataPegawaiUnique[$i]->nama_pegawai,
+                'dataPiket' => $dataPiket
+
+            ];
+            for ($j = 0; $j < $jumlahHari; $j++) {
+                // $dataPenjadwalan[$i]['dataPiket'][$j] = [];
+
+                for ($k = 0; $k < $jumlahDataPenjadwalanDatabase; $k++) {
+                    if ($dataPenjadwalanDatabase[$k]->id_pegawai === $dataPenjadwalan[$i]['idPegawai']) {
+                        $pisahTanggal = explode('-', $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan);
+                        $hasilTanggal = intval($pisahTanggal[2]);
+
+                        if ($dataPenjadwalanDatabase[$k]->tanggal_penjadwalan !== "0000-00-00") {
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPenjadwalanGenetika'] = $dataPenjadwalanDatabase[$k]->id_penjadwalan_genetikas;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['idPiket'] = $dataPenjadwalanDatabase[$k]->id_piket;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['kodePiket'] = $dataPenjadwalanDatabase[$k]->kode_piket;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['tanggalPenjadwalan'] = $dataPenjadwalanDatabase[$k]->tanggal_penjadwalan;
+                            $dataPenjadwalan[$i]['dataPiket'][$hasilTanggal - 1]['nilaiFitness'] = $dataPenjadwalanDatabase[$k]->nilai_fitness;
                         }
                     }
                 }
@@ -1084,6 +1186,89 @@ class AdminModel extends Model
 
         return $dataPenjadwalan;
     }
+
+
+    // hitung jumlah nilai total fitness data penjadwalan
+    public static function dataNilaiFitness($dataPenjadwalan)
+    {
+        // dump($dataPenjadwalan);
+        // hitung total jumlah pegawai di data penjadwalan
+        $jumlahDataPegawai = count($dataPenjadwalan);
+        // dump($jumlahDataPegawai);
+
+        // hitung jumlah piket per pegawai
+        $jumlahHari = count($dataPenjadwalan[0]['dataPiket']);
+        // dump($jumlahHari);
+        // dump(gettype($dataPenjadwalan[1]['dataPiket'][6]['nilaiFitness']));
+
+        // deklarasi tempat menyimpan data nilai fitness
+        $dataNilaiFitnessMinimum = 0;
+        $dataNilaiFitnessNol = 0;
+        $dataNilaiFitnessSatu = 0;
+        $dataNilaiFitnessDua = 0;
+        $dataNilaiFitnessMaksimum = 0;
+        $dataNilaiFitnessKosong = 0;
+
+        // mulai perulangan
+        for ($i = 0; $i < $jumlahDataPegawai; $i++) {
+            for ($j = 0; $j < $jumlahHari; $j++) {
+
+                // cek apakah ada data kosong
+                if ($dataPenjadwalan[$i]['dataPiket'][$j]['nilaiFitness'] == '') {
+                    $dataNilaiFitnessKosong++;
+                } else {
+                    // jika data tidak kosong
+                    // ubah data nilai fitness ke int
+                    $dataFitnessPiket[$i][$j] = intval($dataPenjadwalan[$i]['dataPiket'][$j]['nilaiFitness']);
+                    // untuk data nilai fitness -1
+                    if ($dataFitnessPiket[$i][$j] === -1) {
+                        $dataNilaiFitnessMinimum++;
+                    } else
+                        // untuk data nilai fitness 0
+                        if ($dataFitnessPiket[$i][$j] === 0) {
+                            $dataNilaiFitnessNol++;
+                        } else
+                            // untuk nilai fitness 1
+                            if ($dataFitnessPiket[$i][$j] === 1) {
+                                $dataNilaiFitnessSatu++;
+                            } else
+                                // untuk nilai fitness 2
+                                if ($dataFitnessPiket[$i][$j] === 2) {
+                                    $dataNilaiFitnessDua++;
+                                } else
+                                    // untuk nilai fitness 3
+                                    if ($dataFitnessPiket[$i][$j] === 3) {
+                                        $dataNilaiFitnessMaksimum++;
+                                    }
+                }
+            }
+        }
+
+
+        $totalData = $dataNilaiFitnessMinimum + $dataNilaiFitnessNol + $dataNilaiFitnessSatu + $dataNilaiFitnessDua + $dataNilaiFitnessMaksimum + $dataNilaiFitnessKosong;
+        // dump(
+        //     $dataNilaiFitnessMinimum,
+        //     $dataNilaiFitnessNol,
+        //     $dataNilaiFitnessSatu,
+        //     $dataNilaiFitnessDua,
+        //     $dataNilaiFitnessMaksimum,
+        //     $dataNilaiFitnessKosong,
+        //     $totalData
+        // );
+
+        $dataNilaiFitnessHasil = [
+            'dataNilaiFitnessMinimum' => $dataNilaiFitnessMinimum,
+            'dataNilaiFitnessNol' => $dataNilaiFitnessNol,
+            'dataNilaiFitnessSatu' => $dataNilaiFitnessSatu,
+            'dataNilaiFitnessDua' => $dataNilaiFitnessDua,
+            'dataNilaiFitnessMaksimum' => $dataNilaiFitnessMaksimum,
+            'dataNilaiFitnessKosong' => $dataNilaiFitnessKosong,
+            'dataNilaiFitnessTotal' => $totalData
+        ];
+
+        return $dataNilaiFitnessHasil;
+    }
+
 
 
     // ---------- Ubah Data ke Biner -----------
@@ -2430,6 +2615,7 @@ class AdminModel extends Model
             $hasilCrossover = AdminModel::uniformCrossover($kromosom, $crossoverRateInput);
         }
 
+
         // $hasilCrossover = AdminModel::uniformCrossover($kromosom, $crossoverRateInput);
         // dump($hasilCrossover);
         return $hasilCrossover;
@@ -2566,6 +2752,7 @@ class AdminModel extends Model
         // jika crossover rate di sini lebih besar dari crossover rate input
         // lakukan crossover
         if ($crossoverRateRandom > $crossoverRateInput) {
+            // echo "Crossover ";
             for ($i = 0; $i < $jumlahGen; $i++) {
                 // dump($i);
 
@@ -2577,9 +2764,11 @@ class AdminModel extends Model
                 if ($flipKoin === 0) {
                 } else
                 if ($flipKoin === 1) {
+                    // echo "Flip Koin," . $i;
                     // simpan hasil data crossover di temp
                     $tempKromosomA[$i] = $splitKromosomA[$i];
                     $tempKromosomB[$i] = $splitKromosomB[$i];
+
 
                     // coba replace langsung
                     $tempGenKromosomA = array_replace($splitKromosomA, $tempKromosomB);
@@ -3138,221 +3327,6 @@ class AdminModel extends Model
     }
 
 
-
-
-
-    // public static function prosesMemetika($dataMemetika)
-    // {
-    //     // dump($dataMemetika);
-
-    //     // =============== Deklarasi Variabel ===============
-    //     // untuk menyimpan data jumlah populasi
-    //     $jumlahPopulasi = intval($dataMemetika['inputJumlahPopulasi']);
-
-    //     // untuk menyimpan jumlah generasi
-    //     $jumlahGenerasi = intval($dataMemetika['inputJumlahGenerasi']);
-
-    //     // untuk menyimpan data nilai mutation rate
-    //     $mutationRateInput = floatval($dataMemetika['inputMutationRate']);
-
-    //     // untuk menyimpan data nilai crossover rate
-    //     $crossoverRateInput = floatval($dataMemetika['inputCrossoverRate']);
-
-    //     // untuk menyimpan data tanggal
-    //     $dataTanggal = $dataMemetika['inputBulanPiket'];
-
-
-
-
-    //     // echo $crossoverRateInput . '<br>';
-    //     // echo $mutationRateInput  . '<br>';
-    //     // echo $jumlahPopulasi . '<br>';
-
-    //     // =============== Data Pegawai ===============
-    //     // mengambil data pegawai
-    //     $dataPegawai = AdminModel::getDataPegawaiAll();
-    //     // dump($dataPegawai);
-
-    //     // mengubah data pegawai menjadi binary
-    //     $dataPegawaiBiner = AdminModel::dataPegawaiToBiner($dataPegawai);
-    //     // dump($dataPegawaiBiner);
-
-
-
-    //     // =============== Data Tanggal ===============
-    //     // mengubah data tanggal menjadi binary
-    //     $dataTanggalBiner = AdminModel::dataTanggalToBiner($dataTanggal);
-    //     // dump($dataTanggalBiner);
-
-
-    //     // =============== Data Piket ===============
-    //     // mengambil semua data piket
-    //     $dataPiket = AdminModel::getAllDataPiket();
-    //     // dump($dataPiket);
-
-
-    //     // mengubah data piket menjadi binary
-    //     $dataPiketBiner = AdminModel::dataPiketToBiner($dataPiket);
-    //     // dump($dataPiketBiner);
-
-    //     // generate populasi awal
-    //     $populasiAwal = AdminModel::generatePopulasiAwal($dataPegawaiBiner, $dataPiketBiner, $dataTanggalBiner, $jumlahPopulasi);
-    //     // dump($populasiAwal);
-
-    //     // split kromosom menjadi gen
-    //     $convertKromosomToGen = AdminModel::splitKromosom($populasiAwal);
-    //     // dump($convertKromosomToGen);
-
-
-    //     $hitungNilaiFitnessKromosom = AdminModel::hitungNilaiFitnessBaru($convertKromosomToGen, $dataTanggalBiner);
-    //     // dump($hitungNilaiFitnessKromosom);
-
-    //     $urutFitnessTertinggi = AdminModel::urutanFitnessTertinggi($hitungNilaiFitnessKromosom);
-    //     // dump($urutFitnessTertinggi);
-    //     // // ======================= INI PERCOBAAN  ========================
-
-    //     // untuk menghitung jumlah kromosom fitness
-    //     $dataSatuPopulasiAwalMinimum = 0;
-    //     $dataSatuPopulasiAwalDua = 0;
-    //     $dataSatuPopulasiAwalSatu = 0;
-    //     $dataSatuPopulasiAwalNol = 0;
-    //     $dataSatuPopulasiAwalMaksimum = 0;
-
-    //     for ($i = 0; $i < count($urutFitnessTertinggi); $i++) {
-    //         if ($urutFitnessTertinggi[$i]['nilaiFitness'] === -1) {
-    //             $dataSatuPopulasiAwalMinimum++;
-    //         } else
-    //         if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 0) {
-    //             $dataSatuPopulasiAwalNol++;
-    //         } else
-    //         if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 1) {
-    //             $dataSatuPopulasiAwalSatu++;
-    //         } else
-    //         if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 2) {
-    //             $dataSatuPopulasiAwalDua++;
-    //         } else
-    //         if ($urutFitnessTertinggi[$i]['nilaiFitness'] === 3) {
-    //             $dataSatuPopulasiAwalMaksimum++;
-    //         }
-    //     }
-
-    //     $populasiAwalHasilConvert = AdminModel::convertKromosomToData($urutFitnessTertinggi, $dataTanggal);
-    //     // dump($populasiAwalHasilConvert);
-
-    //     $convertDataKromosomAwal = AdminModel::ConvertIdKromosom($populasiAwalHasilConvert);
-    //     // dump($convertDataKromosomAwal);
-
-    //     // kondisi selesai
-    //     // hitung perhitungan crossover berdasarkan total populasi hasil input
-    //     for ($i = 0; $i < $jumlahGenerasi; $i++) {
-
-    //         // ini parameter nya harus diganti
-    //         $urutanKromosomFitnessTertinggi = AdminModel::urutanFitnessTertinggi($hitungNilaiFitnessKromosom);
-    //         // dump($urutanKromosomFitnessTertinggi);
-
-    //         // echo "Fitness Tertinggi";
-    //         // pemilihan dua kromosom tertinggi
-    //         $hasilSeleksiKromosomFitnessTertinggi = AdminModel::seleksiFitnessTertinggiBaru($urutanKromosomFitnessTertinggi);
-    //         // dump($hasilSeleksiKromosomFitnessTertinggi);
-
-    //         // tes crossover
-    //         $hasilCrossoverKromosom = AdminModel::singlePointCrossoverBaru($hasilSeleksiKromosomFitnessTertinggi, $crossoverRateInput);
-    //         // dump($hasilCrossover);
-
-    //         // hitung nilai fitness baru hasil crossover
-    //         // $hitungNilaiFitnessHasilCrossover = AdminModel::hitungNilaiFitnessBaru($hasilCrossoverKromosom, $dataTanggalBiner);
-    //         // // dump($hitungNilaiFitnessHasilCrossover);
-
-    //         // mutasi dua kromosom hasil crossover
-    //         $kromosomHasilMutasi = AdminModel::bitFlipMutationBaru($hasilCrossoverKromosom, $mutationRateInput);
-    //         // dump($kromosomHasilMutasi);
-
-    //         // split kromosom menjadi gen hasil mutasi
-    //         $splitKromosomHasilMutasi = AdminModel::splitKromosom($kromosomHasilMutasi);
-    //         // dump($splitKromosomHasilMutasi);
-
-    //         // hitung nilai fitness baru hasil mutasi
-    //         // disini ada error karena data kosong
-    //         // error ini ntar
-    //         $hitungNilaiFitnessHasilMutasi = AdminModel::hitungNilaiFitnessBaru($splitKromosomHasilMutasi, $dataTanggalBiner);
-    //         // dump($hitungNilaiFitnessHasilMutasi);
-
-    //         // ini buat replace data mutasi ke populasi
-    //         // $hitungNilaiFitnessKromosom = AdminModel::cekDataMutasiKePopulasi($urutanKromosomFitnessTertinggi, $hitungNilaiFitnessHasilMutasi);
-    //         // // dump($urutanKromosomFitnessTertinggi);
-
-    //         // proses memetika / local search
-    //         // cari data kromosom tertinggi untuk dicek ke mutasi
-    //         $hitungNilaiFitnessKromosom = AdminModel::prosesLocalSearch($urutanKromosomFitnessTertinggi, $hitungNilaiFitnessHasilMutasi);
-    //         // dump($hitungNilaiFitnessKromosom);
-    //     }
-    //     // dump($hitungNilaiFitnessKromosom);
-
-    //     $dataSatuPopulasiAkhirMinimum = 0;
-    //     $dataSatuPopulasiAkhirDua = 0;
-    //     $dataSatuPopulasiAkhirSatu = 0;
-    //     $dataSatuPopulasiAkhirNol = 0;
-    //     $dataSatuPopulasiAkhirMaksimum = 0;
-
-
-
-    //     for ($i = 0; $i < count($hitungNilaiFitnessKromosom); $i++) {
-    //         if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === -1) {
-    //             $dataSatuPopulasiAkhirMinimum++;
-    //         } else
-    //         if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 0) {
-    //             $dataSatuPopulasiAkhirNol++;
-    //         } else
-    //         if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 1) {
-    //             $dataSatuPopulasiAkhirSatu++;
-    //         } else
-    //         if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 2) {
-    //             $dataSatuPopulasiAkhirDua++;
-    //         } else
-    //         if ($hitungNilaiFitnessKromosom[$i]['nilaiFitness'] === 3) {
-    //             $dataSatuPopulasiAkhirMaksimum++;
-    //         }
-    //     }
-
-    //     $populasiAkhirHasilConvert = AdminModel::convertKromosomToData($hitungNilaiFitnessKromosom, $dataTanggal);
-    //     // dump($populasiAkhirHasilConvert);
-
-    //     $convertDataKromosomAkhir = AdminModel::ConvertIdKromosom($populasiAkhirHasilConvert);
-    //     // dump($convertDataKromosomAkhir);
-
-    //     // dump($dataSatuPopulasiAwalMinimum, $dataSatuPopulasiAkhirMinimum);
-    //     // dump($dataSatuPopulasiAwalMaksimum, $dataSatuPopulasiAkhirMaksimum);
-
-    //     $hasilAkhirPerhitungan = AdminModel::hasilAkhirPenjadwalan($convertDataKromosomAkhir, $dataTanggalBiner);
-    //     // dump($hasilAkhirPerhitungan);
-
-    //     // ambil data pegawai
-    //     $dataPegawaiUnique = AdminModel::getAllDataPegawaiUnique();
-    //     $hasilMemetika = [
-    //         'dataTanggal' => $dataTanggalBiner,
-    //         'jumlahHari' => count($dataTanggalBiner['hari']),
-    //         'dataPegawai' => $dataPegawaiUnique,
-    //         'populasiAwal' => $convertDataKromosomAwal,
-    //         'populasiAkhir' => $convertDataKromosomAkhir,
-    //         'populasiAkhirPerhitungan' => $hasilAkhirPerhitungan,
-    //         'totalKromosomPopulasiAwal' => [
-    //             $dataSatuPopulasiAwalMaksimum,
-    //             $dataSatuPopulasiAwalDua,
-    //             $dataSatuPopulasiAwalSatu,
-    //             $dataSatuPopulasiAwalNol,
-    //             $dataSatuPopulasiAwalMinimum
-    //         ],
-    //         'totalKromosomPopulasiAkhir' => [
-    //             $dataSatuPopulasiAkhirMaksimum,
-    //             $dataSatuPopulasiAkhirDua,
-    //             $dataSatuPopulasiAkhirSatu,
-    //             $dataSatuPopulasiAkhirNol,
-    //             $dataSatuPopulasiAkhirMinimum
-    //         ],
-    //     ];
-
-    //     return $hasilMemetika;
-    // }
 
 
 
