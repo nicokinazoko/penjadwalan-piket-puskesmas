@@ -68,7 +68,7 @@
 
                                                         {{-- nanti diubah link nya --}}
                                                         <a
-                                                            href="http://127.0.0.1:8000/algoritma/memetika/edit-data/{{ $j + 1 }}/{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] }}">
+                                                            href="http://127.0.0.1:8000/algoritma/genetika/edit-data/{{ $j + 1 }}/{{ $dataPenjadwalan[$i]['dataPiket'][$j]['idPenjadwalanGenetika'] }}">
                                                             @if (date('l', strtotime($dataPenjadwalan[$i]['dataPiket'][$j]['tanggalPenjadwalan'])) === 'Sunday')
 
                                                                 Libur
@@ -106,6 +106,8 @@
                                 </table>
                             </div>
                             <div class="tab-pane" id="tab_2">
+                                <canvas id="donutChartAwal"
+                                    style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
                             </div>
 
                             <!-- /.tab-pane -->
@@ -145,4 +147,49 @@
     <!-- FLOT PIE PLUGIN - also used to draw donut charts -->
     <script src="{{ asset('vendor/plugins/flot/plugins/jquery.flot.pie.js') }}"></script>
 
+    <script>
+        $(function() {
+
+            //-------------
+            //- DONUT CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            var donutChartCanvasAwal = $('#donutChartAwal').get(0).getContext('2d')
+            var donutData = {
+                labels: [
+                    'Fitness 3',
+                    'Fitness 2',
+                    'Fitness 1',
+                    'Fitness 0',
+                    'Fitness -1',
+                    'Fitness Kosong'
+
+                ],
+                datasets: [{
+                    data: [
+                        {{ $dataNilaiFitness['dataNilaiFitnessMaksimum'] }},
+                        {{ $dataNilaiFitness['dataNilaiFitnessDua'] }},
+                        {{ $dataNilaiFitness['dataNilaiFitnessSatu'] }},
+                        {{ $dataNilaiFitness['dataNilaiFitnessNol'] }},
+                        {{ $dataNilaiFitness['dataNilaiFitnessMinimum'] }},
+                        {{ $dataNilaiFitness['dataNilaiFitnessKosong'] }}
+
+                    ],
+                    backgroundColor: ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                }]
+            }
+            var donutOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+            }
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            new Chart(donutChartCanvasAwal, {
+                type: 'doughnut',
+                data: donutData,
+                options: donutOptions
+            })
+
+        })
+    </script>
 @endsection
