@@ -378,10 +378,13 @@ class AdminController extends Controller
 
         // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
         $jumlahHari = count($dataPenjadwalan[0]['dataPiket']);
+
+        $dataNilaiFitness = AdminModel::dataNilaiFitness($dataPenjadwalan);
         // dump($jumlahHari);
         return view('content.memetic.view-data-memetic-tanggal-buat', [
             'jumlahHari' => $jumlahHari,
-            'dataPenjadwalan' => $dataPenjadwalan
+            'dataPenjadwalan' => $dataPenjadwalan,
+            'dataNilaiFitness' => $dataNilaiFitness
         ]);
     }
 
@@ -730,15 +733,19 @@ class AdminController extends Controller
     // untuk lihat data penjadwalan berdasarkan tanggal pembuatan jadwal
     public static function getDataPenjadwalanByTanggalPembuatanGenetika($tanggalPembuatan)
     {
-        $dataPenjadwalanGenetika = AdminModel::getDataPenjadwalanGenetikaByTanggalPembuatanHasil($tanggalPembuatan);
+        $dataPenjadwalanGenetika = AdminModel::getDataPenjadwalanByTanggalPembuatanGenetikaBaru($tanggalPembuatan);
         // dump($dataPenjadwalanGenetika);
 
         // dump($dataPenjadwalan[12]['dataPiket'][30]['idPiket']);
         $jumlahHari = count($dataPenjadwalanGenetika[0]['dataPiket']);
+
+        $dataNilaiFitness = AdminModel::dataNilaiFitness($dataPenjadwalanGenetika);
         // dump($jumlahHari);
+        // dump($dataNilaiFitness);
         return view('content.genetika.view-data-genetika-tanggal-buat', [
             'jumlahHari' => $jumlahHari,
-            'dataPenjadwalan' => $dataPenjadwalanGenetika
+            'dataPenjadwalan' => $dataPenjadwalanGenetika,
+            'dataNilaiFitness' => $dataNilaiFitness
         ]);
     }
 
@@ -761,37 +768,37 @@ class AdminController extends Controller
     // untuk edit data penjadwalan
     public static function editDataPenjadwalanByIdPenjadwalanGenetika($tanggalPenjadwalan, $idPenjadwalan)
     {
-        // // dump($tanggalPenjadwalan, $idPenjadwalan);
+        // dump($tanggalPenjadwalan, $idPenjadwalan);
 
-        // $editDataPenjadwalan = AdminModel::editDataPenjadwalanNeuroFuzzy($idPenjadwalan, $tanggalPenjadwalan);
-        // // dump($editDataPenjadwalan);
+        $editDataPenjadwalan = AdminModel::editDataPenjadwalanGenetika($idPenjadwalan, $tanggalPenjadwalan);
+        // dump($editDataPenjadwalan);
 
-        // $dataPiketUnique = AdminModel::getAllDataPiketUnique();
-        // // dump($dataPiketUnique);
+        $dataPiketUnique = AdminModel::getAllDataPiketUnique();
+        // dump($dataPiketUnique);
 
-        // $jumlahDataPiketUnique = count($dataPiketUnique);
-        // // dump($jumlahDataPiketUnique);
+        $jumlahDataPiketUnique = count($dataPiketUnique);
+        // dump($jumlahDataPiketUnique);
 
-        // $dataPegawai = AdminModel::getDataPegawaiById($editDataPenjadwalan[0]->id_pegawai);
-        // // dump($dataPegawai);
+        $dataPegawai = AdminModel::getDataPegawaiById($editDataPenjadwalan[0]->id_pegawai);
+        // dump($dataPegawai);
 
-        // return view('content.neuro-fuzzy.form-edit-neuro-fuzzy', [
-        //     'dataPiket' => $dataPiketUnique,
-        //     'dataPenjadwalan' => $editDataPenjadwalan,
-        //     'dataPegawai' => $dataPegawai,
-        //     'jumlahDataPiket' => $jumlahDataPiketUnique
-        // ]);
+        return view('content.genetika.form-edit-genetika', [
+            'dataPiket' => $dataPiketUnique,
+            'dataPenjadwalan' => $editDataPenjadwalan,
+            'dataPegawai' => $dataPegawai,
+            'jumlahDataPiket' => $jumlahDataPiketUnique
+        ]);
     }
 
-    public function prosesEditDataPenjadwalanByIdPenjadwalanGenetika(Request $dataPenjadwalanNeuroFuzzy)
+    public function prosesEditDataPenjadwalanByIdPenjadwalanGenetika(Request $dataPenjadwalanGenetika)
     {
-        // $dataPenjadwalan = $dataPenjadwalanNeuroFuzzy->all();
-        // $hasilEditDataPenjadwalanNeuroFuzzy = AdminModel::editDataPenjadwalanNeuroFuzzyByIdProses($dataPenjadwalan);
-        // // dump($hasilEditDataPenjadwalanNeuroFuzzy);
+        $dataPenjadwalan = $dataPenjadwalanGenetika->all();
+        $hasilEditDataPenjadwalanGenetika= AdminModel::editDataPenjadwalanGenetikayByIdProses($dataPenjadwalan);
+        // dump($hasilEditDataPenjadwalanNeuroFuzzy);
 
 
-        // alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
+        alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
 
-        // return redirect()->route('view-data-penjadwalan-algoritma-neuro-fuzzy', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanNeuroFuzzy[0]->tanggal_pembuatan_jadwal]);
+        return redirect()->route('view-data-penjadwalan-algoritma-genetika', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanGenetika[0]->tanggal_pembuatan_jadwal]);
     }
 }
