@@ -52,11 +52,15 @@
                                     @csrf
                                     <input type="hidden" name="dataJadwal" value="{{ serialize($jadwalAkhir) }}">
 
-                                    <a class="btn btn-app">
-                                        <i class="fas fa-save">
-                                            <button type="submit">
-                                                Simpan Data</button></i> Save
-                                    </a>
+                                    <button type="submit" class="btn btn-primary btn-lg"> Simpan Data
+                                    </button>
+                                    <br>
+                                    <br>
+                                        {{-- <a class="btn btn-app">
+                                            <i class="fas fa-save">
+                                                <button type="submit">
+                                                    Simpan Data</button></i> Save
+                                        </a> --}}
 
 
                                 </form>
