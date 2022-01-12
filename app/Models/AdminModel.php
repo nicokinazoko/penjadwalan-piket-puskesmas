@@ -444,7 +444,7 @@ class AdminModel extends Model
 
 
     // simpan data penjadwalan ke database
-    public static function  simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan)
+    public static function  simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan, $dataInputMemetika, $dataWaktuProses)
     {
         // dump($dataPenjadwalan);
         $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
@@ -509,6 +509,43 @@ class AdminModel extends Model
         }
 
         // echo $insertDataDatabase;
+
+        // dump($dataPenjadwalanDatabase);
+
+        // untuk simpan data perhitungan ke database
+        $jumlahPopulasi = intval($dataInputMemetika['inputJumlahPopulasi']);
+        $jumlahGenerasi = intval($dataInputMemetika['inputJumlahGenerasi']);
+        $mutationRate = floatval($dataInputMemetika['inputMutationRate']);
+        $crossoverRate = floatval($dataInputMemetika['inputCrossoverRate']);
+        $bulanPiket = $dataInputMemetika['inputBulanPiket'];
+        dump($jumlahPopulasi, $jumlahGenerasi, $mutationRate, $crossoverRate, $bulanPiket);
+
+        $nilaiFitness = AdminModel::dataNilaiFitness($dataPenjadwalan);
+        dump($nilaiFitness);
+
+        $dataInputPerhitungan = [
+            'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru,
+            'selisih_waktu' => $dataWaktuProses,
+            'jumlah_populasi' => $jumlahPopulasi,
+            'jumlah_generasi' => $jumlahGenerasi,
+            'mutation_rate' => $mutationRate,
+            'crossover_rate' => $crossoverRate,
+            'data_total' => $nilaiFitness['dataNilaiFitnessTotal'],
+            'nilai_fitness_tiga' => $nilaiFitness['dataNilaiFitnessMaksimum'],
+            'nilai_fitness_dua' => $nilaiFitness['dataNilaiFitnessDua'],
+            'nilai_fitness_satu' => $nilaiFitness['dataNilaiFitnessSatu'],
+            'nilai_fitness_nol' => $nilaiFitness['dataNilaiFitnessNol'],
+            'nilai_fitness_min_satu' => $nilaiFitness['dataNilaiFitnessMinimum'],
+            'nilai_fitness_kosong' => $nilaiFitness['dataNilaiFitnessKosong']
+
+        ];
+
+        dump($dataInputPerhitungan);
+
+        $inputDataPerhitungan = DB::table('hasil_perhitungan_memetikas')->insert($dataInputPerhitungan);
+        // echo $insertDataDatabase;
+
+        dump($inputDataPerhitungan);
 
         // dump($dataPenjadwalanDatabase);
     }
@@ -907,9 +944,9 @@ class AdminModel extends Model
 
 
     // simpan data penjadwalan ke database
-    public static function simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan)
+    public static function simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses)
     {
-        // dump($dataPenjadwalan);
+        dump($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
         $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
         $waktuDefault = date_create('now')->format('Y-m-d');
         $waktuPembuatanBaru = date("Y-m-d H:i:s");
@@ -970,7 +1007,37 @@ class AdminModel extends Model
             }
         }
 
+        // untuk simpan data perhitungan ke database
+        $jumlahPopulasi = intval($dataInputGenetika['inputJumlahPopulasi']);
+        $jumlahGenerasi = intval($dataInputGenetika['inputJumlahGenerasi']);
+        $mutationRate = floatval($dataInputGenetika['inputMutationRate']);
+        $crossoverRate = floatval($dataInputGenetika['inputCrossoverRate']);
+        $bulanPiket = $dataInputGenetika['inputBulanPiket'];
+        dump($jumlahPopulasi, $jumlahGenerasi, $mutationRate, $crossoverRate, $bulanPiket);
+
+        $nilaiFitness = AdminModel::dataNilaiFitness($dataPenjadwalan);
+        dump($nilaiFitness);
+
+        $dataInputPerhitungan = [
+            'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru,
+            'selisih_waktu' => $dataWaktuProses,
+            'jumlah_populasi' => $jumlahPopulasi,
+            'jumlah_generasi' => $jumlahGenerasi,
+            'mutation_rate' => $mutationRate,
+            'crossover_rate' => $crossoverRate,
+            'data_total' => $nilaiFitness['dataNilaiFitnessTotal'],
+            'nilai_fitness_tiga' => $nilaiFitness['dataNilaiFitnessMaksimum'],
+            'nilai_fitness_dua' => $nilaiFitness['dataNilaiFitnessDua'],
+            'nilai_fitness_satu' => $nilaiFitness['dataNilaiFitnessSatu'],
+            'nilai_fitness_nol' => $nilaiFitness['dataNilaiFitnessNol'],
+            'nilai_fitness_min_satu' => $nilaiFitness['dataNilaiFitnessMinimum'],
+            'nilai_fitness_kosong' => $nilaiFitness['dataNilaiFitnessKosong']
+
+        ];
+
+        $inputDataPerhitungan = DB::table('hasil_perhitungan_genetikas')->insert($dataInputPerhitungan);
         // echo $insertDataDatabase;
+        dump($inputDataPerhitungan);
 
         // dump($dataPenjadwalanDatabase);
     }
@@ -1269,7 +1336,19 @@ class AdminModel extends Model
         return $dataNilaiFitnessHasil;
     }
 
+    // ---------- Data Perhitungan Genetika -----------
+    public static function getAllDataPerhitunganGenetika()
+    {
+        $dataPerhitunganGenetika = DB::table('hasil_perhitungan_genetikas')->get();
+        return $dataPerhitunganGenetika;
+    }
 
+        // ---------- Data Perhitungan Memetika -----------
+        public static function getAllDataPerhitunganMemetika()
+        {
+            $dataPerhitunganMemetika = DB::table('hasil_perhitungan_memetikas')->get();
+            return $dataPerhitunganMemetika;
+        }
 
     // ---------- Ubah Data ke Biner -----------
 
