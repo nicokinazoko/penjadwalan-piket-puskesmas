@@ -276,6 +276,9 @@ class AdminController extends Controller
     // proses Algoritma Memetika
     public function prosesAlgoritmaMemetika(Request $dataMemetika)
     {
+        // hitung waktu awal proses
+        $waktuEksekusiAwal = microtime(true);
+
         // mengambil semua data dari input
         $dataMemetikaAll = $dataMemetika->all();
         // dump($dataMemetika->all());
@@ -329,18 +332,49 @@ class AdminController extends Controller
         $jumlahPegawaiUnique = count($dataPegawaiUnique);
         // dump($jumlahPegawaiUnique);
 
+        // // hitung waktu akhir proses
+        // $waktuEksekusiAkhir = microtime(true);
+
+        // // hitung selisih waktu proses
+        // $selisihWaktu = $waktuEksekusiAkhir - $waktuEksekusiAwal;
+
+        // $executionTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
+
+        // dump($selisihWaktu, $executionTime);
         // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
-        return view('content.memetic.hasil-memetic', [
-            'jumlahHari' => $jumlahHari,
+
+        $executionTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
+
+        $dataPenjadwalanHasil = [
+            'dataInputMemetika' => $dataMemetikaAll,
+            'waktuProsesMulai' => microtime(true),
+            'waktuProsesSelesai' => $_SERVER["REQUEST_TIME_FLOAT"],
+            'waktuProses' => $executionTime,
             'dataTanggal' => $dataTanggal,
+            'jumlahHari' => $jumlahHari,
             'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
             'dataPegawai' => $dataPegawaiUnique,
             'populasiAwal' => $populasiAwal,
             'populasiAkhir' => $populasiAkhir,
             'jadwalAkhir' => $jadwalAkhir,
             'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
-            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
-        ]);
+            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir,
+        ];
+
+        return view('content.memetic.hasil-memetic', $dataPenjadwalanHasil);
+
+        // return view('content.memetic.hasil-memetic', [
+        //     // 'selisihWaktu' => $selisihWaktu,
+        //     'jumlahHari' => $jumlahHari,
+        //     'dataTanggal' => $dataTanggal,
+        //     'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
+        //     'dataPegawai' => $dataPegawaiUnique,
+        //     'populasiAwal' => $populasiAwal,
+        //     'populasiAkhir' => $populasiAkhir,
+        //     'jadwalAkhir' => $jadwalAkhir,
+        //     'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
+        //     'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
+        // ]);
     }
 
     public function hasilProsesAlgoritmaMemetika()
@@ -348,6 +382,15 @@ class AdminController extends Controller
         return view('content.memetic.hasil-memetic');
     }
 
+    // lihat hasil perhitungan algoritma Memetika
+    public static function lihatPerhitunganMemetika(){
+
+        $dataPerhitunganMemetika = AdminModel::getAllDataPerhitunganMemetika();
+        dump($dataPerhitunganMemetika);
+
+        return view('content.memetic.view-data-perhitungan-memetika', ['dataPerhitunganMemetika' => $dataPerhitunganMemetika]);
+        // return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
+    }
 
     // lihat data hasil Algoritma Memetika
     public function viewDataHasilAlgoritmaMemetika()
@@ -365,9 +408,16 @@ class AdminController extends Controller
         $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
         // dump($dataPenjadwalan);
 
-        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
-        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
-        return redirect()->route('view-data-algoritma-memetika');
+        $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
+        $dataInputMemetika = unserialize($hasilData['dataInputMemetika']);
+        $dataWaktuProses = unserialize($hasilData['waktuProses']);
+
+        // dump($dataPenjadwalan, $dataInputMemetika, $dataWaktuProses);
+
+        // $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan, $dataInputMemetika, $dataWaktuProses);
+        // alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        // return redirect()->route('view-data-algoritma-memetika');
     }
 
     public function getDataPenjadwalanByTanggalPembuatan($tanggalPenjadwalan)
@@ -627,6 +677,12 @@ class AdminController extends Controller
         return view('content.genetika.genetika');
     }
 
+    // lihat hasil perhitungan algoritma genetika
+    public static function lihatPerhitunganGenetika(){
+        $dataPerhitunganGenetika = AdminModel::getAllDataPerhitunganGenetika();
+        // dump($dataPerhitunganGenetika);
+        return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
+    }
 
     // untuk lihat data penjadwalan
     public function viewDataHasilAlgoritmaGenetika()
@@ -703,8 +759,15 @@ class AdminController extends Controller
 
         // // dump(date('l', strtotime($jadwalAkhir[0]['dataPiket'][0]['tanggalPiket'])));
 
+        $executionTime = microtime(true) - $_SERVER["REQUEST_TIME_FLOAT"];
 
-        return view('content.genetika.hasil-genetika', [
+        // dump($executionTime, microtime(true), $_SERVER["REQUEST_TIME_FLOAT"]);
+
+        $dataPenjadwalanHasil = [
+            'dataInputGenetika' => $dataGenetikaAll,
+            'waktuProsesMulai' => microtime(true),
+            'waktuProsesSelesai' => $_SERVER["REQUEST_TIME_FLOAT"],
+            'waktuProses' => $executionTime,
             'dataTanggal' => $dataTanggal,
             'jumlahHari' => $jumlahHari,
             'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
@@ -713,8 +776,27 @@ class AdminController extends Controller
             'populasiAkhir' => $populasiAkhir,
             'jadwalAkhir' => $jadwalAkhir,
             'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
-            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
-        ]);
+            'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir,
+        ];
+
+        // dump($dataPenjadwalanHasil);
+
+
+        return view('content.genetika.hasil-genetika', $dataPenjadwalanHasil);
+        // return view('content.genetika.hasil-genetika', [
+        //     'waktuProsesMulai' => microtime(true),
+        //     'waktuProsesSelesai' => $_SERVER["REQUEST_TIME_FLOAT"],
+        //     'waktuProses' => $executionTime,
+        //     'dataTanggal' => $dataTanggal,
+        //     'jumlahHari' => $jumlahHari,
+        //     'jumlahPegawaiUnique' => $jumlahPegawaiUnique,
+        //     'dataPegawai' => $dataPegawaiUnique,
+        //     'populasiAwal' => $populasiAwal,
+        //     'populasiAkhir' => $populasiAkhir,
+        //     'jadwalAkhir' => $jadwalAkhir,
+        //     'totalFitnessPopulasiAwal' => $fitnessPopulasiAwal,
+        //     'totalFitnessPopulasiAkhir' => $fitnessPopulasiAkhir
+        // ]);
     }
 
     public function prosesSimpanHasilPenjadwalanGenetika(Request $dataPenjadwalanGenetika)
@@ -723,11 +805,14 @@ class AdminController extends Controller
         $hasilData = $dataPenjadwalanGenetika->all();
         // dump($hasilData);
         $dataPenjadwalan = unserialize($hasilData['dataJadwal']);
-        // dump($dataPenjadwalan);
+        $dataInputGenetika = unserialize($hasilData['dataInputGenetika']);
+        $dataWaktuProses = unserialize($hasilData['waktuProses']);
 
-        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan);
-        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
-        return redirect()->route('view-data-algoritma-genetika');
+        // dump($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
+
+        $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
+        // alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        // return redirect()->route('view-data-algoritma-genetika');
     }
 
     // untuk lihat data penjadwalan berdasarkan tanggal pembuatan jadwal
@@ -793,7 +878,7 @@ class AdminController extends Controller
     public function prosesEditDataPenjadwalanByIdPenjadwalanGenetika(Request $dataPenjadwalanGenetika)
     {
         $dataPenjadwalan = $dataPenjadwalanGenetika->all();
-        $hasilEditDataPenjadwalanGenetika= AdminModel::editDataPenjadwalanGenetikayByIdProses($dataPenjadwalan);
+        $hasilEditDataPenjadwalanGenetika = AdminModel::editDataPenjadwalanGenetikayByIdProses($dataPenjadwalan);
         // dump($hasilEditDataPenjadwalanNeuroFuzzy);
 
 
