@@ -51,7 +51,8 @@
                                 <form action="{{ route('proses-simpan-data-algoritma-genetika') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="dataJadwal" value="{{ serialize($jadwalAkhir) }}">
-
+                                    <input type="hidden" name="dataInputGenetika" value="{{ serialize($dataInputGenetika) }}">
+                                    <input type="hidden" name="waktuProses" value="{{ serialize($waktuProses) }}">
                                     <button type="submit" class="btn btn-primary btn-lg"> Simpan Data
                                     </button>
                                     <br>
