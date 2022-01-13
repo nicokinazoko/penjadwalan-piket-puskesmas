@@ -65,7 +65,9 @@
                                     <tbody>
                                         @foreach ($dataPerhitunganGenetika as $dataGenetika)
                                             <tr>
-                                                <td>{{ $dataGenetika->tanggal_pembuatan_jadwal }}</td>
+                                                <td><a href="{{ route('view-data-perhitungan-algoritma-genetika-by-tanggal', ['tanggal_pembuatan' => $dataGenetika->tanggal_pembuatan_jadwal]) }}"
+                                                        }>
+                                                        {{ $dataGenetika->tanggal_pembuatan_jadwal }}</a></td>
                                                 <td>{{ $dataGenetika->jumlah_populasi }}</td>
                                                 <td>{{ $dataGenetika->jumlah_generasi }}</td>
                                                 <td>{{ $dataGenetika->mutation_rate }}</td>
