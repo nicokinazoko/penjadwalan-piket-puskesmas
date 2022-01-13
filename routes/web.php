@@ -85,6 +85,9 @@ Route::prefix('/algoritma')->group(function () {
     // untuk melihat data perhitungan memetika
     Route::get('memetika/lihat-data-perhitungan', [AdminController::class, 'lihatPerhitunganMemetika'])->name('view-data-perhitungan-algoritma-memetika');
 
+    // untuk melihat data perhitungan memetika berdasarkan tanggal penjadwalan
+    Route::get('memetika/lihat-data-perhitungan/{tanggal_pembuatan}', [AdminController::class, 'lihatPerhitunganMemetikaByTanggalPenjadwalan'])->name('view-data-perhitungan-algoritma-memetika-by-tanggal');
+
     // untuk lihat data penjadwalan memetika dari tanggal pembuatan
     Route::get('memetika/lihat-data/{tanggal_pembuatan}', [AdminController::class, 'getDataPenjadwalanByTanggalPembuatan'])->name('view-data-penjadwalan-algoritma-memetika');
 
@@ -149,6 +152,9 @@ Route::prefix('/algoritma')->group(function () {
 
     // untuk melihat data perhitungan genetika
     Route::get('genetika/lihat-data-perhitungan', [AdminController::class, 'lihatPerhitunganGenetika'])->name('view-data-perhitungan-algoritma-genetika');
+
+    // untuk melihat data perhitungan genetika berdasarkan tanggal penjadwalan
+    Route::get('genetika/lihat-data-perhitungan/{tanggal_pembuatan}', [AdminController::class, 'lihatPerhitunganGenetikaByTanggalPenjadwalan'])->name('view-data-perhitungan-algoritma-genetika-by-tanggal');
 
     // untuk hapus data penjadwalan neuro fuzzy
     Route::get('genetika/{tanggal_pembuatan}', [AdminController::class, 'deleteDataPenjadwalanByTanggalPembuatanJadwalGenetika'])->name('delete-data-penjadwalan-genetika');
