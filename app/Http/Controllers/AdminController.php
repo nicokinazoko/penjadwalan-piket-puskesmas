@@ -382,15 +382,7 @@ class AdminController extends Controller
         return view('content.memetic.hasil-memetic');
     }
 
-    // lihat hasil perhitungan algoritma Memetika
-    public static function lihatPerhitunganMemetika(){
 
-        $dataPerhitunganMemetika = AdminModel::getAllDataPerhitunganMemetika();
-        dump($dataPerhitunganMemetika);
-
-        return view('content.memetic.view-data-perhitungan-memetika', ['dataPerhitunganMemetika' => $dataPerhitunganMemetika]);
-        // return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
-    }
 
     // lihat data hasil Algoritma Memetika
     public function viewDataHasilAlgoritmaMemetika()
@@ -677,12 +669,7 @@ class AdminController extends Controller
         return view('content.genetika.genetika');
     }
 
-    // lihat hasil perhitungan algoritma genetika
-    public static function lihatPerhitunganGenetika(){
-        $dataPerhitunganGenetika = AdminModel::getAllDataPerhitunganGenetika();
-        // dump($dataPerhitunganGenetika);
-        return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
-    }
+
 
     // untuk lihat data penjadwalan
     public function viewDataHasilAlgoritmaGenetika()
@@ -885,5 +872,62 @@ class AdminController extends Controller
         alert()->success('Edit data Berhasil', 'Berhasil Edit Data');
 
         return redirect()->route('view-data-penjadwalan-algoritma-genetika', ['tanggal_pembuatan' => $hasilEditDataPenjadwalanGenetika[0]->tanggal_pembuatan_jadwal]);
+    }
+
+    // ------------------- Algoritma Memetika --------------------------------
+
+    // lihat hasil perhitungan algoritma Memetika
+    public static function lihatPerhitunganMemetika()
+    {
+
+        $dataPerhitunganMemetika = AdminModel::getAllDataPerhitunganMemetika();
+        // dump($dataPerhitunganMemetika);
+
+        $dataWaktu = AdminModel::getDataPerhitunganMemetikaWithSelisihWaktu();
+
+        $i = 0;
+        foreach ($dataWaktu as $dataWaktuProses) {
+
+            $dataProses[$i] = floatval($dataWaktuProses->selisih_waktu);
+            $i++;
+        }
+
+        // dump($dataProses);
+        return view(
+            'content.memetic.view-data-perhitungan-memetika',
+            ['dataPerhitunganMemetika' => $dataPerhitunganMemetika],
+            ['dataWaktu' => $dataProses]
+        );
+        // return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
+    }
+
+    // lihat hasil perhitungan memetika berdasarkan tanggal penjadwalan
+    public static function lihatPerhitunganMemetikaByTanggalPenjadwalan($tanggalPembuatanJadwal)
+    {
+        // dump($tanggalPembuatanJadwal);
+        $dataPerhitungan = AdminModel::getDataPerhitunganMemetikaByTanggalPembuatan($tanggalPembuatanJadwal);
+        // dump($dataPerhitungan);
+        return view('content.memetic.view-data-perhitungan-tanggal-memetika', ['dataPerhitunganMemetika' => $dataPerhitungan]);
+    }
+
+
+    // ------------------- Algoritma Genetika --------------------------------
+    // lihat hasil perhitungan algoritma genetika
+    public static function lihatPerhitunganGenetika()
+    {
+        $dataPerhitunganGenetika = AdminModel::getAllDataPerhitunganGenetika();
+        // dump($dataPerhitunganGenetika);
+
+        return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
+    }
+
+    // lihat hasil perhitungan memetika berdasarkan tanggal penjadwalan
+    public static function lihatPerhitunganGenetikaByTanggalPenjadwalan($tanggalPembuatanJadwal)
+    {
+        // dump($tanggalPembuatanJadwal);
+        $dataPerhitungan = AdminModel::getDataPerhitunganGenetikaByTanggalPembuatan($tanggalPembuatanJadwal);
+        // dump($dataPerhitungan);
+        // dump($dataPerhitungan);
+        return view('content.genetika.view-data-perhitungan-tanggal-genetika', ['dataPerhitunganGenetika' => $dataPerhitungan]);
     }
 }
