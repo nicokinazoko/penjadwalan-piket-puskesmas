@@ -46,6 +46,8 @@
         href="{{ asset('vendor/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('vendor/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 
+    <!-- uPlot -->
+    <link rel="stylesheet" href="{{ asset('vendor/plugins/uplot/uPlot.min.css') }}">
 
     <!-- Forms -->
     <!-- Bootstrap Color Picker -->
