@@ -1343,12 +1343,38 @@ class AdminModel extends Model
         return $dataPerhitunganGenetika;
     }
 
-        // ---------- Data Perhitungan Memetika -----------
-        public static function getAllDataPerhitunganMemetika()
-        {
-            $dataPerhitunganMemetika = DB::table('hasil_perhitungan_memetikas')->get();
-            return $dataPerhitunganMemetika;
-        }
+
+
+    // ambil data perhitungan genetika berdasarkan tanggal
+    public static function getDataPerhitunganGenetikaByTanggalPembuatan($tanggalPembuatan)
+    {
+        $dataPerhitunganGenetika = DB::table('hasil_perhitungan_genetikas')->where('tanggal_pembuatan_jadwal', $tanggalPembuatan)->get();
+        // dump($dataPerhitunganGenetika);
+        return $dataPerhitunganGenetika;
+    }
+
+
+
+    // ---------- Data Perhitungan Memetika -----------
+    public static function getAllDataPerhitunganMemetika()
+    {
+        $dataPerhitunganMemetika = DB::table('hasil_perhitungan_memetikas')->get();
+        return $dataPerhitunganMemetika;
+    }
+
+    // ambil data perhitungan memetika berdasarkan tanggal
+    public static function getDataPerhitunganMemetikaByTanggalPembuatan($tanggalPembuatan)
+    {
+        $dataPerhitunganMemetika = DB::table('hasil_perhitungan_memetikas')->where('tanggal_pembuatan_jadwal', $tanggalPembuatan)->get();
+        // dump($dataPerhitunganMemetika);
+        return $dataPerhitunganMemetika;
+    }
+
+    // ambil selisih proses perhitungan memetika
+    public static function getDataPerhitunganMemetikaWithSelisihWaktu(){
+        $dataWaktu = DB::table('hasil_perhitungan_genetikas')->select('selisih_waktu')->get();
+        return $dataWaktu;
+    }
 
     // ---------- Ubah Data ke Biner -----------
 
