@@ -405,11 +405,14 @@ class AdminController extends Controller
         $dataWaktuProses = unserialize($hasilData['waktuProses']);
 
         // dump($dataPenjadwalan, $dataInputMemetika, $dataWaktuProses);
+        // dump($dataWaktuProses);
+        // dump(floatval($dataWaktuProses));
+        // dump(gettype($dataWaktuProses));
 
         // $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan);
         $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseMemetika($dataPenjadwalan, $dataInputMemetika, $dataWaktuProses);
-        // alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
-        // return redirect()->route('view-data-algoritma-memetika');
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        return redirect()->route('view-data-algoritma-memetika');
     }
 
     public function getDataPenjadwalanByTanggalPembuatan($tanggalPenjadwalan)
@@ -798,8 +801,8 @@ class AdminController extends Controller
         // dump($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
 
         $simpanDataPenjadwalan = AdminModel::simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
-        // alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
-        // return redirect()->route('view-data-algoritma-genetika');
+        alert()->success('Simpan Data Berhasil', 'Berhasil Menyimpan Data');
+        return redirect()->route('view-data-algoritma-genetika');
     }
 
     // untuk lihat data penjadwalan berdasarkan tanggal pembuatan jadwal
@@ -885,18 +888,18 @@ class AdminController extends Controller
 
         $dataWaktu = AdminModel::getDataPerhitunganMemetikaWithSelisihWaktu();
 
-        $i = 0;
-        foreach ($dataWaktu as $dataWaktuProses) {
+        // $i = 0;
+        // foreach ($dataWaktu as $dataWaktuProses) {
 
-            $dataProses[$i] = floatval($dataWaktuProses->selisih_waktu);
-            $i++;
-        }
+        //     $dataProses[$i] = floatval($dataWaktuProses->selisih_waktu);
+        //     $i++;
+        // }
 
         // dump($dataProses);
         return view(
             'content.memetic.view-data-perhitungan-memetika',
-            ['dataPerhitunganMemetika' => $dataPerhitunganMemetika],
-            ['dataWaktu' => $dataProses]
+            ['dataPerhitunganMemetika' => $dataPerhitunganMemetika]
+            // ,['dataWaktu' => $dataProses]
         );
         // return view('content.genetika.view-data-perhitungan-genetika', ['dataPerhitunganGenetika' => $dataPerhitunganGenetika]);
     }
