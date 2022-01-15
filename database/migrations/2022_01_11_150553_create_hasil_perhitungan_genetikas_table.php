@@ -15,7 +15,7 @@ class CreateHasilPerhitunganGenetikasTable extends Migration
     {
         Schema::create('hasil_perhitungan_genetikas', function (Blueprint $table) {
             $table->datetime('tanggal_pembuatan_jadwal');
-            $table->float('selisih_waktu', 5, 5);
+            $table->double('selisih_waktu', 10, 5);
             $table->integer('jumlah_populasi');
             $table->integer('jumlah_generasi');
             $table->float('crossover_rate', 5, 5);
