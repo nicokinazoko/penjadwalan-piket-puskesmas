@@ -58,21 +58,36 @@
                                             <th class="text-center">Crossover Rate</th>
                                             <th class="text-center">Mutation Rate</th>
                                             <th class="text-center">Waktu Proses</th>
+                                            <th class="text-center">Nilai Fitness 3</th>
+                                            <th class="text-center">Nilai Fitness 2</th>
+                                            <th class="text-center">Nilai Fitness 1</th>
+                                            <th class="text-center">Nilai Fitness 0</th>
+                                            <th class="text-center">Nilai Fitness -1</th>
+                                            <th class="text-center">Nilai Fitness Kosong</th>
                                         </tr>
 
                                     </thead>
                                     <tbody>
-                                        @foreach ($dataPerhitunganMemetika as $dataMemetika)
-                                            <tr>
-                                                <td><a href="{{ route('view-data-perhitungan-algoritma-memetika-by-tanggal', ['tanggal_pembuatan' => $dataMemetika->tanggal_pembuatan_jadwal]) }}"
-                                                        }>
-                                                        {{ $dataMemetika->tanggal_pembuatan_jadwal }}</a></td>
+                                        <tr>
+                                            @foreach ($dataPerhitunganMemetika as $dataMemetika)
+                                                <td>
+                                                    <a
+                                                        href="{{ route('view-data-penjadwalan-algoritma-memetika', ['tanggal_pembuatan' => $dataMemetika->tanggal_pembuatan_jadwal]) }}">
+                                                        {{ date('d F Y H:i:s', strtotime($dataMemetika->tanggal_pembuatan_jadwal)) }}
+                                                    </a>
+                                                </td>
                                                 <td>{{ $dataMemetika->jumlah_populasi }}</td>
                                                 <td>{{ $dataMemetika->jumlah_generasi }}</td>
                                                 <td>{{ $dataMemetika->mutation_rate }}</td>
                                                 <td>{{ $dataMemetika->crossover_rate }}</td>
                                                 <td>{{ $dataMemetika->selisih_waktu }}</td>
-                                            </tr>
+                                                <td>{{ $dataMemetika->nilai_fitness_tiga }}</td>
+                                                <td>{{ $dataMemetika->nilai_fitness_dua }}</td>
+                                                <td>{{ $dataMemetika->nilai_fitness_satu }}</td>
+                                                <td>{{ $dataMemetika->nilai_fitness_nol }}</td>
+                                                <td>{{ $dataMemetika->nilai_fitness_min_satu }}</td>
+                                                <td>{{ $dataMemetika->nilai_fitness_kosong }}</td>
+                                        </tr>
                                         @endforeach
                                     </tbody>
                                     <tfoot>
@@ -83,6 +98,12 @@
                                             <th class="text-center">Crossover Rate</th>
                                             <th class="text-center">Mutation Rate</th>
                                             <th class="text-center">Waktu Proses</th>
+                                            <th class="text-center">Nilai Fitness 3</th>
+                                            <th class="text-center">Nilai Fitness 2</th>
+                                            <th class="text-center">Nilai Fitness 1</th>
+                                            <th class="text-center">Nilai Fitness 0</th>
+                                            <th class="text-center">Nilai Fitness -1</th>
+                                            <th class="text-center">Nilai Fitness Kosong</th>
                                         </tr>
 
                                     </tfoot>
