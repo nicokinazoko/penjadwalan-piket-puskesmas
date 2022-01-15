@@ -511,17 +511,17 @@ class AdminModel extends Model
         // echo $insertDataDatabase;
 
         // dump($dataPenjadwalanDatabase);
-
+        // dump(gettype($dataWaktuProses));
         // untuk simpan data perhitungan ke database
         $jumlahPopulasi = intval($dataInputMemetika['inputJumlahPopulasi']);
         $jumlahGenerasi = intval($dataInputMemetika['inputJumlahGenerasi']);
         $mutationRate = floatval($dataInputMemetika['inputMutationRate']);
         $crossoverRate = floatval($dataInputMemetika['inputCrossoverRate']);
         $bulanPiket = $dataInputMemetika['inputBulanPiket'];
-        dump($jumlahPopulasi, $jumlahGenerasi, $mutationRate, $crossoverRate, $bulanPiket);
+        // dump($jumlahPopulasi, $jumlahGenerasi, $mutationRate, $crossoverRate, $bulanPiket);
 
         $nilaiFitness = AdminModel::dataNilaiFitness($dataPenjadwalan);
-        dump($nilaiFitness);
+        // dump($nilaiFitness);
 
         $dataInputPerhitungan = [
             'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru,
@@ -540,12 +540,12 @@ class AdminModel extends Model
 
         ];
 
-        dump($dataInputPerhitungan);
+        // dump($dataInputPerhitungan);
 
         $inputDataPerhitungan = DB::table('hasil_perhitungan_memetikas')->insert($dataInputPerhitungan);
         // echo $insertDataDatabase;
 
-        dump($inputDataPerhitungan);
+        // dump($inputDataPerhitungan);
 
         // dump($dataPenjadwalanDatabase);
     }
@@ -1013,10 +1013,10 @@ class AdminModel extends Model
         $mutationRate = floatval($dataInputGenetika['inputMutationRate']);
         $crossoverRate = floatval($dataInputGenetika['inputCrossoverRate']);
         $bulanPiket = $dataInputGenetika['inputBulanPiket'];
-        dump($jumlahPopulasi, $jumlahGenerasi, $mutationRate, $crossoverRate, $bulanPiket);
+        // dump($jumlahPopulasi, $jumlahGenerasi, $mutationRate, $crossoverRate, $bulanPiket);
 
         $nilaiFitness = AdminModel::dataNilaiFitness($dataPenjadwalan);
-        dump($nilaiFitness);
+        // dump($nilaiFitness);
 
         $dataInputPerhitungan = [
             'tanggal_pembuatan_jadwal' => $waktuPembuatanBaru,
@@ -1037,7 +1037,7 @@ class AdminModel extends Model
 
         $inputDataPerhitungan = DB::table('hasil_perhitungan_genetikas')->insert($dataInputPerhitungan);
         // echo $insertDataDatabase;
-        dump($inputDataPerhitungan);
+        // dump($inputDataPerhitungan);
 
         // dump($dataPenjadwalanDatabase);
     }
