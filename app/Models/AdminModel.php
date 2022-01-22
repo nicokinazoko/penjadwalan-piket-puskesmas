@@ -946,7 +946,7 @@ class AdminModel extends Model
     // simpan data penjadwalan ke database
     public static function simpanDataPenjadwalanDatabaseGenetika($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses)
     {
-        dump($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
+        // dump($dataPenjadwalan, $dataInputGenetika, $dataWaktuProses);
         $waktuPembuatan = date_create('now')->format('Y-m-d H:i:s');
         $waktuDefault = date_create('now')->format('Y-m-d');
         $waktuPembuatanBaru = date("Y-m-d H:i:s");
