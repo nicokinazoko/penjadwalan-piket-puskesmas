@@ -1371,7 +1371,8 @@ class AdminModel extends Model
     }
 
     // ambil selisih proses perhitungan memetika
-    public static function getDataPerhitunganMemetikaWithSelisihWaktu(){
+    public static function getDataPerhitunganMemetikaWithSelisihWaktu()
+    {
         $dataWaktu = DB::table('hasil_perhitungan_genetikas')->select('selisih_waktu')->get();
         return $dataWaktu;
     }
@@ -2355,6 +2356,7 @@ class AdminModel extends Model
                                                                 }
                                                             } else
                                                                         if ($dataPiket[$i][0]->kode_piket === 'PKD') {
+
                                                                 $kromosom[$i]['nilaiFitness']++;
                                                             } else {
                                                                 $kromosom[$i]['nilaiFitness']--;
